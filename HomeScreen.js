@@ -38,7 +38,7 @@ function BookingsScreen() {
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default function Tabs() {
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator
@@ -71,10 +71,18 @@ export default function App() {
           tabBarInactiveTintColor: 'black',
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Notifications" component={NotificationsScreen} />
-        <Tab.Screen name="Locations" component={LocationsScreen} />
-        <Tab.Screen name="Bookings" component={BookingsScreen} />
+        <Tab.Screen 
+        screenOptions={{ headerShown: false }}
+         name="Home" component={HomeScreen} />
+        <Tab.Screen 
+        screenOptions={{ headerShown: false }}
+         name="Notifications" component={NotificationsScreen} />
+        <Tab.Screen 
+        screenOptions={{ headerShown: false }}
+         name="Locations" component={LocationsScreen} />
+        <Tab.Screen 
+        screenOptions={{ headerShown: false }}
+         name="Bookings" component={BookingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
