@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ backgroundColor: 'rgb(125, 129, 247)', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text> Welcome to DestiNUS </Text>
     </View>
   );
@@ -14,7 +14,7 @@ function HomeScreen() {
 
 function NotificationsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ backgroundColor: 'rgb(125, 129, 247)', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Notifications will be displayed here!</Text>
     </View>
   );
@@ -22,7 +22,7 @@ function NotificationsScreen() {
 
 function LocationsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ backgroundColor: 'rgb(125, 129, 247)', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text> Locations will be displayed here! </Text>
     </View>
   );
@@ -30,7 +30,7 @@ function LocationsScreen() {
 
 function BookingsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ backgroundColor: 'rgb(125, 129, 247)', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text> Bookings are made here! </Text>
     </View>
   );
@@ -41,11 +41,10 @@ const Tab = createBottomTabNavigator();
 export default function Tabs() {
   return (
     <NavigationContainer independent={true}>
-      <Tab.Navigator
+      <Tab.Navigator 
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-
             if (route.name === 'Home') {
               iconName = focused
                 ? 'ios-home'
@@ -72,7 +71,7 @@ export default function Tabs() {
         })}
       >
         <Tab.Screen 
-        screenOptions={{ headerShown: false }}
+        screenOptions={{headerShown: false}}
          name="Home" component={HomeScreen} />
         <Tab.Screen 
         screenOptions={{ headerShown: false }}
