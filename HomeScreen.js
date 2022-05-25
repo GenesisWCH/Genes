@@ -68,6 +68,8 @@ export default function Tabs() {
           },
           tabBarActiveTintColor: 'blue',
           tabBarInactiveTintColor: 'black',
+          tabBarActiveBackgroundColor: 'darkorange',
+          tabBarInactiveBackgroundColor: 'darkorange',
         })}
       >
         <Tab.Screen 
