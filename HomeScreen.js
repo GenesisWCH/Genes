@@ -3,6 +3,10 @@ import { Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { MaterialIcons } from '@expo/vector-icons';
+import { auth } from './firebase/index';
 
 function HomeScreen() {
   return (
@@ -39,6 +43,19 @@ function BookingsScreen() {
 const Tab = createBottomTabNavigator();
 
 export default function Tabs() {
+
+  const logoutHandler = () => {
+    signOut(auth).then(() => {
+        setIsAuth(false);
+        setUser({});
+    });
+};
+
+const LogoutIcon = () => (
+  <TouchableOpacity onPress={logoutHandler}>
+      <MaterialIcons name="logout" size={28} color="#407BFF" />
+  </TouchableOpacity>
+);
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator 
@@ -72,16 +89,24 @@ export default function Tabs() {
           tabBarInactiveBackgroundColor: 'darkorange',
         })}
       >
-        <Tab.Screen 
+        <Tab.Screen options={{
+        headerRight: () => <LogoutIcon />,
+    }}
         screenOptions={{headerShown: false}}
          name="Home" component={HomeScreen} />
-        <Tab.Screen 
+        <Tab.Screen options={{
+        headerRight: () => <LogoutIcon />,
+    }}
         screenOptions={{ headerShown: false }}
          name="Notifications" component={NotificationsScreen} />
-        <Tab.Screen 
+        <Tab.Screen options={{
+        headerRight: () => <LogoutIcon />,
+    }}
         screenOptions={{ headerShown: false }}
          name="Locations" component={LocationsScreen} />
-        <Tab.Screen 
+        <Tab.Screen options={{
+        headerRight: () => <LogoutIcon />,
+    }}
         screenOptions={{ headerShown: false }}
          name="Bookings" component={BookingsScreen} />
       </Tab.Navigator>
