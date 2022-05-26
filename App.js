@@ -1,7 +1,7 @@
 
 import SignUpPage from './SignUp';
 import LoginPage from './Login';
-import HomeScreen from './HomeScreen';
+import Tabs from './HomeScreen';
 
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
@@ -59,22 +59,9 @@ const App = () => {
     </TouchableOpacity>
 );
 
-// to set up inner pages with createbottomtabs
-const InnerNavigator = () => (
-  <innerStack.Navigator initialRouteName='Home'>
-      <innerStack.Screen name="Home" 
-      options={{
-        headerTitle: 'Home',
-        headerRight: () => <LogoutIcon />,
-    }}
-    component={HomeScreen} 
-    />
-  </innerStack.Navigator>
-);
-
   return (
     <NavigationContainer>
-      {isAuth ? <InnerNavigator /> : <FrontPageNavigator />}
+      {isAuth ? <Tabs /> : <FrontPageNavigator />}
     </NavigationContainer>
   );
 };
