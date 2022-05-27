@@ -80,7 +80,7 @@ const LoginPage = ({ navigation }) => {
                     style={styles.forgotPWButton}
                     android_ripple={{ color: '#FFF' }}
                 >
-                    <Text style={styles.forgotPWButtonText}>Forgot your password?</Text>
+                    <Text style={styles.forgotPWButtonText}>Forgot Password?</Text>
                 </Pressable>
                 <Pressable
                     onPress={loginHandler}
@@ -94,7 +94,14 @@ const LoginPage = ({ navigation }) => {
                     style={styles.signUpLinkButton}
                     android_ripple={{ color: '#FFF' }}
                 >
-                    <Text style={styles.signUpLinkText}>New to DestiNUS? Create new account here</Text>
+                    <Text style={styles.signUpLinkText}>New to DestiNUS? Create account here</Text>
+                </Pressable>
+                <Pressable
+                    //onPress={}
+                    style={styles.guestButton}
+                    android_ripple={{ color: '#FFF' }}
+                >
+                    <Text style={styles.guestButton}>Continue as Guest</Text>
                 </Pressable>
             </View>
         </View>
@@ -148,7 +155,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     buttonText: {
-        fontSize: 12,
+        fontSize: 18,
         fontWeight: 'bold',
         color: 'black',
     },
@@ -184,5 +191,15 @@ const styles = StyleSheet.create({
         height: 30,
         paddingHorizontal: 8,
         backgroundColor: '#FFFFFF',
+    },
+    guestButton: {
+        marginTop: 0,
+        backgroundColor: '#FFFFFF',
+        fontSize: 12,
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+
+        textAlign: 'center',
+        color: '#0B5497'
     },
 });
