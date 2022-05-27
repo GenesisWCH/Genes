@@ -1,10 +1,9 @@
-// Code is a modified version of RN workshop part 1 exercise 2 solution
+// Code is a modified version of RN workshop given codes by Dominic and Marcus
 import {
     StyleSheet, Text, View, Image, Pressable, TextInput, ToastAndroid, Dimensions,
-    Keyboard, KeyboardAvoidingView, Platform
-} from "react-native";
+    Keyboard } from "react-native";
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from './firebase/index';
 
 const { width } = Dimensions.get('window');
@@ -14,8 +13,6 @@ const SignUpPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    //   const [isValidInput, setIsValidInput] = useState(false);
-    //   const [response, setResponse] = useState('');
 
     const signUpToast = () => {
         ToastAndroid.show(
@@ -41,7 +38,6 @@ const SignUpPage = () => {
             .then(userCredentials => {
                 const user = userCredentials.user;
 
-                // To show the user object returned
                 console.log(user);
 
                 restoreForm();
@@ -111,10 +107,6 @@ const SignUpPage = () => {
                     <Text style={styles.buttonText}>Sign Up</Text>
                 </Pressable>
             </View>
-
-            {/* {isValidInput && (
-                <Text style={styles.responseText}>{response}</Text>
-            )} */}
         </View>
     );
 };
@@ -142,8 +134,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: 250,
         height: 30,
-        //borderColor: 'black',
-        //borderWidth: 2,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
 
@@ -152,21 +142,19 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: 250,
         height: 30,
-        //borderColor: 'black',
-        //borderWidth: 2,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
 
     },
     button: {
         backgroundColor: '#75C3FB',
-        marginTop: 46, // Deducting off from the marginBottom of input i.e. 4dp
+        marginTop: 46,
         paddingHorizontal: 5,
         paddingVertical: 8,
         borderRadius: 5,
     },
     buttonText: {
-        fontSize: 12,
+        fontSize: 18,
         fontWeight: 'bold',
         color: 'black',
     },

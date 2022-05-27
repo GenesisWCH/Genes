@@ -1,31 +1,26 @@
 
 import SignUpPage from './SignUp';
 import LoginPage from './Login';
-import Tabs from './HomeScreen';
+import Tabs from './Tabs';
 
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { MaterialIcons } from '@expo/vector-icons';
 import { auth } from './firebase/index';
 
 import { LogBox } from 'react-native';
 
-LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs(); //Ignore all log notifications
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 
 const Stack = createNativeStackNavigator();
-const innerStack = createNativeStackNavigator();
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    // Mounting function
     const unsubscribeAuthStateChanged = onAuthStateChanged(
         auth,
         (authenticatedUser) => {
@@ -45,19 +40,6 @@ const App = () => {
         <Stack.Screen name="Sign Up" component={SignUpPage} />
       </Stack.Navigator>
     );
-
-  const logoutHandler = () => {
-      signOut(auth).then(() => {
-          setIsAuth(false);
-          setUser({});
-      });
-  };
-
-  const LogoutIcon = () => (
-    <TouchableOpacity onPress={logoutHandler}>
-        <MaterialIcons name="logout" size={28} color="#407BFF" />
-    </TouchableOpacity>
-);
 
   return (
     <NavigationContainer>
