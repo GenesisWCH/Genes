@@ -1,4 +1,4 @@
-// Code is a modified version of RN workshop part 1 exercise 2 solution
+// Code is a modified version of RN workshop given codes by Dominic and Marcus
 import {
     StyleSheet, Text, View, Image, Pressable, TextInput, ToastAndroid, Dimensions,
     Keyboard, KeyboardAvoidingView, Platform
@@ -30,7 +30,6 @@ const LoginPage = ({ navigation }) => {
             .then(userCredentials => {
                 const user = userCredentials.user;
 
-                // To show the user object returned
                 console.log(user);
 
                 restoreForm();
@@ -131,8 +130,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: 250,
         height: 30,
-        //borderColor: 'black',
-        //borderWidth: 2,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
 
@@ -141,15 +138,13 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: 250,
         height: 30,
-        //borderColor: 'black',
-        //borderWidth: 2,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
 
     },
     button: {
         backgroundColor: '#75C3FB',
-        marginTop: 46, // Deducting off from the marginBottom of input i.e. 4dp
+        marginTop: 46,
         paddingHorizontal: 5,
         paddingVertical: 8,
         borderRadius: 5,
@@ -181,7 +176,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
-
         textAlign: 'center',
         color: '#0B5497'
     },
