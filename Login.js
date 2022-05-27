@@ -20,6 +20,13 @@ const LoginPage = ({ navigation }) => {
         );
     };
 
+    const wrongFieldsToast = () => {
+        ToastAndroid.show(
+            'Incorrect email/password, please try again!',
+            ToastAndroid.SHORT
+        );
+    };
+
     const loginHandler = () => {
         if (email.length === 0 || password.length === 0) {
             missingFieldsToast();
@@ -39,6 +46,9 @@ const LoginPage = ({ navigation }) => {
                 const errorMessage = error.message;
 
                 console.error('[loginHandler]', errorCode, errorMessage);
+
+                wrongFieldsToast();
+                return;
             });
     };
     const restoreForm = () => {
