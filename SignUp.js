@@ -1,4 +1,4 @@
-// Code is a modified version of RN workshop given codes by Dominic and Marcus
+
 import {
     StyleSheet, Text, View, Image, Pressable, TextInput, ToastAndroid, Dimensions,
     Keyboard } from "react-native";
@@ -28,9 +28,21 @@ const SignUpPage = () => {
         );
     };
 
+    const matchingPasswordsToast = () => {
+        ToastAndroid.show(
+            'The 2 passwords given do not match, please try again!',
+            ToastAndroid.SHORT
+        );
+    };
+
     const signUpHandler = () => {
-        if (name.length === 0 || email.length === 0 || password.length === 0 || confirmPassword.length === 0 || password != confirmPassword) {
+        if (name.length === 0 || email.length === 0 || password.length === 0 || confirmPassword.length === 0) {
             missingFieldsToast();
+            return;
+        }
+
+        else if (password != confirmPassword) {
+            matchingPasswordsToast();
             return;
         }
 
