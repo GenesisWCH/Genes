@@ -11,7 +11,7 @@ import { auth } from './firebase/index';
 function HomeScreen() {
   return (
     <View style={styles.page}>
-      <Text> Welcome to DestiNUS </Text>
+      <Text> Welcome to DestiNUS! </Text>
     </View>
   );
 }
@@ -53,7 +53,7 @@ export default function Tabs() {
 
 const LogoutIcon = () => (
   <TouchableOpacity onPress={logoutHandler}>
-      <MaterialIcons name="logout" size={28} color='darkorange' />
+      <MaterialIcons name="logout" size={28} color='black' />
   </TouchableOpacity>
 );
   return (
@@ -91,36 +91,36 @@ const LogoutIcon = () => (
         <Tab.Screen options={{
         headerRight: () => <LogoutIcon />,
         headerStyle: {
-          backgroundColor: 'rgb(125, 129, 247)',
+          backgroundColor: 'darkorange',
         },
-        headerTintColor: 'darkorange'
+        headerTintColor: 'black'
     }}
         screenOptions={{headerShown: false}}
          name="Home" component={HomeScreen} />
         <Tab.Screen options={{
         headerRight: () => <LogoutIcon />, 
         headerStyle: {
-          backgroundColor: 'rgb(125, 129, 247)',
+          backgroundColor: 'darkorange',
         },
-        headerTintColor: 'darkorange'
+        headerTintColor: 'black'
     }} 
         screenOptions={{ headerShown: false }}
          name="Notifications" component={NotificationsScreen} />
         <Tab.Screen options={{
         headerRight: () => <LogoutIcon />,
         headerStyle: {
-          backgroundColor: 'rgb(125, 129, 247)',
+          backgroundColor: 'darkorange',
         },
-        headerTintColor: 'darkorange'
+        headerTintColor: 'black'
     }}
         screenOptions={{ headerShown: false }}
          name="Locations" component={LocationsScreen} />
         <Tab.Screen options={{
         headerRight: () => <LogoutIcon />,
         headerStyle: {
-          backgroundColor: 'rgb(125, 129, 247)',
+          backgroundColor: 'darkorange',
         },
-        headerTintColor: 'darkorange'
+        headerTintColor: 'black'
     }}
         screenOptions={{ headerShown: false }}
          name="Bookings" component={BookingsScreen} />
