@@ -1,4 +1,1 @@
 # Genes
-Testing
-Hello
-Hi
