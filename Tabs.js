@@ -1,65 +1,33 @@
-import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
-import {  signOut } from 'firebase/auth';
-import { MaterialIcons } from '@expo/vector-icons';
+import { signOut } from 'firebase/auth';
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { auth } from './firebase/index';
-
-function HomeScreen() {
-  return (
-    <View style={styles.page}>
-      <Text> Welcome to DestiNUS! </Text>
-    </View>
-  );
-}
-
-function NotificationsScreen() {
-  return (
-    <View style={styles.page}>
-      <Text>Notifications will be displayed here!</Text>
-    </View>
-  );
-}
-
-function LocationsScreen() {
-  return (
-    <View style={styles.page}>
-      <Text> Locations will be displayed here! </Text>
-    </View>
-  );
-}
-
-function BookingsScreen() {
-  return (
-    <View style={styles.page}>
-      <Text styles={styles.headerText}> Bookings are made here! </Text>
-    </View>
-  );
-}
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import HomeScreen from "./Screens/HomeScreen";
+import NotificationsScreen from "./Screens/NotificationsScreen";
+import LocationsScreen from "./Screens/LocationsScreen";
+import BookingsScreen from "./Screens/BookingsScreen";
+import LogOutHandler from "./functions/LogOutHandler";
 
 const Tab = createBottomTabNavigator();
 
 export default function Tabs() {
 
-  const logoutHandler = () => {
-    signOut(auth).then(() => {
-        setIsAuth(false);
-        setUser({});
-    });
-};
-
 const LogoutIcon = () => (
-  <TouchableOpacity onPress={logoutHandler}>
+  <Pressable onPress={LogOutHandler}>
       <MaterialIcons name="logout" size={28} color='black' />
-  </TouchableOpacity>
+  </Pressable>
 );
+
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator 
-        screenOptions={({ route }) => ({
+        screenOptions={
+          
+          ({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === 'Home') {
@@ -89,14 +57,10 @@ const LogoutIcon = () => (
         })}
       >
         <Tab.Screen options={{
-        headerRight: () => <LogoutIcon />,
-        headerStyle: {
-          backgroundColor: 'darkorange',
-        },
-        headerTintColor: 'black'
+        headerShown: false
     }}
-        screenOptions={{headerShown: false}}
-         name="Home" component={HomeScreen} />
+         name="Home" component={HomeScreen} 
+         />
         <Tab.Screen options={{
         headerRight: () => <LogoutIcon />, 
         headerStyle: {
@@ -104,8 +68,9 @@ const LogoutIcon = () => (
         },
         headerTintColor: 'black'
     }} 
-        screenOptions={{ headerShown: false }}
-         name="Notifications" component={NotificationsScreen} />
+        
+         name="Notifications" component={NotificationsScreen} 
+         />
         <Tab.Screen options={{
         headerRight: () => <LogoutIcon />,
         headerStyle: {
@@ -113,8 +78,9 @@ const LogoutIcon = () => (
         },
         headerTintColor: 'black'
     }}
-        screenOptions={{ headerShown: false }}
-         name="Locations" component={LocationsScreen} />
+        
+         name="Locations" component={LocationsScreen} 
+         />
         <Tab.Screen options={{
         headerRight: () => <LogoutIcon />,
         headerStyle: {
@@ -122,21 +88,11 @@ const LogoutIcon = () => (
         },
         headerTintColor: 'black'
     }}
-        screenOptions={{ headerShown: false }}
+        
          name="Bookings" component={BookingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  page: {
-    backgroundColor: 'rgb(125, 129, 247)', 
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
-  },
-  headerText: {
-    color: 'darkorange'
-  }
-});
+
