@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from './firebase/index';
+import { auth } from '../firebase/index';
 
 const { width } = Dimensions.get('window');
 
@@ -61,7 +61,7 @@ const LoginPage = ({ navigation }) => {
         <View style={styles.container}>
             <Image
                 source={
-                    require('./assets/logo.png')
+                    require('../assets/logo.png')
                 }
                 resizeMode='contain'
                 style={styles.image}

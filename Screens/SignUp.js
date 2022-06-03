@@ -4,7 +4,7 @@ import {
     Keyboard } from "react-native";
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from './firebase/index';
+import { auth } from '../firebase/index';
 
 const { width } = Dimensions.get('window');
 
@@ -73,7 +73,7 @@ const SignUpPage = () => {
         <View style={styles.container}>
             <Image
                 source={
-                    require('./assets/logo.png')
+                    require('../assets/logo.png')
                 }
                 resizeMode='contain'
                 style={styles.image}
