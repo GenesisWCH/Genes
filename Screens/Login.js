@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        marginTop: 0,
         width: width * 0.7,
         height: 240,
         alignSelf: 'center'
@@ -136,7 +135,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     input: {
-        marginTop: 0,
         marginBottom: 10,
         width: 250,
         height: 30,
@@ -165,24 +163,18 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     forgotPWButton: {
-        marginVertical: 0,
         width: 250,
         height: 30,
         paddingHorizontal: 8,
         backgroundColor: '#FFFFFF',
     },
     forgotPWButtonText: {
-        marginTop: 0,
-        color: 'black',
-        backgroundColor: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
         color: '#0B5497'
     },
     signUpLinkText: {
-        marginTop: 0,
-        backgroundColor: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
@@ -197,7 +189,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     guestButton: {
-        marginTop: 0,
         backgroundColor: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
