@@ -204,7 +204,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        marginTop: 0,
         width: width * 0.7,
         height: 240,
         alignSelf: 'center'
@@ -213,7 +212,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     input: {
-        marginTop: 0,
         marginBottom: 10,
         width: 250,
         height: 30,
