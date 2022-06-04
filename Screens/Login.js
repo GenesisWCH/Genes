@@ -165,24 +165,18 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     forgotPWButton: {
-        marginVertical: 0,
         width: 250,
         height: 30,
         paddingHorizontal: 8,
         backgroundColor: '#FFFFFF',
     },
     forgotPWButtonText: {
-        marginTop: 0,
-        color: 'black',
-        backgroundColor: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
         color: '#0B5497'
     },
     signUpLinkText: {
-        marginTop: 0,
-        backgroundColor: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
@@ -197,7 +191,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     guestButton: {
-        marginTop: 0,
         backgroundColor: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
