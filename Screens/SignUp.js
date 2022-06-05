@@ -7,7 +7,6 @@ import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
-
 const { width } = Dimensions.get('window');
 
 const SignUpPage = () => {
