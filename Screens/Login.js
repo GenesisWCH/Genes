@@ -1,6 +1,6 @@
 // Code is a modified version of RN workshop given codes by Dominic and Marcus
 import {
-    StyleSheet, Text, View, Image, Pressable, TextInput, ToastAndroid, Dimensions,
+    StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions,
     Keyboard, KeyboardAvoidingView, Platform
 } from "react-native";
 import React, { useState } from 'react';
@@ -15,17 +15,23 @@ const LoginPage = ({ navigation }) => {
     const [password, setPassword] = useState('');
 
     const missingFieldsToast = () => {
-        ToastAndroid.show(
-            'Missing fields, please try again!',
-            ToastAndroid.SHORT
-        );
+       let toast = Toast.show('Missing fields, please try again!', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const wrongFieldsToast = () => {
-        ToastAndroid.show(
-            'Incorrect email/password, please try again!',
-            ToastAndroid.SHORT
-        );
+        let toast = Toast.show('Incorrect email/password, please try again!', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const passwordResetToast = () => {
@@ -65,14 +71,13 @@ const LoginPage = ({ navigation }) => {
 
                 restoreForm();
             })
+            
             .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
-                console.error('[loginHandler]', errorCode, errorMessage);
-
                 wrongFieldsToast();
                 return;
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error('[loginHandler]', errorCode, errorMessage);
             });
     };
 
