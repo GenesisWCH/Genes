@@ -11,6 +11,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/index';
 
 import { LogBox } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
+
 
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
@@ -40,11 +42,14 @@ const App = () => {
         <Stack.Screen name="Sign Up" component={SignUpPage} />
       </Stack.Navigator>
     );
+  
 
   return (
+    <RootSiblingParent>
     <NavigationContainer>
       {isAuth ? <Tabs /> : <FrontPageNavigator />}
     </NavigationContainer>
+    </RootSiblingParent>
   );
 };
 

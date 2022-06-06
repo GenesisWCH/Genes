@@ -64,7 +64,7 @@ const SignUpPage = () => {
             'This email is already in use. Please use another email.',
             ToastAndroid.SHORT
         );
-        let toast = Toast.show('This email is already in use. Please use another email.', {
+        let toast = Toast.show('This email is already in use. Please use another one.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
           });
