@@ -108,18 +108,20 @@ const SignUpPage = () => {
                 restoreForm();
                 signUpToast();
             })
-            .catch((error) => {
-                
-                if (errorCode == "auth/email-already-in-use") {
-                    emailAlreadyInUseToast();
-                } else if (errorCode == "auth/invalid-email") {
-                    invalidEmailToast();
-                } else {
+            .catch(error => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
 
-                console.error('[signUpHandler]', errorCode, errorMessage);
+                if (errorCode == "auth/email-already-in-use") {
+                    emailAlreadyInUseToast();
+                } 
+                
+                if (errorCode == "auth/invalid-email") {
+                    invalidEmailToast();
                 }
+
+                console.error('[signUpHandler]', errorCode, errorMessage);
+                
             });
     };
 
