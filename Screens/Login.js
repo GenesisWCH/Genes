@@ -6,6 +6,7 @@ import {
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase/index';
+import Toast from 'react-native-root-toast';
 
 const { width } = Dimensions.get('window');
 
@@ -14,17 +15,23 @@ const LoginPage = ({ navigation }) => {
     const [password, setPassword] = useState('');
 
     const missingFieldsToast = () => {
-        ToastAndroid.show(
-            'Missing fields, please try again!',
-            ToastAndroid.SHORT
-        );
+       let toast = Toast.show('Missing fields, please try again!', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const wrongFieldsToast = () => {
-        ToastAndroid.show(
-            'Incorrect email/password, please try again!',
-            ToastAndroid.SHORT
-        );
+        let toast = Toast.show('Incorrect email/password, please try again!', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const loginHandler = () => {
