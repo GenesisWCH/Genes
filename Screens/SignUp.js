@@ -119,9 +119,7 @@ const SignUpPage = () => {
                 if (errorCode == "auth/invalid-email") {
                     invalidEmailToast();
                 }
-
                 console.error('[signUpHandler]', errorCode, errorMessage);
-                
             });
     };
 
