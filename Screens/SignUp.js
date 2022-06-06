@@ -18,10 +18,6 @@ const SignUpPage = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const signUpToast = () => {
-        ToastAndroid.show(
-            'Sign Up successfully completed!',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('Sign Up successfully completed!', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
@@ -32,10 +28,6 @@ const SignUpPage = () => {
     };
 
     const missingFieldsToast = () => {
-        ToastAndroid.show(
-            'Missing fields, please try again!',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('Missing fields, please try again!', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
@@ -46,10 +38,6 @@ const SignUpPage = () => {
     };
 
     const strongPasswordToast = () => {
-        ToastAndroid.show(
-            'Password is not strong enough.',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('Password is not strong enough.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
@@ -60,10 +48,6 @@ const SignUpPage = () => {
     };
 
     const emailAlreadyInUseToast = () => {
-        ToastAndroid.show(
-            'This email is already in use. Please use another one.',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('This email is already in use. Please use another one.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
@@ -74,10 +58,6 @@ const SignUpPage = () => {
     };
 
     const invalidEmailToast = () => {
-        ToastAndroid.show(
-            'This email is invalid. Please use an NUS email domain.',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('This email is invalid. Please use an NUS email domain.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
@@ -89,10 +69,6 @@ const SignUpPage = () => {
 
 
     const matchingPasswordsToast = () => {
-        ToastAndroid.show(
-            'The 2 passwords given do not match, please try again!',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('The 2 passwords given do not match, please try again!', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
@@ -132,17 +108,18 @@ const SignUpPage = () => {
                 restoreForm();
                 signUpToast();
             })
-            .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
+            .catch((error) => {
+                
                 if (errorCode == "auth/email-already-in-use") {
                     emailAlreadyInUseToast();
                 } else if (errorCode == "auth/invalid-email") {
                     invalidEmailToast();
-                }
+                } else {
+                const errorCode = error.code;
+                const errorMessage = error.message;
 
                 console.error('[signUpHandler]', errorCode, errorMessage);
+                }
             });
     };
 
