@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { signOut } from 'firebase/auth';
-import { MaterialIcons, AntDesign } from '@expo/vector-icons';
-import { auth } from './firebase/index';
+import { MaterialIcons } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import HomeScreen from "./Screens/HomeScreen";
 import NotificationsScreen from "./Screens/NotificationsScreen";
@@ -72,11 +70,7 @@ const LogoutIcon = () => (
          name="Notifications" component={NotificationsScreen} 
          />
         <Tab.Screen options={{
-        headerRight: () => <LogoutIcon />,
-        headerStyle: {
-          backgroundColor: 'darkorange',
-        },
-        headerTintColor: 'black'
+        headerShown: false
     }}
         
          name="Locations" component={LocationsScreen} 

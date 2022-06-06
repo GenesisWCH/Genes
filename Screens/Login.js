@@ -1,12 +1,11 @@
 // Code is a modified version of RN workshop given codes by Dominic and Marcus
 import {
-    StyleSheet, Text, View, Image, Pressable, TextInput, ToastAndroid, Dimensions,
+    StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions,
     Keyboard, KeyboardAvoidingView, Platform
 } from "react-native";
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '../firebase/index';
-import Modal from "react-native-modal";
 import Toast from 'react-native-root-toast';
 
 const { width } = Dimensions.get('window');
@@ -35,6 +34,29 @@ const LoginPage = ({ navigation }) => {
           }, 3000);
     };
 
+    const passwordResetToast = () => {
+        let toast = Toast.show('An email has been sent to reset your password.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+            Toast.hide(toast);
+        }, 3000);
+    };
+
+    // toast is working. email can only be sent if the domain is ready.
+    const passwordResetHandler = () => {
+        passwordResetToast();
+        return sendPasswordResetEmail(auth, email)
+            .then(() => {
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+            });
+    }
+
     const loginHandler = () => {
         if (email.length === 0 || password.length === 0) {
             missingFieldsToast();
@@ -58,6 +80,7 @@ const LoginPage = ({ navigation }) => {
                 console.error('[loginHandler]', errorCode, errorMessage);
             });
     };
+
     const restoreForm = () => {
         setEmail('');
         setPassword('');
@@ -65,7 +88,7 @@ const LoginPage = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
             <Image
                 source={
                     require('../assets/logo.png')
@@ -92,7 +115,7 @@ const LoginPage = ({ navigation }) => {
                     style={styles.input2}
                 />
                 <Pressable
-                    //onPress={}
+                    onPress={passwordResetHandler}
                     style={styles.forgotPWButton}
                     android_ripple={{ color: '#FFF' }}
                 >
@@ -120,7 +143,7 @@ const LoginPage = ({ navigation }) => {
                     <Text style={styles.guestButton}>Continue as Guest</Text>
                 </Pressable>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 

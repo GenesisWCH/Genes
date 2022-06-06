@@ -6,6 +6,7 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../functions/LogOutHandler";
+import { auth } from '../firebase';
 
 
 function HomeScreen() {
@@ -64,7 +65,7 @@ function HomeScreen() {
       </View>
 
       <View style={styles.body}>
-        <Text> Welcome to DestiNUS! haha</Text>
+        <Text>Email: {auth.currentUser.email}</Text>
         <SectionList
           sections={[
             { title: 'D', data: ['Devin', 'Dan', 'Dominic'] },
