@@ -8,6 +8,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
 const { width } = Dimensions.get('window');
+import Toast from 'react-native-root-toast';
 
 const SignUpPage = () => {
     const [name, setName] = useState('');
@@ -21,6 +22,13 @@ const SignUpPage = () => {
             'Sign Up successfully completed!',
             ToastAndroid.SHORT
         );
+        let toast = Toast.show('Sign Up successfully completed!', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const missingFieldsToast = () => {
@@ -28,6 +36,13 @@ const SignUpPage = () => {
             'Missing fields, please try again!',
             ToastAndroid.SHORT
         );
+        let toast = Toast.show('Missing fields, please try again!', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const strongPasswordToast = () => {
@@ -35,13 +50,27 @@ const SignUpPage = () => {
             'Password is not strong enough.',
             ToastAndroid.SHORT
         );
+        let toast = Toast.show('Password is not strong enough.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const emailAlreadyInUseToast = () => {
         ToastAndroid.show(
-            'This email is already in use. Please use another one.',
+            'This email is already in use. Please use another email.',
             ToastAndroid.SHORT
         );
+        let toast = Toast.show('This email is already in use. Please use another email.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const invalidEmailToast = () => {
@@ -49,6 +78,13 @@ const SignUpPage = () => {
             'This email is invalid. Please use an NUS email domain.',
             ToastAndroid.SHORT
         );
+        let toast = Toast.show('This email is invalid. Please use an NUS email domain.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
 
@@ -57,6 +93,13 @@ const SignUpPage = () => {
             'The 2 passwords given do not match, please try again!',
             ToastAndroid.SHORT
         );
+        let toast = Toast.show('The 2 passwords given do not match, please try again!', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+          });
+          setTimeout(function hideToast() {
+            Toast.hide(toast);
+          }, 3000);
     };
 
     const signUpHandler = () => {
