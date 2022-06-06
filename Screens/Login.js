@@ -6,6 +6,7 @@ import {
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase/index';
+import Modal from "react-native-modal";
 import Toast from 'react-native-root-toast';
 
 const { width } = Dimensions.get('window');
@@ -48,14 +49,13 @@ const LoginPage = ({ navigation }) => {
 
                 restoreForm();
             })
+            
             .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
-                console.error('[loginHandler]', errorCode, errorMessage);
-
                 wrongFieldsToast();
                 return;
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error('[loginHandler]', errorCode, errorMessage);
             });
     };
     const restoreForm = () => {
