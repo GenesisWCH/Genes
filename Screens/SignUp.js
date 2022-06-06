@@ -1,10 +1,10 @@
 
 import {
-    StyleSheet, Text, View, Image, Pressable, TextInput, ToastAndroid, Dimensions,
+    StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions,
     Keyboard, KeyboardAvoidingView
 } from "react-native";
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
 const { width } = Dimensions.get('window');
@@ -18,88 +18,63 @@ const SignUpPage = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const signUpToast = () => {
-        ToastAndroid.show(
-            'Sign Up successfully completed!',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('Sign Up successfully completed!', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
-          });
-          setTimeout(function hideToast() {
+        });
+        setTimeout(function hideToast() {
             Toast.hide(toast);
-          }, 3000);
+        }, 3000);
     };
 
     const missingFieldsToast = () => {
-        ToastAndroid.show(
-            'Missing fields, please try again!',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('Missing fields, please try again!', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
-          });
-          setTimeout(function hideToast() {
+        });
+        setTimeout(function hideToast() {
             Toast.hide(toast);
-          }, 3000);
+        }, 3000);
     };
 
     const strongPasswordToast = () => {
-        ToastAndroid.show(
-            'Password is not strong enough.',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('Password is not strong enough.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
-          });
-          setTimeout(function hideToast() {
+        });
+        setTimeout(function hideToast() {
             Toast.hide(toast);
-          }, 3000);
+        }, 3000);
     };
 
     const emailAlreadyInUseToast = () => {
-        ToastAndroid.show(
-            'This email is already in use. Please use another one.',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('This email is already in use. Please use another one.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
-          });
-          setTimeout(function hideToast() {
+        });
+        setTimeout(function hideToast() {
             Toast.hide(toast);
-          }, 3000);
+        }, 3000);
     };
 
     const invalidEmailToast = () => {
-        ToastAndroid.show(
-            'This email is invalid. Please use an NUS email domain.',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('This email is invalid. Please use an NUS email domain.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
-          });
-          setTimeout(function hideToast() {
+        });
+        setTimeout(function hideToast() {
             Toast.hide(toast);
-          }, 3000);
+        }, 3000);
     };
 
-
     const matchingPasswordsToast = () => {
-        ToastAndroid.show(
-            'The 2 passwords given do not match, please try again!',
-            ToastAndroid.SHORT
-        );
         let toast = Toast.show('The 2 passwords given do not match, please try again!', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
-          });
-          setTimeout(function hideToast() {
+        });
+        setTimeout(function hideToast() {
             Toast.hide(toast);
-          }, 3000);
+        }, 3000);
     };
 
     const signUpHandler = () => {
@@ -221,7 +196,7 @@ const SignUpPage = () => {
                 <Pressable
                     style={styles.passwordRequirementButton}
                     onPress={() => setModalVisible(true)}
-                    >
+                >
                     <Text style={styles.passwordRequirementButtonText}>Password Requirement</Text>
                 </Pressable>
                 <Pressable
