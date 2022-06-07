@@ -55,7 +55,7 @@ function LocationsScreen() {
       </Modal>
 
       <View style={styles.header}>
-        <Text style={styles.headerText}> Home</Text>
+        <Text style={styles.headerText}> Locations</Text>
         <Pressable
           style={styles.profileIcon}
           onPress={() => setModalVisible(true)}
