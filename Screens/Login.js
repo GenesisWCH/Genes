@@ -4,7 +4,7 @@ import {
     Keyboard, KeyboardAvoidingView, Platform
 } from "react-native";
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Toast from 'react-native-root-toast';
 
@@ -44,6 +44,16 @@ const LoginPage = ({ navigation }) => {
         }, 3000);
     };
 
+    const guestToast = () => {
+        let toast = Toast.show('You signed in as a guest.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+            Toast.hide(toast);
+        }, 3000);
+    };
+
     // toast is working. email can only be sent if the domain is ready.
     const passwordResetHandler = () => {
         passwordResetToast();
@@ -74,7 +84,6 @@ const LoginPage = ({ navigation }) => {
             
             .catch(error => {
                 wrongFieldsToast();
-                return;
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.error('[loginHandler]', errorCode, errorMessage);
@@ -86,6 +95,19 @@ const LoginPage = ({ navigation }) => {
         setPassword('');
         Keyboard.dismiss();
     };
+
+    const guestHandler = () => {
+        guestToast();
+        return signInAnonymously(auth)
+        .then(() => {
+          // Signed in..
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ...
+        });
+    }
 
     return (
         <KeyboardAvoidingView style={styles.container}>
@@ -136,7 +158,7 @@ const LoginPage = ({ navigation }) => {
                     <Text style={styles.signUpLinkText}>New to DestiNUS? Create account here</Text>
                 </Pressable>
                 <Pressable
-                    //onPress={}
+                    onPress={guestHandler}
                     style={styles.guestButton}
                     android_ripple={{ color: '#FFF' }}
                 >
