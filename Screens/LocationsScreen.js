@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -9,9 +9,54 @@ import { auth } from '../firebase';
 
 import styles from "../css/LocationsStyle";
 import MapView from 'react-native-maps';
+import * as Location from "expo-location";
 
 function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
+  const locationToast = () => {
+    let toast = Toast.show('You have given permission to DestiNUS to use your current location.', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+      Toast.hide(toast);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        locationToast();
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+        enableHighAccuracy: true,
+        timeInterval: 5
+      });
+
+      setLatitude(location.coords.latitude)
+      setLongitude(location.coords.longitude);
+      setLocation(location.coords);
+    })();
+  }, []);
+
+  const mapRef = React.createRef();
+
+  // const onLoading = () => {
+  //   const newRegion = {
+  //     latitude: latitude,
+  //     longitude: longitude
+  //   }
+  // }
+  
+
   return (
     <SafeAreaView style={styles.page}>
       <Modal
@@ -55,7 +100,7 @@ function LocationsScreen() {
       </Modal>
 
       <View style={styles.header}>
-        <Text style={styles.headerText}> Home</Text>
+        <Text style={styles.headerText}>Location</Text>
         <Pressable
           style={styles.profileIcon}
           onPress={() => setModalVisible(true)}
@@ -65,10 +110,29 @@ function LocationsScreen() {
 
       </View>
       <View style={styles.body}>
-        <MapView style={styles.map} />
-      </View>
-      </SafeAreaView>
-    );
-  }
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          // onMapReady={() => onLoading()}
 
-  export default LocationsScreen;
+          showsUserLocation
+          followsUserLocation //Apple only
+          showsIndoorLevelPicker
+        //minZoomLevel={18}
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+export default LocationsScreen;
+
+// my home coordinates
+// initialRegion={{
+//   latitude: 1.3398239189160044,
+//   longitude: 103.70272617604708,
+//   latitudeDelta: 0.0922,
+//   longitudeDelta: 0.0421
+// }}
+
+// COM 1 coordinates: 1.294898512582403, 103.77367351793063
