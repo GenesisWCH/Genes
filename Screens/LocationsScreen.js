@@ -12,6 +12,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { render } from "react-dom";
+import {autocompleteKey} from '@env';
 
 function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -138,7 +139,7 @@ function LocationsScreen() {
               })
             }}
             query={{
-              key: 'AIzaSyD5tEVCdFTTHyin4scVIfcwM9LPlDO7wxA',
+              key: autocompleteKey,
               language: 'en',
               components: 'country:sg',
               types: 'establishment',
