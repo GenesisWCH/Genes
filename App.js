@@ -43,7 +43,6 @@ const App = () => {
       </Stack.Navigator>
     );
   
-
   return (
     <RootSiblingParent>
     <NavigationContainer>

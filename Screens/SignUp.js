@@ -113,10 +113,11 @@ const SignUpPage = () => {
 
                 if (errorCode == "auth/email-already-in-use") {
                     emailAlreadyInUseToast();
-                } else if (errorCode == "auth/invalid-email") {
+                } 
+                
+                if (errorCode == "auth/invalid-email") {
                     invalidEmailToast();
                 }
-
                 console.error('[signUpHandler]', errorCode, errorMessage);
             });
     };
