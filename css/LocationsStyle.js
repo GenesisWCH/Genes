@@ -52,10 +52,17 @@ const LocationsStyle = StyleSheet.create({
         textAlign: "center"
       },
     map: {
+      
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
     },
-    
+    autoComplete: {
+      flex: 0,
+      position: "absolute",
+      width: '100%',
+      zIndex: 1,
+      backgroundColor: 'white'
+    },
   });
 
   export default LocationsStyle;

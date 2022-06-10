@@ -8,14 +8,22 @@ import LogOutHandler from "../functions/LogOutHandler";
 import { auth } from '../firebase';
 
 import styles from "../css/LocationsStyle";
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from "expo-location";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { render } from "react-dom";
 
 function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+    const[region, setRegion] = useState({
+    latitude: 1.3398239189160044,
+    longitude: 103.70272617604708,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421
+  })
 
   const locationToast = () => {
     let toast = Toast.show('You have given permission to DestiNUS to use your current location.', {
@@ -55,7 +63,8 @@ function LocationsScreen() {
   //     longitude: longitude
   //   }
   // }
-  
+
+
 
   return (
     <SafeAreaView style={styles.page}>
@@ -110,20 +119,59 @@ function LocationsScreen() {
 
       </View>
       <View style={styles.body}>
-        <MapView
-          ref={mapRef}
-          style={styles.map}
-          // onMapReady={() => onLoading()}
-
-          showsUserLocation
-          followsUserLocation //Apple only
-          showsIndoorLevelPicker
-        //minZoomLevel={18}
-        />
+        <View style={styles.page}>
+          <GooglePlacesAutocomplete
+            // layering issue: not above map and need to manually remove keyboard avoiding view
+            placeholder='Search'
+            fetchDetails={true}
+            GooglePlacesSearchQuery={{
+              rankby: 'distance'
+            }}
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
+              console.log(data, details);
+              setRegion({
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
+              })
+            }}
+            query={{
+              key: 'AIzaSyD5tEVCdFTTHyin4scVIfcwM9LPlDO7wxA',
+              language: 'en',
+              components: 'country:sg',
+              types: 'establishment',
+              radius: 30000,
+              location: `${region.latitude}, ${region.longitude}`
+            }}
+            styles={{
+              container: {
+                flex: 0,
+                position: "absolute",
+                width: '100%',
+                zIndex: 1
+              },
+              listView: { backgroundColor: 'white' }
+            }}
+          />
+          <MapView
+            // ref={mapRef}
+            style={styles.map}
+            // onMapReady={() => onLoading()}
+            showsUserLocation
+            followsUserLocation //Apple only
+            showsIndoorLevelPicker
+          //minZoomLevel={18}
+          >
+            <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />
+          </MapView>
+        </View>
       </View>
     </SafeAreaView>
   );
 }
+
 
 export default LocationsScreen;
 
