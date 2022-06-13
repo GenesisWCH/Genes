@@ -35,7 +35,7 @@ const LoginPage = ({ navigation }) => {
     };
 
     const passwordResetToast = () => {
-        let toast = Toast.show('An email has been sent to reset your password.', {
+        let toast = Toast.show('An email has been sent to reset your password. Please check your spam folder', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
         });
@@ -55,15 +55,15 @@ const LoginPage = ({ navigation }) => {
     };
 
     // toast is working. email can only be sent if the domain is ready.
-    const passwordResetHandler = () => {
-        passwordResetToast();
+    const passwordResetHandler = () => {       
         return sendPasswordResetEmail(auth, email)
             .then(() => {
+                passwordResetToast();
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                // ..
+                console.error('[passwordResetHandler]', errorCode, errorMessage);
             });
     }
 

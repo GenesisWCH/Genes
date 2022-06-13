@@ -4,7 +4,7 @@ import {
     Keyboard, KeyboardAvoidingView
 } from "react-native";
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
 const { width } = Dimensions.get('window');
@@ -77,6 +77,7 @@ const SignUpPage = () => {
         }, 3000);
     };
 
+
     const signUpHandler = () => {
         if (name.length === 0 || email.length === 0 || password.length === 0 || confirmPassword.length === 0) {
             missingFieldsToast();
@@ -105,7 +106,11 @@ const SignUpPage = () => {
                 console.log(user);
 
                 restoreForm();
-                signUpToast();
+
+                sendEmailVerification(auth.currentUser)
+                    .then(() => {
+                        signUpToast();
+                    });
             })
             .catch(error => {
                 const errorCode = error.code;
@@ -113,8 +118,8 @@ const SignUpPage = () => {
 
                 if (errorCode == "auth/email-already-in-use") {
                     emailAlreadyInUseToast();
-                } 
-                
+                }
+
                 if (errorCode == "auth/invalid-email") {
                     invalidEmailToast();
                 }
