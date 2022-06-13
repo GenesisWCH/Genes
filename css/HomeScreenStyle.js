@@ -23,6 +23,7 @@ const HomeScreenStyle = StyleSheet.create({
     },
     body: {
         flex: 93,
+        backgroundColor:"white",
     },
     centeredView: {
       flex: 1,
@@ -58,7 +59,7 @@ const HomeScreenStyle = StyleSheet.create({
       paddingBottom: 2,
       fontSize: 14,
       fontWeight: 'bold',
-      backgroundColor: 'rgba(247,247,247,1.0)',
+      backgroundColor: 'silver',
     },
     item: {
       padding: 10,

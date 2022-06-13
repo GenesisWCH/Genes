@@ -3,7 +3,7 @@ import SignUpPage from './Screens/SignUp';
 import LoginPage from './Screens/Login';
 import Tabs from './Tabs';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -43,7 +43,6 @@ const App = () => {
       </Stack.Navigator>
     );
   
-
   return (
     <RootSiblingParent>
     <NavigationContainer>
