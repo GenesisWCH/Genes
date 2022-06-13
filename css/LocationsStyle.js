@@ -52,9 +52,9 @@ const LocationsStyle = StyleSheet.create({
         textAlign: "center"
       },
     map: {
-      
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
+      marginTop: 44,
     },
     autoComplete: {
       flex: 0,

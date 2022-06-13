@@ -25,27 +25,25 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 
 // examples on GitHub repo were done by class instead of function
-class LocationsScreen extends React.Component {
+class LocationsScreenClass extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      region: {
+
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      },
-      markerRegion: {
-        latitude: 1.3398239189160044,
-        longitude: 103.70272617604708,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      },
-      location: {
-        latitude: null,
-        longitude: null
-      },
+        longitudeDelta: LONGITUDE_DELTA,
+
+        markerLatitude: 1.3398239189160044,
+        markerLongitude: 103.70272617604708,
+        markerLatitudeDelta: LATITUDE_DELTA,
+        markerLongitudeDelta: LONGITUDE_DELTA,
+
+        locationLatitude: null,
+        locationLongitude: null,
+
       modalVisible: false
     };
   }
@@ -57,8 +55,8 @@ class LocationsScreen extends React.Component {
   updateState(location) {
     this.setState({
       ...this.state,
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      locationLatitude: location.coords.latitude,
+      locationLongitude: location.coords.longitude,
     });
   }
 
@@ -233,7 +231,7 @@ render() {
 }
 
 
-export default LocationsScreen;
+export default LocationsScreenClass;
 
 // my home coordinates
 // initialRegion={{

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View } from 'react-native';
+import { Text, View, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Modal from "react-native-modal";
@@ -12,18 +12,39 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { render } from "react-dom";
-import {autocompleteKey} from '@env';
+import { autocompleteKey } from '@env';
+import { Animated, KeyboardAvoidingView } from "react-native-web";
+
+const { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / height;
+const LATITUDE = 1.3398239189160044;
+const LONGITUDE = 103.70272617604708;
+const LATITUDE_DELTA = 0.02;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const INITIAL_POSITION = {
+  latitude: 1.3398239189160044,
+  longitude: 103.70272617604708,
+  latitudeDelta: LATITUDE_DELTA,
+  longitudeDelta: LONGITUDE_DELTA
+};
 
 function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-    const[region, setRegion] = useState({
-    latitude: 1.3398239189160044,
-    longitude: 103.70272617604708,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421
+  const [region, setRegion] = useState({
+    latitude: 40.7,
+    longitude: -74,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA
+  })
+  const [markerRegion, setMarkerRegion] = useState({
+    latitude: 40.7,
+    longitude: -74,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA
   })
 
   const locationToast = () => {
@@ -56,7 +77,7 @@ function LocationsScreen() {
     })();
   }, []);
 
-  const mapRef = React.createRef();
+  // const mapRef = React.createRef();
 
   // const onLoading = () => {
   //   const newRegion = {
@@ -65,7 +86,11 @@ function LocationsScreen() {
   //   }
   // }
 
-
+  // const animateMap = () => {
+  //   mapRef.current.animateToRegion({ // Takes a region object as parameter
+  //     region
+  //   }, 1000);
+  // }
 
   return (
     <SafeAreaView style={styles.page}>
@@ -137,6 +162,10 @@ function LocationsScreen() {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421
               })
+              // animateMap();
+              setMarkerRegion({
+                region
+              })
             }}
             query={{
               key: autocompleteKey,
@@ -144,7 +173,7 @@ function LocationsScreen() {
               components: 'country:sg',
               types: 'establishment',
               radius: 30000,
-              location: `${region.latitude}, ${region.longitude}`
+              location: `${markerRegion.latitude}, ${markerRegion.longitude}`
             }}
             styles={{
               container: {
@@ -159,13 +188,14 @@ function LocationsScreen() {
           <MapView
             // ref={mapRef}
             style={styles.map}
+            region={region} //setting the region teleports the screen to the region with no animation from the current view of the map
             // onMapReady={() => onLoading()}
             showsUserLocation
             followsUserLocation //Apple only
             showsIndoorLevelPicker
           //minZoomLevel={18}
           >
-            <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />
+            <Marker coordinate={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }} />
           </MapView>
         </View>
       </View>
@@ -185,3 +215,4 @@ export default LocationsScreen;
 // }}
 
 // COM 1 coordinates: 1.294898512582403, 103.77367351793063
+// note: zoom level for 'centralise map to current location' button is same as the current zoom.
