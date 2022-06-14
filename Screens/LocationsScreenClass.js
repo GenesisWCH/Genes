@@ -12,42 +12,72 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { render } from "react-dom";
-import { autocompleteKey } from '@env';
-import { Animated, KeyboardAvoidingView } from "react-native-web";
+import {autocompleteKey} from '@env';
+
 
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 1.3398239189160044;
 const LONGITUDE = 103.70272617604708;
-const LATITUDE_DELTA = 0.02;
+const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const INITIAL_POSITION = {
-  latitude: 1.3398239189160044,
-  longitude: 103.70272617604708,
-  latitudeDelta: LATITUDE_DELTA,
-  longitudeDelta: LONGITUDE_DELTA
-};
 
-function LocationsScreen() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [location, setLocation] = useState(null);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [region, setRegion] = useState({
-    latitude: 40.7,
-    longitude: -74,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  })
-  const [markerRegion, setMarkerRegion] = useState({
-    latitude: 40.7,
-    longitude: -74,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  })
 
-  const locationToast = () => {
+// examples on GitHub repo were done by class instead of function
+class LocationsScreenClass extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+
+        markerLatitude: 1.3398239189160044,
+        markerLongitude: 103.70272617604708,
+        markerLatitudeDelta: LATITUDE_DELTA,
+        markerLongitudeDelta: LONGITUDE_DELTA,
+
+        locationLatitude: null,
+        locationLongitude: null,
+
+      modalVisible: false
+    };
+  }
+
+  onRegionChange(region) {
+    this.setState({ region });
+  }
+
+  updateState(location) {
+    this.setState({
+      ...this.state,
+      locationLatitude: location.coords.latitude,
+      locationLongitude: location.coords.longitude,
+    });
+  }
+
+  async componentDidMount() {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+        enableHighAccuracy: true,
+        timeInterval: 5
+      });
+      this.updateState(location);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  locationToast() {
     let toast = Toast.show('You have given permission to DestiNUS to use your current location.', {
       duration: Toast.durations.LONG,
       position: Toast.positions.CENTER,
@@ -57,48 +87,52 @@ function LocationsScreen() {
     }, 3000);
   };
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        locationToast();
-        return;
-      }
+  toggleModal() {
+    const modalState = this.state.modalVisible;
+    this.setState({ modalVisible: !modalState});
+  }
 
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Balanced,
-        enableHighAccuracy: true,
-        timeInterval: 5
-      });
+  autoCompleteSearch(latitude, longitude) {
+    const markerRegion2 = this.state.markerRegion
+    markerRegion2.latitude = latitude
+    markerRegion2.longitude = longitude
+    this.setState(
+      {markerRegion: markerRegion2}
+    )
+  }
 
-      setLatitude(location.coords.latitude)
-      setLongitude(location.coords.longitude);
-      setLocation(location.coords);
-    })();
-  }, []);
 
-  // const mapRef = React.createRef();
 
-  // const onLoading = () => {
-  //   const newRegion = {
-  //     latitude: latitude,
-  //     longitude: longitude
-  //   }
-  // }
+// const mapRef = React.createRef();
 
-  // const animateMap = () => {
-  //   mapRef.current.animateToRegion({ // Takes a region object as parameter
-  //     region
-  //   }, 1000);
-  // }
+// const onLoading = () => {
+//   let location = Location.getCurrentPositionAsync({
+//     accuracy: Location.Accuracy.Balanced,
+//     enableHighAccuracy: true,
+//     timeInterval: 5
+//   });
 
+
+//   mapRef.current.animateToRegion({
+//     latitude: location.coords.latitude,
+//     longitude: location.coords.longitude,
+//     latitudeDelta: 0.0922,
+//     longitudeDelta: 0.0421
+//   }, 5000)
+
+// }
+
+
+
+
+render() {
   return (
     <SafeAreaView style={styles.page}>
       <Modal
         animationIn={"slideInRight"}
         animationOut={'slideOutRight'}
-        isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
+        isVisible={this.state.modalVisible}
+        onBackdropPress={this.toggleModal}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -138,7 +172,7 @@ function LocationsScreen() {
         <Text style={styles.headerText}>Location</Text>
         <Pressable
           style={styles.profileIcon}
-          onPress={() => setModalVisible(true)}
+          onPress={this.toggleModal}
         >
           <AntDesign name="user" size={28} color='black' />
         </Pressable>
@@ -156,16 +190,7 @@ function LocationsScreen() {
             onPress={(data, details = null) => {
               // 'details' is provided when fetchDetails = true
               console.log(data, details);
-              setRegion({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              })
-              // animateMap();
-              setMarkerRegion({
-                region
-              })
+              this.autoCompleteSearch(details.geometry.location.lat, details.geometry.location.lng)
             }}
             query={{
               key: autocompleteKey,
@@ -173,7 +198,7 @@ function LocationsScreen() {
               components: 'country:sg',
               types: 'establishment',
               radius: 30000,
-              location: `${markerRegion.latitude}, ${markerRegion.longitude}`
+              location: `${this.state.region.latitude}, ${this.state.region.longitude}`
             }}
             styles={{
               container: {
@@ -188,23 +213,25 @@ function LocationsScreen() {
           <MapView
             // ref={mapRef}
             style={styles.map}
-            region={region} //setting the region teleports the screen to the region with no animation from the current view of the map
             // onMapReady={() => onLoading()}
+            region={this.state.region}
+      onRegionChange={region => this.onRegionChange(region)}
             showsUserLocation
             followsUserLocation //Apple only
             showsIndoorLevelPicker
           //minZoomLevel={18}
           >
-            <Marker coordinate={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }} />
+            <Marker coordinate={{ latitude: this.state.markerRegion.latitude, longitude: this.state.markerRegion.longitude }} />
           </MapView>
         </View>
       </View>
     </SafeAreaView>
   );
 }
+}
 
 
-export default LocationsScreen;
+export default LocationsScreenClass;
 
 // my home coordinates
 // initialRegion={{
@@ -215,4 +242,48 @@ export default LocationsScreen;
 // }}
 
 // COM 1 coordinates: 1.294898512582403, 103.77367351793063
-// note: zoom level for 'centralise map to current location' button is same as the current zoom.
+
+
+  // const[modalVisible, setModalVisible] = useState(false);
+  // const[location, setLocation] = useState(null);
+  // const[latitude, setLatitude] = useState(null);
+  // const[longitude, setLongitude] = useState(null);
+  // const[region, setRegion] = useState({
+  //   latitude: 1.3398239189160044,
+  //   longitude: 103.70272617604708,
+  //   latitudeDelta: 0.0922,
+  //   longitudeDelta: 0.0421
+  // })
+
+  
+
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       locationToast();
+  //       return;
+  //     }
+
+  //     let location = await Location.getCurrentPositionAsync({
+  //       accuracy: Location.Accuracy.Balanced,
+  //       enableHighAccuracy: true,
+  //       timeInterval: 5
+  //     });
+
+  //     setLatitude(location.coords.latitude)
+  //     setLongitude(location.coords.longitude);
+  //     setLocation(location.coords);
+  //   })();
+  // }, []);
+
+  // modal function
+  // onPress={() => setModalVisible(true)}
+  
+
+  // setRegion({
+  //   latitude: details.geometry.location.lat,
+  //   longitude: details.geometry.location.lng,
+  //   latitudeDelta: 0.0922,
+  //   longitudeDelta: 0.0421
+  // })

@@ -54,8 +54,15 @@ const LocationsStyle = StyleSheet.create({
     map: {
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
+      marginTop: 44,
     },
-    
+    autoComplete: {
+      flex: 0,
+      position: "absolute",
+      width: '100%',
+      zIndex: 1,
+      backgroundColor: 'white'
+    },
   });
 
   export default LocationsStyle;
