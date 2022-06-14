@@ -74,7 +74,9 @@ function HomeScreen({navigation}) {
 
       <View style={styles.body}>
 
-        <Text style={{fontSize: 25, color: 'black', fontWeight: 'bold', backgroundColor: 'white'}}> Welcome User! </Text>
+        <Text style={styles.welcomeText}>
+          Welcome, {auth.currentUser.isAnonymous ? 'Guest' : auth.currentUser.displayName}!
+          </Text>
         <SectionList
           sections={DATA}
           renderItem={({ item }) => 

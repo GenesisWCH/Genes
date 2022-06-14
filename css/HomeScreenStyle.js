@@ -80,7 +80,14 @@ const HomeScreenStyle = StyleSheet.create({
       textAlign: "right",
       position: 'absolute',
         right: 5
-    }
+    },
+    welcomeText: {
+      fontSize: 25, 
+      color: 'black', 
+      fontWeight: 'bold', 
+      backgroundColor: 'white',
+      paddingLeft: 5,
+    },
   });
 
   export default HomeScreenStyle;

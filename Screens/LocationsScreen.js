@@ -29,7 +29,7 @@ const INITIAL_POSITION = {
   longitudeDelta: LONGITUDE_DELTA
 };
 
-function LocationsScreen() {
+function LocationsScreen({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState(null);
   const [latitude, setLatitude] = useState(null);
@@ -148,6 +148,7 @@ function LocationsScreen() {
         <View style={styles.page}>
           <GooglePlacesAutocomplete
             // layering issue: not above map and need to manually remove keyboard avoiding view
+            // Android: No clear input button in search bar
             placeholder='Search'
             fetchDetails={true}
             GooglePlacesSearchQuery={{
