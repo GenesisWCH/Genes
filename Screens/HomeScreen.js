@@ -73,7 +73,6 @@ function HomeScreen({navigation}) {
       </View>
 
       <View style={styles.body}>
-
         <Text style={styles.welcomeText}>
           Welcome, {auth.currentUser.isAnonymous ? 'Guest' : auth.currentUser.displayName}!
           </Text>
@@ -88,7 +87,7 @@ function HomeScreen({navigation}) {
               onPress={() => navigation.navigate('Locations')}
               style={styles.directionbutton}
               android_ripple={{ color: '#FFF' }}>
-                <Text style={styles.buttonText}>  Directions</Text>
+                <Text style={styles.directionButtonText}>Directions</Text>
               </Pressable>
             </View>
             }

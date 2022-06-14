@@ -73,21 +73,22 @@ const HomeScreenStyle = StyleSheet.create({
     directionbutton: {
       backgroundColor: "orange",
       width: 100,
-      marginVertical: 3,
-      paddingHorizontal: 8,
       paddingVertical: 8,
       marginVertical: 10,
-      textAlign: "right",
       position: 'absolute',
-        right: 5
+      right: 5
     },
     welcomeText: {
       fontSize: 25, 
-      color: 'black', 
-      fontWeight: 'bold', 
+      color: 'black',
+      fontWeight: 'bold',
       backgroundColor: 'white',
       paddingLeft: 5,
     },
+    directionButtonText: {
+      fontSize: 15,
+      alignSelf: 'center'
+    }
   });
 
   export default HomeScreenStyle;
