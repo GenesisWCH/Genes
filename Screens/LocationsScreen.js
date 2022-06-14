@@ -14,6 +14,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { render } from "react-dom";
 import { autocompleteKey } from '@env';
 import { Animated, KeyboardAvoidingView } from "react-native-web";
+import MapViewDirections from "react-native-maps-directions";
 
 const { width, height } = Dimensions.get('window');
 
@@ -29,20 +30,21 @@ const INITIAL_POSITION = {
   longitudeDelta: LONGITUDE_DELTA
 };
 
-function LocationsScreen({navigation}) {
+function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [showDirections, setShowDirections] = useState(false)
   const [region, setRegion] = useState({
-    latitude: 40.7,
-    longitude: -74,
+    latitude: LATITUDE,
+    longitude: LONGITUDE,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA
   })
   const [markerRegion, setMarkerRegion] = useState({
-    latitude: 40.7,
-    longitude: -74,
+    latitude: LATITUDE,
+    longitude: LONGITUDE,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA
   })
@@ -77,7 +79,7 @@ function LocationsScreen({navigation}) {
     })();
   }, []);
 
-  // const mapRef = React.createRef();
+  const mapRef = React.createRef();
 
   // const onLoading = () => {
   //   const newRegion = {
@@ -148,7 +150,6 @@ function LocationsScreen({navigation}) {
         <View style={styles.page}>
           <GooglePlacesAutocomplete
             // layering issue: not above map and need to manually remove keyboard avoiding view
-            // Android: No clear input button in search bar
             placeholder='Search'
             fetchDetails={true}
             GooglePlacesSearchQuery={{
@@ -163,10 +164,13 @@ function LocationsScreen({navigation}) {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421
               })
-              // animateMap();
               setMarkerRegion({
-                region
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
               })
+              setShowDirections(true)
             }}
             query={{
               key: autocompleteKey,
@@ -187,15 +191,24 @@ function LocationsScreen({navigation}) {
             }}
           />
           <MapView
-            // ref={mapRef}
+            ref={mapRef}
             style={styles.map}
-            region={region} //setting the region teleports the screen to the region with no animation from the current view of the map
+            region={region}
             // onMapReady={() => onLoading()}
             showsUserLocation
             followsUserLocation //Apple only
             showsIndoorLevelPicker
           //minZoomLevel={18}
           >
+            {showDirections ?
+              <MapViewDirections
+                origin={{ latitude: latitude, longitude: longitude }}
+                destination={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }}
+                apikey={autocompleteKey}
+                strokeWidth={3}
+                strokeColor="hotpink"
+              />
+              : null}
             <Marker coordinate={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }} />
           </MapView>
         </View>
@@ -217,3 +230,4 @@ export default LocationsScreen;
 
 // COM 1 coordinates: 1.294898512582403, 103.77367351793063
 // note: zoom level for 'centralise map to current location' button is same as the current zoom.
+
