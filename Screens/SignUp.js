@@ -309,5 +309,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textDecorationLine: 'underline',
         color: '#0B5497'
-    }
+    },
 });

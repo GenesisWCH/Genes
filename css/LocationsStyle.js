@@ -63,6 +63,12 @@ const LocationsStyle = StyleSheet.create({
       zIndex: 1,
       backgroundColor: 'white'
     },
+
+    locatebutton: {
+
+      
+    }
+    
   });
 
   export default LocationsStyle;
