@@ -73,6 +73,7 @@ function HomeScreen({navigation}) {
       </View>
 
       <View style={styles.body}>
+
         <Text style={{fontSize: 25, color: 'black', fontWeight: 'bold', backgroundColor: 'white'}}> Welcome User! </Text>
         <SectionList
           sections={DATA}
