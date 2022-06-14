@@ -65,7 +65,7 @@ function HomeScreen() {
       </View>
 
       <View style={styles.body}>
-        <Text>Email: {auth.currentUser.email}</Text>
+        <Text style={styles.welcomeText}>Welcome, {auth.currentUser.isAnonymous ? 'Guest' : auth.currentUser.displayName}!</Text>
         <SectionList
           sections={[
             { title: 'D', data: ['Devin', 'Dan', 'Dominic'] },

@@ -64,6 +64,10 @@ const HomeScreenStyle = StyleSheet.create({
       padding: 10,
       fontSize: 18,
       height: 44,
+    },
+    welcomeText: {
+      paddingLeft: 5,
+      fontSize: 20
     }
   });
 
