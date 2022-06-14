@@ -64,7 +64,22 @@ const HomeScreenStyle = StyleSheet.create({
     item: {
       padding: 10,
       fontSize: 18,
-      height: 44,
+      height: 100,
+    },
+    container: {
+      flex:1,
+      paddingTop:22
+    },
+    directionbutton: {
+      backgroundColor: "orange",
+      width: 100,
+      marginVertical: 3,
+      paddingHorizontal: 8,
+      paddingVertical: 8,
+      marginVertical: 10,
+      textAlign: "right",
+      position: 'absolute',
+        right: 5
     }
   });
 

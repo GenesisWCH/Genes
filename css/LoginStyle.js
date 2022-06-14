@@ -83,7 +83,6 @@ const LoginStyle = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
-
         textAlign: 'center',
         color: '#0B5497'
     },

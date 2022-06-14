@@ -55,6 +55,10 @@ const LocationsStyle = StyleSheet.create({
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
     },
+    locatebutton: {
+
+      
+    }
     
   });
 
