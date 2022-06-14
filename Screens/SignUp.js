@@ -4,7 +4,7 @@ import {
     Keyboard, KeyboardAvoidingView
 } from "react-native";
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
 const { width } = Dimensions.get('window');
@@ -111,6 +111,11 @@ const SignUpPage = () => {
                     .then(() => {
                         signUpToast();
                     });
+                updateProfile(auth.currentUser, {
+                    displayName: name
+                }).then(() => {
+                }).catch((error) => {
+                });
             })
             .catch(error => {
                 const errorCode = error.code;
