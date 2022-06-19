@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Text, View, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -14,7 +14,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { render } from "react-dom";
 import { autocompleteKey } from '@env';
 import { Animated, KeyboardAvoidingView } from "react-native-web";
-import MapViewDirections from "react-native-maps-directions";
+import MapViewDirections from "../MapViewDirections";
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,6 +36,8 @@ function LocationsScreen() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [showDirections, setShowDirections] = useState(false)
+  const [duration, setDuration] = useState(0)
+  const [distance, setDistance] = useState(0)
   const [region, setRegion] = useState({
     latitude: LATITUDE,
     longitude: LONGITUDE,
@@ -48,6 +50,14 @@ function LocationsScreen() {
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA
   })
+  const mapRef = useRef();
+  const edgePaddingValue = 20
+  // const edgePadding = {
+  //   top: edgePaddingValue,
+  //   right: edgePaddingValue,
+  //   bottom: edgePaddingValue,
+  //   left: edgePaddingValue
+  // }
 
   const locationToast = () => {
     let toast = Toast.show('You have given permission to DestiNUS to use your current location.', {
@@ -79,7 +89,8 @@ function LocationsScreen() {
     })();
   }, []);
 
-  const mapRef = React.createRef();
+
+
 
   // const onLoading = () => {
   //   const newRegion = {
@@ -176,7 +187,7 @@ function LocationsScreen() {
               key: autocompleteKey,
               language: 'en',
               components: 'country:sg',
-              types: 'establishment',
+              types: '',
               radius: 30000,
               location: `${markerRegion.latitude}, ${markerRegion.longitude}`
             }}
@@ -198,7 +209,6 @@ function LocationsScreen() {
             showsUserLocation
             followsUserLocation //Apple only
             showsIndoorLevelPicker
-          //minZoomLevel={18}
           >
             {showDirections ?
               <MapViewDirections
@@ -207,6 +217,25 @@ function LocationsScreen() {
                 apikey={autocompleteKey}
                 strokeWidth={3}
                 strokeColor="hotpink"
+                optimizeWaypoints={true}
+                onReady={result => {
+                  console.log(`Distance: ${result.distance} km`)
+                  console.log(`Duration: ${result.duration} min.`)
+                  setDistance(result.distance)
+                  setDuration(result.duration)
+                  mapRef.current.fitToCoordinates(result.coordinates, {
+                    edgePadding: {
+                      top: height / 10,
+                      right: width / 10,
+                      bottom: height / 10,
+                      left: width / 10
+                    }
+                  })
+                  console.log('zoomed in?')
+                }}
+                onError={(errorMessage) => {
+                  console.log('GOT AN ERROR');
+              }}
               />
               : null}
             <Marker coordinate={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }} />
