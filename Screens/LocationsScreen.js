@@ -1,109 +1,118 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Text, View, Dimensions } from 'react-native';
+import { Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../functions/LogOutHandler";
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 
 import styles from "../css/LocationsStyle";
-import MapView, { Marker } from 'react-native-maps';
-import * as Location from "expo-location";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { render } from "react-dom";
-import { autocompleteKey } from '@env';
-import { Animated, KeyboardAvoidingView } from "react-native-web";
-import MapViewDirections from "../MapViewDirections";
+import { Dropdown } from 'react-native-element-dropdown';
+import { collection, collectionGroup, query, where, getDocs, Firestore } from "firebase/firestore";
 
-const { width, height } = Dimensions.get('window');
-
-const ASPECT_RATIO = width / height;
-const LATITUDE = 1.3398239189160044;
-const LONGITUDE = 103.70272617604708;
-const LATITUDE_DELTA = 0.02;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const INITIAL_POSITION = {
-  latitude: 1.3398239189160044,
-  longitude: 103.70272617604708,
-  latitudeDelta: LATITUDE_DELTA,
-  longitudeDelta: LONGITUDE_DELTA
-};
+const dummyData = [
+  { label: 'L2_Foyer', value: 'L2_Foyer' },
+]
 
 function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [location, setLocation] = useState(null);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [showDirections, setShowDirections] = useState(false)
-  const [duration, setDuration] = useState(0)
-  const [distance, setDistance] = useState(0)
-  const [region, setRegion] = useState({
-    latitude: LATITUDE,
-    longitude: LONGITUDE,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  })
-  const [markerRegion, setMarkerRegion] = useState({
-    latitude: LATITUDE,
-    longitude: LONGITUDE,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  })
-  const mapRef = useRef();
-  const edgePaddingValue = 20
-  // const edgePadding = {
-  //   top: edgePaddingValue,
-  //   right: edgePaddingValue,
-  //   bottom: edgePaddingValue,
-  //   left: edgePaddingValue
-  // }
-
-  const locationToast = () => {
-    let toast = Toast.show('You have given permission to DestiNUS to use your current location.', {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.CENTER,
-    });
-    setTimeout(function hideToast() {
-      Toast.hide(toast);
-    }, 3000);
-  };
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [currPlace, setCurrPlace] = useState([])
+  const [currPlaces, setCurrPlaces] = useState([])
+  const [routeText, setRouteText] = useState('');
+  const [data, setData] = useState([]);
+  const [isFocus, setIsFocus] = useState(false);
+  const [showDirection, setShowDirection] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        locationToast();
-        return;
-      }
+    const getDocuments = async () => {
+      const querySnapshot = await getDocs(collection(db, "map"));
+      setData(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
+      console.log(doc.id, " => ", doc.data());
+    };
 
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Balanced,
-        enableHighAccuracy: true,
-        timeInterval: 5
-      });
-
-      setLatitude(location.coords.latitude)
-      setLongitude(location.coords.longitude);
-      setLocation(location.coords);
-    })();
+    getDocuments();
   }, []);
 
+  // sets a map of place : false
+  const setVisited = async () => {
+    console.log('calling setVisited')
+    const visited = new Map()
+    const querySnapshot = await getDocs(collection(db, "map"));
+    querySnapshot.forEach((doc) => {
+      visited.set(doc.id, false)
+      console.log(doc.id, ' is marked not visited!')
+      // console.log(doc.id, " => ", doc.data());
+    });
+    return visited
+  }
 
+  // given the document id in string, returns the array 'links'
+  const getNbrs = async (place) => {
+    console.log('calling getNbrs')
+    const docRef = doc(db, "map", place);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const nbrs = docSnap.get('links')
+      console.log("Document data:", docSnap.data());
+      console.log(nbrs)
+      return nbrs
+    } else {
+      console.log("No such document!");
+    }
+  }
 
+  const setRoute = (end, map) => {
+    console.log('calling setRoute')
+    const currPlace = end
+    var text = ''
+    while (currPlace != null) {
+      text = ('->' + currPlace + text)
+      setCurrPlace(map.get(currPlace))
+    }
+    
+    setRouteText(text)
+    console.log(routeText)
+  }
 
-  // const onLoading = () => {
-  //   const newRegion = {
-  //     latitude: latitude,
-  //     longitude: longitude
-  //   }
-  // }
+  //BFS -> given a starting location/doc, and an end, 
+  // query the doc. get the array links. and continuously find the next frontiers. When the location is reached,
+  // break the while loop. 
+  // hashmap will trace the path. 
 
-  // const animateMap = () => {
-  //   mapRef.current.animateToRegion({ // Takes a region object as parameter
-  //     region
-  //   }, 1000);
-  // }
+  const BFS = (start, end) => {
+    console.log('calling BFS')
+    const map = new Map()
+    const visited = setVisited()
+
+    map.set(start, null)
+    setCurrPlaces([start])
+    while (currPlaces.length != 0) {
+      const next = []
+      for (var i = 0; i < currPlaces.length; i++) {
+        const currPlace = currPlaces[i]
+        const nbrs = getNbrs(currPlace)
+        for (var j = 0; j < nbrs.length; j++) {
+          
+          const neighbour = nbrs[j]
+          console.log(neighbour, 'is added!')
+          if (!visited.get(neighbour)) {
+            visited.set(neighbour, true)
+            next.push(neighbour)
+            map.set(neighbour, currPlace)
+          }
+        }
+      }
+      setCurrPlaces(next)
+      if (map.has(end)) {
+        break
+      }
+    }
+    setRoute(end, map)
+    setShowDirection(true)
+  }
 
   return (
     <SafeAreaView style={styles.page}>
@@ -159,87 +168,77 @@ function LocationsScreen() {
       </View>
       <View style={styles.body}>
         <View style={styles.page}>
-          <GooglePlacesAutocomplete
-            // layering issue: not above map and need to manually remove keyboard avoiding view
-            placeholder='Search'
-            fetchDetails={true}
-            GooglePlacesSearchQuery={{
-              rankby: 'distance'
+          <Dropdown
+            // start
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder='Select starting point'
+            searchPlaceholder="Search..."
+            value={start}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={item => {
+              setStart(item.value);
+              setIsFocus(false);
             }}
-            onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              console.log(data, details);
-              setRegion({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              })
-              setMarkerRegion({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              })
-              setShowDirections(true)
-            }}
-            query={{
-              key: autocompleteKey,
-              language: 'en',
-              components: 'country:sg',
-              types: '',
-              radius: 30000,
-              location: `${markerRegion.latitude}, ${markerRegion.longitude}`
-            }}
-            styles={{
-              container: {
-                flex: 0,
-                position: "absolute",
-                width: '100%',
-                zIndex: 1
-              },
-              listView: { backgroundColor: 'white' }
-            }}
-          />
-          <MapView
-            ref={mapRef}
-            style={styles.map}
-            region={region}
-            // onMapReady={() => onLoading()}
-            showsUserLocation
-            followsUserLocation //Apple only
-            showsIndoorLevelPicker
-          >
-            {showDirections ?
-              <MapViewDirections
-                origin={{ latitude: latitude, longitude: longitude }}
-                destination={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }}
-                apikey={autocompleteKey}
-                strokeWidth={3}
-                strokeColor="hotpink"
-                optimizeWaypoints={true}
-                onReady={result => {
-                  console.log(`Distance: ${result.distance} km`)
-                  console.log(`Duration: ${result.duration} min.`)
-                  setDistance(result.distance)
-                  setDuration(result.duration)
-                  mapRef.current.fitToCoordinates(result.coordinates, {
-                    edgePadding: {
-                      top: height / 10,
-                      right: width / 10,
-                      bottom: height / 10,
-                      left: width / 10
-                    }
-                  })
-                  console.log('zoomed in?')
-                }}
-                onError={(errorMessage) => {
-                  console.log('GOT AN ERROR');
-              }}
+            renderLeftIcon={() => (
+              <AntDesign
+                style={styles.icon}
+                color={isFocus ? 'blue' : 'black'}
+                name="Safety"
+                size={20}
               />
-              : null}
-            <Marker coordinate={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }} />
-          </MapView>
+            )}
+          />
+          <Dropdown
+            // end
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder='Select end point'
+            searchPlaceholder="Search..."
+            value={end}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={item => {
+              setEnd(item.value);
+              setIsFocus(false);
+            }}
+            renderLeftIcon={() => (
+              <AntDesign
+                style={styles.icon}
+                color={isFocus ? 'blue' : 'black'}
+                name="Safety"
+                size={20}
+              />
+            )}
+          />
+          <Pressable
+            onPress={(start, end) => BFS(start, end)}
+            style={styles.button}>
+            <Text>Search</Text>
+          </Pressable>
+          {/* {showDirection ?
+            <Text>{routeText}</Text>
+            : <Text></Text>} */}
+            {showDirection ?
+            <Text>hello!</Text>
+            : <Text></Text>}
         </View>
       </View>
     </SafeAreaView>

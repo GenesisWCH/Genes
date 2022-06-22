@@ -51,24 +51,42 @@ const LocationsStyle = StyleSheet.create({
       modalText: {
         textAlign: "center"
       },
-    map: {
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
-      marginTop: 44,
+      dropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        marginHorizontal: 10,
+        marginVertical: 5,
+        paddingHorizontal: 8,
+        backgroundColor: 'white',
     },
-    autoComplete: {
-      flex: 0,
-      position: "absolute",
-      width: '100%',
-      zIndex: 1,
-      backgroundColor: 'white'
+    icon: {
+        marginRight: 5,
     },
-
-    locatebutton: {
-
-      
-    }
-    
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
   });
 
   export default LocationsStyle;
