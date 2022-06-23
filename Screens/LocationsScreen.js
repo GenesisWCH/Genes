@@ -10,7 +10,7 @@ import { auth } from '../firebase';
 import styles from "../css/LocationsStyle";
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from "expo-location";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+// import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { render } from "react-dom";
 import { autocompleteKey } from '@env';
 import { Animated, KeyboardAvoidingView } from "react-native-web";

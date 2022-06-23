@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, SectionList } from 'react-native';
+import {Image, Text, View, SectionList } from 'react-native';
 import styles from '../css/HomeScreenStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -11,7 +11,13 @@ import { auth } from '../firebase';
 const DATA = [
   {
     title: "Food Outlets",
-    data: ['Drinks Vending Machine @ Level 1','Drinks Vending Machine @ Level 2'],
+    data: [
+      <Text style = "position: absolute">Drinks Vending Machine @ Level 1</Text>,
+      <View>
+        <Image source={{uri:'https://msba.nus.edu.sg/wp-content/uploads/2019/04/2010-School-of-Computing-pic-_5_.jpg'}} style={{width: 50, height: 50}}/>
+      </View>,
+      <Text>Drinks Vending Machine @ Level 2</Text>
+    ],
   },
   {
     title: "Facilities",
