@@ -9,7 +9,7 @@ import { auth, db } from '../firebase';
 
 import styles from "../css/LocationsStyle";
 import { Dropdown } from 'react-native-element-dropdown';
-import { collection, collectionGroup, query, where, getDocs, Firestore } from "firebase/firestore";
+import { collection, collectionGroup, query, where, getDocs, doc, getDoc, Firestore } from "firebase/firestore";
 
 const dummyData = [
   { label: 'L2_Foyer', value: 'L2_Foyer' },
@@ -23,6 +23,7 @@ function LocationsScreen() {
   const [currPlaces, setCurrPlaces] = useState([])
   const [routeText, setRouteText] = useState('');
   const [data, setData] = useState([]);
+  const [data2, setData2] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
   const [showDirection, setShowDirection] = useState(false);
 
@@ -30,8 +31,9 @@ function LocationsScreen() {
     const getDocuments = async () => {
       const querySnapshot = await getDocs(collection(db, "map"));
       setData(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
+      setData2(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
       console.log(doc.id, " => ", doc.data());
-    };
+    };  
 
     getDocuments();
   }, []);
@@ -43,36 +45,44 @@ function LocationsScreen() {
     const querySnapshot = await getDocs(collection(db, "map"));
     querySnapshot.forEach((doc) => {
       visited.set(doc.id, false)
-      console.log(doc.id, ' is marked not visited!')
+      // console.log(doc.id, false)
+      // console.log(doc.id, ' is marked not visited!')
       // console.log(doc.id, " => ", doc.data());
     });
     return visited
   }
 
   // given the document id in string, returns the array 'links'
-  const getNbrs = async (place) => {
+  const getNbrs = async (place, nbrList, map) => {
     console.log('calling getNbrs')
     const docRef = doc(db, "map", place);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const nbrs = docSnap.get('links')
-      console.log("Document data:", docSnap.data());
-      console.log(nbrs)
-      return nbrs
+      // console.log('Neighbours of Place:', nbrs)
+      for (var i = 0; i < nbrs.length; i++) {
+        // if (nbrs[i] == end) {
+        //   map.set(nbrs[i], place)
+        // } else {
+        // nbrList.push(nbrs[i])
+        // }
+        nbrList.push(nbrs[i])
+      }
+      console.log('nbrList:', nbrList)
     } else {
-      console.log("No such document!");
+      console.log("\nNo such document!\n\nCurrent Place checked:", place);
     }
   }
 
-  const setRoute = (end, map) => {
+  const setRoute = (map) => {
     console.log('calling setRoute')
     const currPlace = end
     var text = ''
     while (currPlace != null) {
       text = ('->' + currPlace + text)
+      console.log('currPlace:', currPlace)
       setCurrPlace(map.get(currPlace))
     }
-    
     setRouteText(text)
     console.log(routeText)
   }
@@ -82,35 +92,78 @@ function LocationsScreen() {
   // break the while loop. 
   // hashmap will trace the path. 
 
-  const BFS = (start, end) => {
-    console.log('calling BFS')
+  const BFS = async (startPoint, endPoint) => {
+    console.log('calling BFS', ' ', start, '->', end)
     const map = new Map()
-    const visited = setVisited()
+    const visited = await setVisited()
+    var queue = []
+    queue.push(start)
+    console.log('Queue:', queue)
 
     map.set(start, null)
-    setCurrPlaces([start])
-    while (currPlaces.length != 0) {
-      const next = []
-      for (var i = 0; i < currPlaces.length; i++) {
-        const currPlace = currPlaces[i]
-        const nbrs = getNbrs(currPlace)
-        for (var j = 0; j < nbrs.length; j++) {
-          
-          const neighbour = nbrs[j]
-          console.log(neighbour, 'is added!')
-          if (!visited.get(neighbour)) {
-            visited.set(neighbour, true)
-            next.push(neighbour)
-            map.set(neighbour, currPlace)
+    visited.set(start, true)
+    console.log('Marked', start, 'as visited!')
+    // console.log(map)
+    // setCurrPlaces([startPoint])
+    // console.log(currPlaces)
+
+    while (queue.length != 0) {
+        var next = []
+        for (var i = 0; i < queue.length; i++) {
+          var currPlace = queue[i]
+          console.log('current place:', currPlace)
+          var nbrs = []
+          await getNbrs(currPlace, nbrs, map)
+          // var iter = map.entries()
+          //     for (var ele of iter){
+          //       console.log(ele)
+          //     }
+          // console.log('neighbours of curr point added')
+          // console.log(nbrs)
+          for (var j = 0; j < nbrs.length; j++) {
+            var neighbour = nbrs[j]
+            if (!visited.get(neighbour)) {
+              console.log(neighbour, 'is visited!')
+              visited.set(neighbour , true)
+              next.push(neighbour)
+              map.set(neighbour, currPlace)
+              // var iter = map.entries()
+              // for (var ele of iter){
+              //   console.log(ele)
+              // }
+            }
+
           }
         }
+        if (map.has(end)) {
+          break
+        }
+        queue = next
+        
       }
-      setCurrPlaces(next)
-      if (map.has(end)) {
-        break
-      }
-    }
-    setRoute(end, map)
+
+    //   for (var i = 0; i < currPlaces.length; i++) {
+    //     const currPlace = currPlaces[i]
+    //     const nbrs = getNbrs(currPlace)
+    //     for (var j = 0; j < nbrs.length; j++) {
+
+    //       const neighbour = nbrs[j]
+    //       console.log(neighbour, 'is added!')
+    //       if (!visited.get(neighbour)) {
+    //         visited.set(neighbour, true)
+    //         next.push(neighbour)
+    //         map.set(neighbour, currPlace)
+    //       }
+    //     }
+    //   }
+    //   setCurrPlaces(next)
+    //   if (map.has(end)) {
+    //     break
+    //   }
+    // }
+
+
+    setRoute(map)
     setShowDirection(true)
   }
 
@@ -182,12 +235,13 @@ function LocationsScreen() {
             valueField="value"
             placeholder='Select starting point'
             searchPlaceholder="Search..."
-            value={start}
+            // value={start}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
               setStart(item.value);
               setIsFocus(false);
+              console.log(start)
             }}
             renderLeftIcon={() => (
               <AntDesign
@@ -205,19 +259,20 @@ function LocationsScreen() {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={data2}
             search
             maxHeight={300}
             labelField="label"
             valueField="value"
             placeholder='Select end point'
             searchPlaceholder="Search..."
-            value={end}
+            // value={end}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
               setEnd(item.value);
               setIsFocus(false);
+              console.log(end)
             }}
             renderLeftIcon={() => (
               <AntDesign
@@ -230,14 +285,14 @@ function LocationsScreen() {
           />
           <Pressable
             onPress={(start, end) => BFS(start, end)}
-            style={styles.button}>
+            style={styles.searchButton}>
             <Text>Search</Text>
           </Pressable>
           {/* {showDirection ?
             <Text>{routeText}</Text>
             : <Text></Text>} */}
-            {showDirection ?
-            <Text>hello!</Text>
+          {showDirection ?
+            <Text>{routeText}</Text>
             : <Text></Text>}
         </View>
       </View>
@@ -247,15 +302,3 @@ function LocationsScreen() {
 
 
 export default LocationsScreen;
-
-// my home coordinates
-// initialRegion={{
-//   latitude: 1.3398239189160044,
-//   longitude: 103.70272617604708,
-//   latitudeDelta: 0.0922,
-//   longitudeDelta: 0.0421
-// }}
-
-// COM 1 coordinates: 1.294898512582403, 103.77367351793063
-// note: zoom level for 'centralise map to current location' button is same as the current zoom.
-

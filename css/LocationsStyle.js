@@ -87,6 +87,12 @@ const LocationsStyle = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
+    searchButton: {
+      backgroundColor: "darkorange",
+      width: 100,
+      height: 100,
+      marginVertical: 3,
+    },
   });
 
   export default LocationsStyle;
