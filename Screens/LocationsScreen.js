@@ -8,8 +8,10 @@ import LogOutHandler from "../functions/LogOutHandler";
 import { auth, db } from '../firebase';
 
 import styles from "../css/LocationsStyle";
+
 import { Dropdown } from 'react-native-element-dropdown';
 import { collection, collectionGroup, query, where, getDocs, doc, getDoc, Firestore } from "firebase/firestore";
+
 
 const dummyData = [
   { label: 'L2_Foyer', value: 'L2_Foyer' },
