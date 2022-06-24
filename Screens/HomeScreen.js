@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Image, Text, View, SectionList } from 'react-native';
+import {Button, Image, Text, View, SectionList, TouchableOpacity } from 'react-native';
 import styles from '../css/HomeScreenStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -7,12 +7,46 @@ import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../functions/LogOutHandler";
 import { auth } from '../firebase';
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+function mainScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
+    </View>
+  );
+}
+
+function detailScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button title="Go back" onPress={() => navigation.goBack()} />
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+function MyStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Main" component={mainScreen} />
+      <Stack.Screen name="Details" component={detailScreen} />
+    </Stack.Navigator>
+  );
+} 
 
 const DATA = [
   {
     title: "Food Outlets",
     data: [
-      <Text style = "position: absolute">Drinks Vending Machine @ Level 1</Text>,
+      <TouchableOpacity style={styles.listButton}>
+      <Text>Drinks Vending Machine @ Level 1</Text>
+      </TouchableOpacity>,
       <View>
         <Image source={{uri:'https://msba.nus.edu.sg/wp-content/uploads/2019/04/2010-School-of-Computing-pic-_5_.jpg'}} style={{width: 50, height: 50}}/>
       </View>,
@@ -43,14 +77,14 @@ function HomeScreen({navigation}) {
             <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
             <Pressable
               style={[styles.button]}
-            //</View>onPress={}
+           
             >
               <Text style={styles.textStyle}>Profile</Text>
 
             </Pressable>
             <Pressable
               style={[styles.button]}
-            //onPress={}
+            
             >
               <Text style={styles.textStyle}>Settings</Text>
 
@@ -105,4 +139,13 @@ function HomeScreen({navigation}) {
   );
 }
 
-export default HomeScreen;
+export default HomeScreen; 
+/*
+{
+  return(
+    <NavigationContainer>
+      <MyStack/>
+    </NavigationContainer>
+  );
+}
+*/

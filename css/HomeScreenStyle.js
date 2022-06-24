@@ -85,6 +85,15 @@ const HomeScreenStyle = StyleSheet.create({
       backgroundColor: 'white',
       paddingLeft: 5,
     },
+    listButton: {
+      backgroundColor: "white",
+      textAlign: "center",
+      width: 300,
+      fontSize: 60,
+      paddingTop: 20,
+      paddingLeft: 10,
+      height:100,
+    },
     directionButtonText: {
       fontSize: 15,
       alignSelf: 'center'
