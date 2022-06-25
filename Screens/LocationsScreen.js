@@ -41,6 +41,63 @@ function LocationsScreen() {
   }, []);
 
   // sets a map of place : false
+
+const map = new Map();
+map.set('02-AHU1', ['02-AHU1 dummy'])
+map.set('02-AHU1 dummy', ['02-AHU1', 'SR 5 dummy'])
+map.set('02-AHU2', ['02-AHU2 dummy'])
+map.set('02-AHU2 dummy', ['02-AHU2', 'L2 Convenience Store dummy', 'SR 10 dummy'])
+map.set('02-AHU4', ['Wire Centre dummy'])
+map.set('Cerebro@SoC', ['Student Area'])
+map.set('Computing Club', ['ICPC Lab dummy'])
+map.set('DR 12', ['DR 12 dummy'])
+map.set('DR 12 dummy', ['DR 12', 'TR 11', 'L2 Undergraduate Studies dummy', 'TR 10 dummy'])
+map.set('Foyer Entrance', ['Student Area'])
+map.set('ICPC Lab', ['Student Area'])
+map.set('ICPC Lab dummy', ['Student Area'])
+map.set('L2 Convenience Store', ['L2 Convenience Store dummy'])
+map.set('L2 Convenience Store corner', ['L2 Convenience Store dummy', 'ICPC Lab dummy'])
+map.set('L2 Convenience Store dummy', ['L2 Convenience Store', '02-AHU2 dummy', 'Stairs to COM2', 'L2 Convenience Store corner'])
+map.set('L2 Lift', ['Foyer Entrance'])
+map.set('L2 Undergraduate Studies', ['L2 Undergraduate Studies dummy'])
+map.set('L2 Undergraduate Studies dummy', ['L2 Undergraduate Studies', 'Wire Centre dummy', 'DR 12 dummy', 'TR 11'])
+map.set('L2_Foyer', ['Students" Lounge', 'SR 1', 'Student Area', 'SR 7 dummy', 'TR 10 dummy', 'Foyer Entrance'])
+map.set('Linkway', ['SR 6 dummy', 'Makers@SoC dummy'])
+map.set('Makers@SoC', ['Makers@SoC dummy'])
+map.set('Makers@SoC dummy', ['Makers@SoC', 'SR 6 dummy', 'Linkway', 'SR 5 dummy'])
+map.set('SR 1', ['L2_Foyer'])
+map.set('SR 10', ['SR 10 dummy'])
+map.set('SR 10 dummy', ['SR 10', 'VC Room', 'SR 9 dummy', '02-AHU2 dummy'])
+map.set('SR 2', ['Student Area'])
+map.set('SR 3', ['SR 8 dummy'])
+map.set('SR 5', ['SR 5 dummy'])
+map.set('SR 5 dummy', ['02-AHU1 dummy', 'SR 5', 'Makers@SoC dummy'])
+map.set('SR 6', ['SR 6 dummy'])
+map.set('SR 6 dummy', ['SR 6', 'Student Area', 'Linkway', 'Makers@SoC dummy'])
+map.set('SR 7', ['SR 7 dummy'])
+map.set('SR 7 dummy', ['L2_Foyer', 'SR 7', 'SR 8 dummy'])
+map.set('SR 8', ['SR 8 dummy'])
+map.set('SR 8 dummy', ['SR 7 dummy', 'SR 8', 'SR 3', 'SR 9 dummy'])
+map.set('SR 9', ['SR 9 dummy'])
+map.set('SR 9 dummy', ['SR 9', 'VC Room', 'SR 10 dummy', 'SR 8 dummy'])
+map.set('Stair 5 (North)', ['Student Area'])
+map.set('Stairs to COM 2', ['L2 Convenience Store dummy'])
+map.set('Student Area', ['SR 6 dummy', 'Toilet near Stair 5(North)', 'Stair 5(North)', 'SR2', 'L2_Foyer'])
+map.set("Students' Lounge", ['L2_Foyer', 'TR 10 dummy'])
+map.set('TR 10', ['TR 10 dummy'])
+map.set('TR 10 dummy', ['TR 10', 'DR 12 dummy', 'Students" Lounge', 'L2_Foyer'])
+map.set('TR 11', ['DR 12 dummy', 'L2 Undergraduate Studies dummy'])
+map.set('Toilet near Stair 5 (North)', ['Student Area'])
+map.set('VC Room', ['SR 9 dummy', 'SR 10 dummy'])
+map.set('Wire Centre ', ['Wire Centre dummy'])
+map.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Studies dummy', 'Wire Centre'])
+
+
+
+
+
+
+
   const setVisited = async () => {
     console.log('calling setVisited')
     const visited = new Map()
