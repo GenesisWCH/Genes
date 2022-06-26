@@ -1,109 +1,173 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Text, View, Dimensions } from 'react-native';
+import { Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../functions/LogOutHandler";
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 
 import styles from "../css/LocationsStyle";
-import MapView, { Marker } from 'react-native-maps';
-import * as Location from "expo-location";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { render } from "react-dom";
-import { autocompleteKey } from '@env';
-import { Animated, KeyboardAvoidingView } from "react-native-web";
-import MapViewDirections from "../MapViewDirections";
 
-const { width, height } = Dimensions.get('window');
+import { Dropdown } from 'react-native-element-dropdown';
+import { collection, collectionGroup, query, where, getDocs, doc, getDoc, Firestore } from "firebase/firestore";
 
-const ASPECT_RATIO = width / height;
-const LATITUDE = 1.3398239189160044;
-const LONGITUDE = 103.70272617604708;
-const LATITUDE_DELTA = 0.02;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const INITIAL_POSITION = {
-  latitude: 1.3398239189160044,
-  longitude: 103.70272617604708,
-  latitudeDelta: LATITUDE_DELTA,
-  longitudeDelta: LONGITUDE_DELTA
-};
+
+const dummyData = [
+  { label: 'L2_Foyer', value: 'L2_Foyer' },
+]
 
 function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [location, setLocation] = useState(null);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [showDirections, setShowDirections] = useState(false)
-  const [duration, setDuration] = useState(0)
-  const [distance, setDistance] = useState(0)
-  const [region, setRegion] = useState({
-    latitude: LATITUDE,
-    longitude: LONGITUDE,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  })
-  const [markerRegion, setMarkerRegion] = useState({
-    latitude: LATITUDE,
-    longitude: LONGITUDE,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  })
-  const mapRef = useRef();
-  const edgePaddingValue = 20
-  // const edgePadding = {
-  //   top: edgePaddingValue,
-  //   right: edgePaddingValue,
-  //   bottom: edgePaddingValue,
-  //   left: edgePaddingValue
-  // }
-
-  const locationToast = () => {
-    let toast = Toast.show('You have given permission to DestiNUS to use your current location.', {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.CENTER,
-    });
-    setTimeout(function hideToast() {
-      Toast.hide(toast);
-    }, 3000);
-  };
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [currPlace, setCurrPlace] = useState([])
+  const [currPlaces, setCurrPlaces] = useState([])
+  const [routeText, setRouteText] = useState('');
+  const [data, setData] = useState([]);
+  const [data2, setData2] = useState([]);
+  const [isFocus, setIsFocus] = useState(false);
+  const [showDirection, setShowDirection] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        locationToast();
-        return;
-      }
+    const getDocuments = async () => {
+      const querySnapshot = await getDocs(collection(db, "map"));
+      setData(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
+      setData2(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
+      console.log(doc.id, " => ", doc.data());
+    };  
 
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Balanced,
-        enableHighAccuracy: true,
-        timeInterval: 5
-      });
-
-      setLatitude(location.coords.latitude)
-      setLongitude(location.coords.longitude);
-      setLocation(location.coords);
-    })();
+    getDocuments();
   }, []);
 
+  // sets a map of place : false
+  const setVisited = async () => {
+    console.log('calling setVisited')
+    const visited = new Map()
+    const querySnapshot = await getDocs(collection(db, "map"));
+    querySnapshot.forEach((doc) => {
+      visited.set(doc.id, false)
+      // console.log(doc.id, false)
+      // console.log(doc.id, ' is marked not visited!')
+      // console.log(doc.id, " => ", doc.data());
+    });
+    return visited
+  }
+
+  // given the document id in string, returns the array 'links'
+  const getNbrs = async (place, nbrList, map) => {
+    console.log('calling getNbrs')
+    const docRef = doc(db, "map", place);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const nbrs = docSnap.get('links')
+      // console.log('Neighbours of Place:', nbrs)
+      for (var i = 0; i < nbrs.length; i++) {
+        // if (nbrs[i] == end) {
+        //   map.set(nbrs[i], place)
+        // } else {
+        // nbrList.push(nbrs[i])
+        // }
+        nbrList.push(nbrs[i])
+      }
+      console.log('nbrList:', nbrList)
+    } else {
+      console.log("\nNo such document!\n\nCurrent Place checked:", place);
+    }
+  }
+
+  const setRoute = (map) => {
+    console.log('calling setRoute')
+    const currPlace = end
+    var text = ''
+    while (currPlace != null) {
+      text = ('->' + currPlace + text)
+      console.log('currPlace:', currPlace)
+      setCurrPlace(map.get(currPlace))
+    }
+    setRouteText(text)
+    console.log(routeText)
+  }
+
+  //BFS -> given a starting location/doc, and an end, 
+  // query the doc. get the array links. and continuously find the next frontiers. When the location is reached,
+  // break the while loop. 
+  // hashmap will trace the path. 
+
+  const BFS = async (startPoint, endPoint) => {
+    console.log('calling BFS', ' ', start, '->', end)
+    const map = new Map()
+    const visited = await setVisited()
+    var queue = []
+    queue.push(start)
+    console.log('Queue:', queue)
+
+    map.set(start, null)
+    visited.set(start, true)
+    console.log('Marked', start, 'as visited!')
+    // console.log(map)
+    // setCurrPlaces([startPoint])
+    // console.log(currPlaces)
+
+    while (queue.length != 0) {
+        var next = []
+        for (var i = 0; i < queue.length; i++) {
+          var currPlace = queue[i]
+          console.log('current place:', currPlace)
+          var nbrs = []
+          await getNbrs(currPlace, nbrs, map)
+          // var iter = map.entries()
+          //     for (var ele of iter){
+          //       console.log(ele)
+          //     }
+          // console.log('neighbours of curr point added')
+          // console.log(nbrs)
+          for (var j = 0; j < nbrs.length; j++) {
+            var neighbour = nbrs[j]
+            if (!visited.get(neighbour)) {
+              console.log(neighbour, 'is visited!')
+              visited.set(neighbour , true)
+              next.push(neighbour)
+              map.set(neighbour, currPlace)
+              // var iter = map.entries()
+              // for (var ele of iter){
+              //   console.log(ele)
+              // }
+            }
+
+          }
+        }
+        if (map.has(end)) {
+          break
+        }
+        queue = next
+        
+      }
+
+    //   for (var i = 0; i < currPlaces.length; i++) {
+    //     const currPlace = currPlaces[i]
+    //     const nbrs = getNbrs(currPlace)
+    //     for (var j = 0; j < nbrs.length; j++) {
+
+    //       const neighbour = nbrs[j]
+    //       console.log(neighbour, 'is added!')
+    //       if (!visited.get(neighbour)) {
+    //         visited.set(neighbour, true)
+    //         next.push(neighbour)
+    //         map.set(neighbour, currPlace)
+    //       }
+    //     }
+    //   }
+    //   setCurrPlaces(next)
+    //   if (map.has(end)) {
+    //     break
+    //   }
+    // }
 
 
-
-  // const onLoading = () => {
-  //   const newRegion = {
-  //     latitude: latitude,
-  //     longitude: longitude
-  //   }
-  // }
-
-  // const animateMap = () => {
-  //   mapRef.current.animateToRegion({ // Takes a region object as parameter
-  //     region
-  //   }, 1000);
-  // }
+    setRoute(map)
+    setShowDirection(true)
+  }
 
   return (
     <SafeAreaView style={styles.page}>
@@ -159,87 +223,79 @@ function LocationsScreen() {
       </View>
       <View style={styles.body}>
         <View style={styles.page}>
-          <GooglePlacesAutocomplete
-            // layering issue: not above map and need to manually remove keyboard avoiding view
-            placeholder='Search'
-            fetchDetails={true}
-            GooglePlacesSearchQuery={{
-              rankby: 'distance'
+          <Dropdown
+            // start
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder='Select starting point'
+            searchPlaceholder="Search..."
+            // value={start}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={item => {
+              setStart(item.value);
+              setIsFocus(false);
+              console.log(start)
             }}
-            onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              console.log(data, details);
-              setRegion({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              })
-              setMarkerRegion({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              })
-              setShowDirections(true)
-            }}
-            query={{
-              key: autocompleteKey,
-              language: 'en',
-              components: 'country:sg',
-              types: '',
-              radius: 30000,
-              location: `${markerRegion.latitude}, ${markerRegion.longitude}`
-            }}
-            styles={{
-              container: {
-                flex: 0,
-                position: "absolute",
-                width: '100%',
-                zIndex: 1
-              },
-              listView: { backgroundColor: 'white' }
-            }}
-          />
-          <MapView
-            ref={mapRef}
-            style={styles.map}
-            region={region}
-            // onMapReady={() => onLoading()}
-            showsUserLocation
-            followsUserLocation //Apple only
-            showsIndoorLevelPicker
-          >
-            {showDirections ?
-              <MapViewDirections
-                origin={{ latitude: latitude, longitude: longitude }}
-                destination={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }}
-                apikey={autocompleteKey}
-                strokeWidth={3}
-                strokeColor="hotpink"
-                optimizeWaypoints={true}
-                onReady={result => {
-                  console.log(`Distance: ${result.distance} km`)
-                  console.log(`Duration: ${result.duration} min.`)
-                  setDistance(result.distance)
-                  setDuration(result.duration)
-                  mapRef.current.fitToCoordinates(result.coordinates, {
-                    edgePadding: {
-                      top: height / 10,
-                      right: width / 10,
-                      bottom: height / 10,
-                      left: width / 10
-                    }
-                  })
-                  console.log('zoomed in?')
-                }}
-                onError={(errorMessage) => {
-                  console.log('GOT AN ERROR');
-              }}
+            renderLeftIcon={() => (
+              <AntDesign
+                style={styles.icon}
+                color={isFocus ? 'blue' : 'black'}
+                name="Safety"
+                size={20}
               />
-              : null}
-            <Marker coordinate={{ latitude: markerRegion.latitude, longitude: markerRegion.longitude }} />
-          </MapView>
+            )}
+          />
+          <Dropdown
+            // end
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data2}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder='Select end point'
+            searchPlaceholder="Search..."
+            // value={end}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={item => {
+              setEnd(item.value);
+              setIsFocus(false);
+              console.log(end)
+            }}
+            renderLeftIcon={() => (
+              <AntDesign
+                style={styles.icon}
+                color={isFocus ? 'blue' : 'black'}
+                name="Safety"
+                size={20}
+              />
+            )}
+          />
+          <Pressable
+            onPress={(start, end) => BFS(start, end)}
+            style={styles.searchButton}>
+            <Text>Search</Text>
+          </Pressable>
+          {/* {showDirection ?
+            <Text>{routeText}</Text>
+            : <Text></Text>} */}
+          {showDirection ?
+            <Text>{routeText}</Text>
+            : <Text></Text>}
         </View>
       </View>
     </SafeAreaView>
@@ -248,15 +304,3 @@ function LocationsScreen() {
 
 
 export default LocationsScreen;
-
-// my home coordinates
-// initialRegion={{
-//   latitude: 1.3398239189160044,
-//   longitude: 103.70272617604708,
-//   latitudeDelta: 0.0922,
-//   longitudeDelta: 0.0421
-// }}
-
-// COM 1 coordinates: 1.294898512582403, 103.77367351793063
-// note: zoom level for 'centralise map to current location' button is same as the current zoom.
-
