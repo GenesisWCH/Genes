@@ -94,9 +94,12 @@ const HomeScreenStyle = StyleSheet.create({
       paddingLeft: 10,
       height:100,
     },
-    directionButtonText: {
-      fontSize: 15,
-      alignSelf: 'center'
+    item: {
+      flexDirection: 'row'
+    },
+    image: {
+      width: 50,
+      height: 50,
     }
   });
 
