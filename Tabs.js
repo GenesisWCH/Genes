@@ -23,8 +23,7 @@ const LogoutIcon = () => (
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator 
-        screenOptions={
-          
+        screenOptions={          
           ({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
@@ -52,38 +51,37 @@ const LogoutIcon = () => (
           tabBarInactiveTintColor: 'black',
           tabBarActiveBackgroundColor: 'darkorange',
           tabBarInactiveBackgroundColor: 'darkorange',
-        })}
+        })
+      }
+
       >
         <Tab.Screen options={{
-        headerShown: false
+        headerShown: false,
+        tabBarHideOnKeyboard: true
     }}
-         name="Home" component={HomeScreen} 
+         name="Home" 
+         component={HomeScreen} 
          />
         <Tab.Screen options={{
-        headerRight: () => <LogoutIcon />, 
-        headerStyle: {
-          backgroundColor: 'darkorange',
-        },
-        headerTintColor: 'black'
+        headerShown: false,
+        tabBarHideOnKeyboard: true
     }} 
-        
-         name="Notifications" component={NotificationsScreen} 
+         name="Notifications" 
+         component={NotificationsScreen} 
          />
         <Tab.Screen options={{
-        headerShown: false
+        headerShown: false,
+        tabBarHideOnKeyboard: true
     }}
-        
-         name="Locations" component={LocationsScreen} 
+         name="Locations" 
+         component={LocationsScreen} 
          />
         <Tab.Screen options={{
-        headerRight: () => <LogoutIcon />,
-        headerStyle: {
-          backgroundColor: 'darkorange',
-        },
-        headerTintColor: 'black'
+        headerShown: false,
+        tabBarHideOnKeyboard: true
     }}
-        
-         name="Bookings" component={BookingsScreen} />
+         name="Bookings" 
+         component={BookingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -23,6 +23,7 @@ const HomeScreenStyle = StyleSheet.create({
     },
     body: {
         flex: 93,
+        backgroundColor:"white",
     },
     centeredView: {
       flex: 1,
@@ -58,12 +59,35 @@ const HomeScreenStyle = StyleSheet.create({
       paddingBottom: 2,
       fontSize: 14,
       fontWeight: 'bold',
-      backgroundColor: 'rgba(247,247,247,1.0)',
+      backgroundColor: 'silver',
     },
     item: {
       padding: 10,
       fontSize: 18,
-      height: 44,
+      height: 100,
+    },
+    container: {
+      flex:1,
+      paddingTop:22
+    },
+    directionbutton: {
+      backgroundColor: "orange",
+      width: 100,
+      paddingVertical: 8,
+      marginVertical: 10,
+      position: 'absolute',
+      right: 5
+    },
+    welcomeText: {
+      fontSize: 25, 
+      color: 'black',
+      fontWeight: 'bold',
+      backgroundColor: 'white',
+      paddingLeft: 5,
+    },
+    directionButtonText: {
+      fontSize: 15,
+      alignSelf: 'center'
     }
   });
 

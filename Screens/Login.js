@@ -54,15 +54,15 @@ const LoginPage = ({ navigation }) => {
     };
 
     // toast is working. email can only be sent if the domain is ready.
-    const passwordResetHandler = () => {
-        passwordResetToast();
+    const passwordResetHandler = () => {       
         return sendPasswordResetEmail(auth, email)
             .then(() => {
+                passwordResetToast();
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                // ..
+                console.error('[passwordResetHandler]', errorCode, errorMessage);
             });
     }
 
