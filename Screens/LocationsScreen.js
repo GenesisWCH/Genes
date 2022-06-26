@@ -38,6 +38,16 @@ function LocationsScreen() {
       }, 3000);
 };
 
+const missingFieldsToast = () => {
+  let toast = Toast.show('Please ensure you have selected the start and end points', {
+       duration: Toast.durations.LONG,
+       position: Toast.positions.CENTER,
+     });
+     setTimeout(function hideToast() {
+       Toast.hide(toast);
+     }, 3000);
+};
+
   const setVisited = async () => {
     // console.log('calling setVisited')
     const visited = new Map()
@@ -85,6 +95,10 @@ function LocationsScreen() {
   // Map pathMap will trace the path. 
 
   const BFS = async () => {
+    if (start.length == 0 || end.length == 0) {
+      missingFieldsToast()
+      return
+    }
     searchToast()
     // console.log('calling BFS', ' ', start, '->', end)
     const pathMap = new Map()
