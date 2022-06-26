@@ -23,7 +23,6 @@ const SignUpStyle = StyleSheet.create({
         height: 30,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
-
     },
     input2: {
         marginVertical: 10,
@@ -31,7 +30,6 @@ const SignUpStyle = StyleSheet.create({
         height: 30,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
-
     },
     button: {
         backgroundColor: '#75C3FB',

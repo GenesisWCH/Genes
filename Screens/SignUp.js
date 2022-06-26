@@ -1,14 +1,15 @@
-
+// Code is a modified version of RN workshop given codes by Dominic and Marcus
 import {
     StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions,
     Keyboard, KeyboardAvoidingView
 } from "react-native";
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
-const { width } = Dimensions.get('window');
 import Toast from 'react-native-root-toast';
+
+const { width } = Dimensions.get('window');
 
 const SignUpPage = () => {
     const [name, setName] = useState('');
@@ -58,7 +59,7 @@ const SignUpPage = () => {
     };
 
     const invalidEmailToast = () => {
-        let toast = Toast.show('This email is invalid. Please use an NUS email domain.', {
+        let toast = Toast.show('This email is invalid. Please use an NUS email or gmail domain.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
         });
@@ -77,7 +78,6 @@ const SignUpPage = () => {
         }, 3000);
     };
 
-
     const signUpHandler = () => {
         if (name.length === 0 || email.length === 0 || password.length === 0 || confirmPassword.length === 0) {
             missingFieldsToast();
@@ -88,6 +88,16 @@ const SignUpPage = () => {
         const containsLower = /[a-z]/.test(password);
         const containsNum = /\d/.test(password);
         const containsSpecial = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password);
+
+        if (/@gmail.com\s*$/.test(email) || /@u.nus.edu\s*$/.test(email)) {
+            // 
+        } else {
+            invalidEmailToast()
+            console.log("it does not end in @gmail or @u.nus.edu");
+            return;
+        }
+
+
 
         if (password.length < 6 || !containsLower || !containsUpper || !containsNum || !containsSpecial) {
             strongPasswordToast();
