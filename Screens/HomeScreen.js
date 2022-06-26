@@ -8,6 +8,29 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../functions/LogOutHandler";
 import { auth } from '../firebase';
 
+/*
+const DATA = [
+  {title: "Food Outlets", sublist: [
+    {text: 'Drinks Vending Machine @ Level 1', image:{uri: 'https://msba.nus.edu.sg/wp-content/uploads/2019/04/2010-School-of-Computing-pic-_5_.jpg'}, navi: 'Drinks Vending Machine @ Level 1'},
+    {text: 'Drinks Vending Machine @ Level 2', image:{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/COM_2_Building%2C_NUS_School_of_Computing%2C_National_University_of_Singapore_-_20100813.jpg/1280px-COM_2_Building%2C_NUS_School_of_Computing%2C_National_University_of_Singapore_-_20100813.jpg'}, navi: 'Drinks Vending Machine @ Level 2'}
+  ]
+},
+ {title: "Facilities", sublist: [
+   {text: 'Printer @ Level 1', image:{uri: 'https://drive.google.com/file/d/1iupyn2093cJo9-n-o0TFOXBEhQruuhlE/view?usp=sharing'}, navi: 'Printer @ Level 1'},
+   {text: 'Portable Charger @ Level 1', image:{uri: ''}, navi: 'Portable Charger @ Level 1'},
+   {text: 'bluPort @ Level 1', image:{uri: ''}, navi: 'bluPort @ Level 1'},
+]
+},
+{title: "Study Spaces", sublist: [
+  {text: 'Study Space @ Level 1', image:{uri: 'https://drive.google.com/file/d/1iupyn2093cJo9-n-o0TFOXBEhQruuhlE/view?usp=sharing'}, navi: 'Study Space @ Level 1'},
+  {text: 'Study Space @ Level 2', image:{uri: ''}, navi: 'Study Space @ Level 2'},
+  {text: 'bluPort @ Level 1', image:{uri: ''}, navi: 'bluPort @ Level 1'},
+]
+},
+]
+*/
+
+
 const DATA = [
   {
     title: "Food Outlets",
@@ -21,6 +44,8 @@ const DATA = [
     title: "Study Spaces",
     data: ['Study Space @ Level 1', 'Study Space @ Level 2'],
   }]
+
+
 
 function HomeScreen({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
