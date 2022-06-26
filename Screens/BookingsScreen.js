@@ -1,3 +1,4 @@
+// Bookings tab is a work in progress and not finalised in both frontend and backend
 import React, { useState } from "react";
 import { Text, View } from 'react-native';
 import styles from '../css/BookingsScreenStyle';
@@ -265,15 +266,11 @@ function BookingsScreen() {
             />
           )}
         />
-        
         <Pressable style={styles.searchButton}>
           <Text style={styles.searchButtonText}>Search</Text>
         </Pressable>
       </View>
-
     </SafeAreaView>
-
-
   );
 }
 
