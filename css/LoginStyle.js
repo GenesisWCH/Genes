@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const LoginStyle = StyleSheet.create({
     container: {
@@ -23,7 +25,6 @@ const LoginStyle = StyleSheet.create({
         height: 30,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
-
     },
     input2: {
         marginVertical: 10,
@@ -31,7 +32,6 @@ const LoginStyle = StyleSheet.create({
         height: 30,
         paddingHorizontal: 8,
         backgroundColor: '#D9D9D9',
-
     },
     button: {
         backgroundColor: '#75C3FB',
@@ -83,7 +83,6 @@ const LoginStyle = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
-
         textAlign: 'center',
         color: '#0B5497'
     },

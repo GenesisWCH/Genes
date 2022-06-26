@@ -1,14 +1,14 @@
 // Code is a modified version of RN workshop given codes by Dominic and Marcus
 import {
-    StyleSheet, Text, View, Image, Pressable, TextInput, Dimensions,
-    Keyboard, KeyboardAvoidingView, Platform
+    Text, View, Image, Pressable, TextInput,
+    Keyboard, KeyboardAvoidingView
 } from "react-native";
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously } from "firebase/auth";
 import { auth } from '../firebase/index';
 import Toast from 'react-native-root-toast';
+import styles from '../css/LoginStyle';
 
-const { width } = Dimensions.get('window');
 
 const LoginPage = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -35,7 +35,7 @@ const LoginPage = ({ navigation }) => {
     };
 
     const passwordResetToast = () => {
-        let toast = Toast.show('An email has been sent to reset your password.', {
+        let toast = Toast.show('An email has been sent to reset your password. Please check your spam.', {
             duration: Toast.durations.LONG,
             position: Toast.positions.CENTER,
         });
@@ -170,83 +170,3 @@ const LoginPage = ({ navigation }) => {
 };
 
 export default LoginPage;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    image: {
-        width: width * 0.7,
-        height: 240,
-        alignSelf: 'center'
-    },
-    inputContainer: {
-        alignItems: 'center'
-    },
-    input: {
-        marginBottom: 10,
-        width: 250,
-        height: 30,
-        paddingHorizontal: 8,
-        backgroundColor: '#D9D9D9',
-
-    },
-    input2: {
-        marginVertical: 10,
-        width: 250,
-        height: 30,
-        paddingHorizontal: 8,
-        backgroundColor: '#D9D9D9',
-
-    },
-    button: {
-        backgroundColor: '#75C3FB',
-        marginTop: 46,
-        paddingHorizontal: 5,
-        paddingVertical: 8,
-        borderRadius: 5,
-    },
-    buttonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: 'black',
-    },
-    forgotPWButton: {
-        width: 250,
-        height: 30,
-        paddingHorizontal: 8,
-        backgroundColor: '#FFFFFF',
-    },
-    forgotPWButtonText: {
-        fontSize: 12,
-        fontWeight: 'bold',
-        textDecorationLine: 'underline',
-        color: '#0B5497'
-    },
-    signUpLinkText: {
-        fontSize: 12,
-        fontWeight: 'bold',
-        textDecorationLine: 'underline',
-        textAlign: 'center',
-        color: '#0B5497'
-    },
-    signUpLinkButton: {
-        marginVertical: 10,
-        width: 250,
-        height: 30,
-        paddingHorizontal: 8,
-        backgroundColor: '#FFFFFF',
-    },
-    guestButton: {
-        backgroundColor: '#FFFFFF',
-        fontSize: 12,
-        fontWeight: 'bold',
-        textDecorationLine: 'underline',
-
-        textAlign: 'center',
-        color: '#0B5497'
-    },
-});
