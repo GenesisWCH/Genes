@@ -100,7 +100,7 @@ function HomeScreenMain({ navigation }) {
               onPress={() => navigation.navigate(item.navi)}
               style={styles.item}
               >
-              <Image style={styles.image} uri={item.image} />
+              <Image style={styles.image} source={{uri:item.image}} />
               <Text key={index}>{item.text}</Text>
               </Pressable>
             </View>
