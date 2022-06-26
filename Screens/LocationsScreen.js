@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Modal from "react-native-modal";
@@ -21,7 +21,7 @@ function LocationsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
-  const [currPlace, setCurrPlace] = useState([])
+  const [currPlace, setCurrPlace] = useState(null)
   const [currPlaces, setCurrPlaces] = useState([])
   const [routeText, setRouteText] = useState('');
   const [data, setData] = useState([]);
@@ -35,7 +35,7 @@ function LocationsScreen() {
       const querySnapshot = await getDocs(collection(db, "map"));
       setData(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
       setData2(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
-      console.log(doc.id, " => ", doc.data());
+      // console.log(doc.id, " => ", doc.data());
     };
 
     getDocuments();
@@ -137,14 +137,17 @@ function LocationsScreen() {
 
   const setRoute = (map) => {
     console.log('calling setRoute')
-    const currPlace = end
+    var currPlace = end
     var text = ''
     while (currPlace != null) {
       text = ('->' + currPlace + text)
       console.log('currPlace:', currPlace)
-      setCurrPlace(map.get(currPlace))
+      currPlace = map.get(currPlace)
     }
+    text = text.slice(2)
+    console.log(text)
     setRouteText(text)
+    setShowDirection(true)
     console.log(routeText)
   }
 
@@ -153,7 +156,7 @@ function LocationsScreen() {
   // break the while loop. 
   // hashmap will trace the path. 
 
-  const BFS = async (startPoint, endPoint) => {
+  const BFS = async () => {
     console.log('calling BFS', ' ', start, '->', end)
     const map = new Map()
     const visited = await setVisited()
@@ -203,29 +206,29 @@ function LocationsScreen() {
 
     }
 
-    //   for (var i = 0; i < currPlaces.length; i++) {
-    //     const currPlace = currPlaces[i]
-    //     const nbrs = getNbrs(currPlace)
-    //     for (var j = 0; j < nbrs.length; j++) {
-
-    //       const neighbour = nbrs[j]
-    //       console.log(neighbour, 'is added!')
-    //       if (!visited.get(neighbour)) {
-    //         visited.set(neighbour, true)
-    //         next.push(neighbour)
-    //         map.set(neighbour, currPlace)
-    //       }
-    //     }
-    //   }
-    //   setCurrPlaces(next)
-    //   if (map.has(end)) {
-    //     break
-    //   }
-    // }
-
-
     setRoute(map)
+  }
+
+  const testSetRoute = () => {
+    console.log('calling testSetRoute')
+    const map = new Map()
+    map.set('02-AHU1', null)
+    map.set('02-AHU1 dummy', '02-AHU1')
+    map.set('02-AHU2', '02-AHU1 dummy')
+    console.log(map)
+    var currPlace = '02-AHU2'
+    console.log(currPlace)
+    var text = ''
+    while (currPlace != null) {
+      text = ('->' + currPlace + text)
+      console.log('currPlace:', currPlace)
+      currPlace = map.get(currPlace)
+    }
+    text.slice(2)
+    console.log(text)
+    setRouteText(text)
     setShowDirection(true)
+    console.log(routeText)
   }
 
 
@@ -255,7 +258,7 @@ function LocationsScreen() {
     }
   }
 
-  const BFSDummy = (startPoint, endPoint) => {
+  const BFSDummy = () => {
     console.log('calling BFSDummy', ' ', start, '->', end)
 
     const dummyMap = new Map()
@@ -318,13 +321,12 @@ function LocationsScreen() {
     console.log('Queue:', queue)
 
 
-    const map = new Map()
-    map.set(start, null)
+    const pathMap = new Map()
+    pathMap.set(start, null)
+
     visited.set(start, true)
     console.log('Marked', start, 'as visited!')
-    // console.log(map)
-    // setCurrPlaces([startPoint])
-    // console.log(currPlaces)
+    
 
     while (queue.length != 0) {
       var next = []
@@ -339,20 +341,19 @@ function LocationsScreen() {
             console.log(neighbour, 'is visited!')
             visited.set(neighbour, true)
             next.push(neighbour)
-            map.set(neighbour, currPlace)
+            pathMap.set(neighbour, currPlace)
 
           }
 
         }
       }
-      if (map.has(end)) {
+      if (pathMap.has(end)) {
         break
       }
       queue = next
 
     }
-    setRoute(map)
-    setShowDirection(true)
+    setRoute(pathMap)
   }
 
 
@@ -474,16 +475,21 @@ function LocationsScreen() {
             )}
           />
           <Pressable
-            onPress={(start, end) => BFSDummy(start, end)}
+            onPress={() => BFS()}
             style={styles.searchButton}>
             <Text>Search</Text>
           </Pressable>
-          {/* {showDirection ?
-            <Text>{routeText}</Text>
-            : <Text></Text>} */}
+          <Pressable
+            onPress={() => testSetRoute()}
+            style={styles.searchButton}>
+            <Text>test</Text>
+          </Pressable>
           {showDirection ?
             <Text>{routeText}</Text>
             : <Text></Text>}
+            <Image 
+            style = {styles.L2Map}
+            source={{uri: 'https://www.comp.nus.edu.sg/images/resources/content/mapsvenues/COM1_L2.jpg'}}/>
         </View>
       </View>
     </SafeAreaView>

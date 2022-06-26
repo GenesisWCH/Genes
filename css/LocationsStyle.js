@@ -93,6 +93,10 @@ const LocationsStyle = StyleSheet.create({
       height: 100,
       marginVertical: 3,
     },
+    L2Map: {
+      width: 200,
+      height: 200
+    }
   });
 
   export default LocationsStyle;
