@@ -28,6 +28,7 @@ function LocationsScreen() {
   const [data2, setData2] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
   const [showDirection, setShowDirection] = useState(false);
+  const [dummyMap2, setDummyMap2] = useState(new Map())
 
   useEffect(() => {
     const getDocuments = async () => {
@@ -35,62 +36,62 @@ function LocationsScreen() {
       setData(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
       setData2(querySnapshot.docs.map((doc) => ({ label: doc.id, value: doc.id })))
       console.log(doc.id, " => ", doc.data());
-    };  
+    };
 
     getDocuments();
   }, []);
 
   // sets a map of place : false
 
-const map = new Map();
-map.set('02-AHU1', ['02-AHU1 dummy'])
-map.set('02-AHU1 dummy', ['02-AHU1', 'SR 5 dummy'])
-map.set('02-AHU2', ['02-AHU2 dummy'])
-map.set('02-AHU2 dummy', ['02-AHU2', 'L2 Convenience Store dummy', 'SR 10 dummy'])
-map.set('02-AHU4', ['Wire Centre dummy'])
-map.set('Cerebro@SoC', ['Student Area'])
-map.set('Computing Club', ['ICPC Lab dummy'])
-map.set('DR 12', ['DR 12 dummy'])
-map.set('DR 12 dummy', ['DR 12', 'TR 11', 'L2 Undergraduate Studies dummy', 'TR 10 dummy'])
-map.set('Foyer Entrance', ['Student Area'])
-map.set('ICPC Lab', ['Student Area'])
-map.set('ICPC Lab dummy', ['Student Area'])
-map.set('L2 Convenience Store', ['L2 Convenience Store dummy'])
-map.set('L2 Convenience Store corner', ['L2 Convenience Store dummy', 'ICPC Lab dummy'])
-map.set('L2 Convenience Store dummy', ['L2 Convenience Store', '02-AHU2 dummy', 'Stairs to COM2', 'L2 Convenience Store corner'])
-map.set('L2 Lift', ['Foyer Entrance'])
-map.set('L2 Undergraduate Studies', ['L2 Undergraduate Studies dummy'])
-map.set('L2 Undergraduate Studies dummy', ['L2 Undergraduate Studies', 'Wire Centre dummy', 'DR 12 dummy', 'TR 11'])
-map.set('L2_Foyer', ['Students" Lounge', 'SR 1', 'Student Area', 'SR 7 dummy', 'TR 10 dummy', 'Foyer Entrance'])
-map.set('Linkway', ['SR 6 dummy', 'Makers@SoC dummy'])
-map.set('Makers@SoC', ['Makers@SoC dummy'])
-map.set('Makers@SoC dummy', ['Makers@SoC', 'SR 6 dummy', 'Linkway', 'SR 5 dummy'])
-map.set('SR 1', ['L2_Foyer'])
-map.set('SR 10', ['SR 10 dummy'])
-map.set('SR 10 dummy', ['SR 10', 'VC Room', 'SR 9 dummy', '02-AHU2 dummy'])
-map.set('SR 2', ['Student Area'])
-map.set('SR 3', ['SR 8 dummy'])
-map.set('SR 5', ['SR 5 dummy'])
-map.set('SR 5 dummy', ['02-AHU1 dummy', 'SR 5', 'Makers@SoC dummy'])
-map.set('SR 6', ['SR 6 dummy'])
-map.set('SR 6 dummy', ['SR 6', 'Student Area', 'Linkway', 'Makers@SoC dummy'])
-map.set('SR 7', ['SR 7 dummy'])
-map.set('SR 7 dummy', ['L2_Foyer', 'SR 7', 'SR 8 dummy'])
-map.set('SR 8', ['SR 8 dummy'])
-map.set('SR 8 dummy', ['SR 7 dummy', 'SR 8', 'SR 3', 'SR 9 dummy'])
-map.set('SR 9', ['SR 9 dummy'])
-map.set('SR 9 dummy', ['SR 9', 'VC Room', 'SR 10 dummy', 'SR 8 dummy'])
-map.set('Stair 5 (North)', ['Student Area'])
-map.set('Stairs to COM 2', ['L2 Convenience Store dummy'])
-map.set('Student Area', ['SR 6 dummy', 'Toilet near Stair 5(North)', 'Stair 5(North)', 'SR2', 'L2_Foyer'])
-map.set("Students' Lounge", ['L2_Foyer', 'TR 10 dummy'])
-map.set('TR 10', ['TR 10 dummy'])
-map.set('TR 10 dummy', ['TR 10', 'DR 12 dummy', 'Students" Lounge', 'L2_Foyer'])
-map.set('TR 11', ['DR 12 dummy', 'L2 Undergraduate Studies dummy'])
-map.set('Toilet near Stair 5 (North)', ['Student Area'])
-map.set('VC Room', ['SR 9 dummy', 'SR 10 dummy'])
-map.set('Wire Centre ', ['Wire Centre dummy'])
-map.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Studies dummy', 'Wire Centre'])
+
+  // dummyMap.set('02-AHU1', ['02-AHU1 dummy'])
+  // dummyMap.set('02-AHU1 dummy', ['02-AHU1', 'SR 5 dummy'])
+  // dummyMap.set('02-AHU2', ['02-AHU2 dummy'])
+  // dummyMap.set('02-AHU2 dummy', ['02-AHU2', 'L2 Convenience Store dummy', 'SR 10 dummy'])
+  // dummyMap.set('02-AHU4', ['Wire Centre dummy'])
+  // dummyMap.set('Cerebro@SoC', ['Student Area'])
+  // dummyMap.set('Computing Club', ['ICPC Lab dummy'])
+  // dummyMap.set('DR 12', ['DR 12 dummy'])
+  // dummyMap.set('DR 12 dummy', ['DR 12', 'TR 11', 'L2 Undergraduate Studies dummy', 'TR 10 dummy'])
+  // dummyMap.set('Foyer Entrance', ['L2_Foyer', 'L2 Lift'])
+  // dummyMap.set('ICPC Lab', ['ICPC Lab dummy'])
+  // dummyMap.set('ICPC Lab dummy', ['ICPC Lab', 'L2 Convenience Store dummy', 'Wire Centre dummy', 'Computing Club'])
+  // dummyMap.set('L2 Convenience Store', ['L2 Convenience Store dummy'])
+  // dummyMap.set('L2 Convenience Store corner', ['L2 Convenience Store dummy', 'ICPC Lab dummy'])
+  // dummyMap.set('L2 Convenience Store dummy', ['L2 Convenience Store', '02-AHU2 dummy', 'Stairs to COM2', 'L2 Convenience Store corner'])
+  // dummyMap.set('L2 Lift', ['Foyer Entrance'])
+  // dummyMap.set('L2 Undergraduate Studies', ['L2 Undergraduate Studies dummy'])
+  // dummyMap.set('L2 Undergraduate Studies dummy', ['L2 Undergraduate Studies', 'Wire Centre dummy', 'DR 12 dummy', 'TR 11'])
+  // dummyMap.set('L2_Foyer', ["Students' Lounge", 'SR 1', 'Student Area', 'SR 7 dummy', 'TR 10 dummy', 'Foyer Entrance'])
+  // dummyMap.set('Linkway', ['SR 6 dummy', 'Makers@SoC dummy'])
+  // dummyMap.set('Makers@SoC', ['Makers@SoC dummy'])
+  // dummyMap.set('Makers@SoC dummy', ['Makers@SoC', 'SR 6 dummy', 'Linkway', 'SR 5 dummy'])
+  // dummyMap.set('SR 1', ['L2_Foyer'])
+  // dummyMap.set('SR 10', ['SR 10 dummy'])
+  // dummyMap.set('SR 10 dummy', ['SR 10', 'VC Room', 'SR 9 dummy', '02-AHU2 dummy'])
+  // dummyMap.set('SR 2', ['Student Area'])
+  // dummyMap.set('SR 3', ['SR 8 dummy'])
+  // dummyMap.set('SR 5', ['SR 5 dummy'])
+  // dummyMap.set('SR 5 dummy', ['02-AHU1 dummy', 'SR 5', 'Makers@SoC dummy'])
+  // dummyMap.set('SR 6', ['SR 6 dummy'])
+  // dummyMap.set('SR 6 dummy', ['SR 6', 'Student Area', 'Linkway', 'Makers@SoC dummy'])
+  // dummyMap.set('SR 7', ['SR 7 dummy'])
+  // dummyMap.set('SR 7 dummy', ['L2_Foyer', 'SR 7', 'SR 8 dummy'])
+  // dummyMap.set('SR 8', ['SR 8 dummy'])
+  // dummyMap.set('SR 8 dummy', ['SR 7 dummy', 'SR 8', 'SR 3', 'SR 9 dummy'])
+  // dummyMap.set('SR 9', ['SR 9 dummy'])
+  // dummyMap.set('SR 9 dummy', ['SR 9', 'VC Room', 'SR 10 dummy', 'SR 8 dummy'])
+  // dummyMap.set('Stair 5 (North)', ['Student Area'])
+  // dummyMap.set('Stairs to COM 2', ['L2 Convenience Store dummy'])
+  // dummyMap.set('Student Area', ['SR 6 dummy', 'Toilet near Stair 5 (North)', 'Stair 5 (North)', 'SR 2', 'L2_Foyer'])
+  // dummyMap.set("Students' Lounge", ['L2_Foyer', 'TR 10 dummy'])
+  // dummyMap.set('TR 10', ['TR 10 dummy'])
+  // dummyMap.set('TR 10 dummy', ['TR 10', 'DR 12 dummy', "Students' Lounge", 'L2_Foyer'])
+  // dummyMap.set('TR 11', ['DR 12 dummy', 'L2 Undergraduate Studies dummy'])
+  // dummyMap.set('Toilet near Stair 5 (North)', ['Student Area'])
+  // dummyMap.set('VC Room', ['SR 9 dummy', 'SR 10 dummy'])
+  // dummyMap.set('Wire Centre', ['Wire Centre dummy'])
+  // dummyMap.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Studies dummy', 'Wire Centre'])
 
 
 
@@ -102,6 +103,7 @@ map.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Stu
     console.log('calling setVisited')
     const visited = new Map()
     const querySnapshot = await getDocs(collection(db, "map"));
+    console.log('hey i queried!')
     querySnapshot.forEach((doc) => {
       visited.set(doc.id, false)
       // console.log(doc.id, false)
@@ -167,39 +169,39 @@ map.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Stu
     // console.log(currPlaces)
 
     while (queue.length != 0) {
-        var next = []
-        for (var i = 0; i < queue.length; i++) {
-          var currPlace = queue[i]
-          console.log('current place:', currPlace)
-          var nbrs = []
-          await getNbrs(currPlace, nbrs, map)
-          // var iter = map.entries()
-          //     for (var ele of iter){
-          //       console.log(ele)
-          //     }
-          // console.log('neighbours of curr point added')
-          // console.log(nbrs)
-          for (var j = 0; j < nbrs.length; j++) {
-            var neighbour = nbrs[j]
-            if (!visited.get(neighbour)) {
-              console.log(neighbour, 'is visited!')
-              visited.set(neighbour , true)
-              next.push(neighbour)
-              map.set(neighbour, currPlace)
-              // var iter = map.entries()
-              // for (var ele of iter){
-              //   console.log(ele)
-              // }
-            }
-
+      var next = []
+      for (var i = 0; i < queue.length; i++) {
+        var currPlace = queue[i]
+        console.log('current place:', currPlace)
+        var nbrs = []
+        await getNbrs(currPlace, nbrs, map)
+        // var iter = map.entries()
+        //     for (var ele of iter){
+        //       console.log(ele)
+        //     }
+        // console.log('neighbours of curr point added')
+        // console.log(nbrs)
+        for (var j = 0; j < nbrs.length; j++) {
+          var neighbour = nbrs[j]
+          if (!visited.get(neighbour)) {
+            console.log(neighbour, 'is visited!')
+            visited.set(neighbour, true)
+            next.push(neighbour)
+            map.set(neighbour, currPlace)
+            // var iter = map.entries()
+            // for (var ele of iter){
+            //   console.log(ele)
+            // }
           }
+
         }
-        if (map.has(end)) {
-          break
-        }
-        queue = next
-        
       }
+      if (map.has(end)) {
+        break
+      }
+      queue = next
+
+    }
 
     //   for (var i = 0; i < currPlaces.length; i++) {
     //     const currPlace = currPlaces[i]
@@ -225,6 +227,135 @@ map.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Stu
     setRoute(map)
     setShowDirection(true)
   }
+
+
+  const setVisitedDummy = (map) => {
+    console.log('calling setVisitedDummy')
+    const visited = new Map()
+    for (let key of map.keys()) {
+      console.log(key);
+      visited.set(key, false)
+    }
+    return visited
+  }
+
+  const getNbrsDummy = (place, map) => {
+    console.log('calling getNbrsDummy')
+    console.log(map)
+    nbrList = []
+    if (map.has(place)) {
+      var nbrs = map.get(place)
+      for (var i = 0; i < nbrs.length; i++) {
+        nbrList.push(nbrs[i])
+      }
+      console.log('nbrList:', nbrList)
+      return nbrList
+    } else {
+      console.log("\nNo such document!\n\nCurrent Place checked:", place);
+    }
+  }
+
+  const BFSDummy = (startPoint, endPoint) => {
+    console.log('calling BFSDummy', ' ', start, '->', end)
+
+    const dummyMap = new Map()
+
+    dummyMap.set('02-AHU1', ['02-AHU1 dummy'])
+    dummyMap.set('02-AHU1 dummy', ['02-AHU1', 'SR 5 dummy'])
+    dummyMap.set('02-AHU2', ['02-AHU2 dummy'])
+    dummyMap.set('02-AHU2 dummy', ['02-AHU2', 'L2 Convenience Store dummy', 'SR 10 dummy'])
+    dummyMap.set('02-AHU4', ['Wire Centre dummy'])
+    dummyMap.set('Cerebro@SoC', ['Student Area'])
+    dummyMap.set('Computing Club', ['ICPC Lab dummy'])
+    dummyMap.set('DR 12', ['DR 12 dummy'])
+    dummyMap.set('DR 12 dummy', ['DR 12', 'TR 11', 'L2 Undergraduate Studies dummy', 'TR 10 dummy'])
+    dummyMap.set('Foyer Entrance', ['L2_Foyer', 'L2 Lift'])
+    dummyMap.set('ICPC Lab', ['ICPC Lab dummy'])
+    dummyMap.set('ICPC Lab dummy', ['ICPC Lab', 'L2 Convenience Store dummy', 'Wire Centre dummy', 'Computing Club'])
+    dummyMap.set('L2 Convenience Store', ['L2 Convenience Store dummy'])
+    dummyMap.set('L2 Convenience Store corner', ['L2 Convenience Store dummy', 'ICPC Lab dummy'])
+    dummyMap.set('L2 Convenience Store dummy', ['L2 Convenience Store', '02-AHU2 dummy', 'Stairs to COM2', 'L2 Convenience Store corner'])
+    dummyMap.set('L2 Lift', ['Foyer Entrance'])
+    dummyMap.set('L2 Undergraduate Studies', ['L2 Undergraduate Studies dummy'])
+    dummyMap.set('L2 Undergraduate Studies dummy', ['L2 Undergraduate Studies', 'Wire Centre dummy', 'DR 12 dummy', 'TR 11'])
+    dummyMap.set('L2_Foyer', ["Students' Lounge", 'SR 1', 'Student Area', 'SR 7 dummy', 'TR 10 dummy', 'Foyer Entrance'])
+    dummyMap.set('Linkway', ['SR 6 dummy', 'Makers@SoC dummy'])
+    dummyMap.set('Makers@SoC', ['Makers@SoC dummy'])
+    dummyMap.set('Makers@SoC dummy', ['Makers@SoC', 'SR 6 dummy', 'Linkway', 'SR 5 dummy'])
+    dummyMap.set('SR 1', ['L2_Foyer'])
+    dummyMap.set('SR 10', ['SR 10 dummy'])
+    dummyMap.set('SR 10 dummy', ['SR 10', 'VC Room', 'SR 9 dummy', '02-AHU2 dummy'])
+    dummyMap.set('SR 2', ['Student Area'])
+    dummyMap.set('SR 3', ['SR 8 dummy'])
+    dummyMap.set('SR 5', ['SR 5 dummy'])
+    dummyMap.set('SR 5 dummy', ['02-AHU1 dummy', 'SR 5', 'Makers@SoC dummy'])
+    dummyMap.set('SR 6', ['SR 6 dummy'])
+    dummyMap.set('SR 6 dummy', ['SR 6', 'Student Area', 'Linkway', 'Makers@SoC dummy'])
+    dummyMap.set('SR 7', ['SR 7 dummy'])
+    dummyMap.set('SR 7 dummy', ['L2_Foyer', 'SR 7', 'SR 8 dummy'])
+    dummyMap.set('SR 8', ['SR 8 dummy'])
+    dummyMap.set('SR 8 dummy', ['SR 7 dummy', 'SR 8', 'SR 3', 'SR 9 dummy'])
+    dummyMap.set('SR 9', ['SR 9 dummy'])
+    dummyMap.set('SR 9 dummy', ['SR 9', 'VC Room', 'SR 10 dummy', 'SR 8 dummy'])
+    dummyMap.set('Stair 5 (North)', ['Student Area'])
+    dummyMap.set('Stairs to COM 2', ['L2 Convenience Store dummy'])
+    dummyMap.set('Student Area', ['SR 6 dummy', 'Toilet near Stair 5 (North)', 'Stair 5 (North)', 'SR 2', 'L2_Foyer'])
+    dummyMap.set("Students' Lounge", ['L2_Foyer', 'TR 10 dummy'])
+    dummyMap.set('TR 10', ['TR 10 dummy'])
+    dummyMap.set('TR 10 dummy', ['TR 10', 'DR 12 dummy', "Students' Lounge", 'L2_Foyer'])
+    dummyMap.set('TR 11', ['DR 12 dummy', 'L2 Undergraduate Studies dummy'])
+    dummyMap.set('Toilet near Stair 5 (North)', ['Student Area'])
+    dummyMap.set('VC Room', ['SR 9 dummy', 'SR 10 dummy'])
+    dummyMap.set('Wire Centre', ['Wire Centre dummy'])
+    dummyMap.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Studies dummy', 'Wire Centre'])
+
+    console.log(dummyMap)
+    const visited = setVisitedDummy(dummyMap)
+
+
+    var queue = []
+    queue.push(start)
+    console.log('Queue:', queue)
+
+
+    const map = new Map()
+    map.set(start, null)
+    visited.set(start, true)
+    console.log('Marked', start, 'as visited!')
+    // console.log(map)
+    // setCurrPlaces([startPoint])
+    // console.log(currPlaces)
+
+    while (queue.length != 0) {
+      var next = []
+      for (var i = 0; i < queue.length; i++) {
+        var currPlace = queue[i]
+        console.log('Current place:', currPlace)
+        var nbrs = getNbrsDummy(currPlace, dummyMap)
+
+        for (var j = 0; j < nbrs.length; j++) {
+          var neighbour = nbrs[j]
+          if (!visited.get(neighbour)) {
+            console.log(neighbour, 'is visited!')
+            visited.set(neighbour, true)
+            next.push(neighbour)
+            map.set(neighbour, currPlace)
+
+          }
+
+        }
+      }
+      if (map.has(end)) {
+        break
+      }
+      queue = next
+
+    }
+    setRoute(map)
+    setShowDirection(true)
+  }
+
+
 
   return (
     <SafeAreaView style={styles.page}>
@@ -343,7 +474,7 @@ map.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergraduate Stu
             )}
           />
           <Pressable
-            onPress={(start, end) => BFS(start, end)}
+            onPress={(start, end) => BFSDummy(start, end)}
             style={styles.searchButton}>
             <Text>Search</Text>
           </Pressable>
