@@ -9,7 +9,6 @@ import { auth } from '../firebase/index';
 import Toast from 'react-native-root-toast';
 import styles from '../css/LoginStyle';
 
-
 const LoginPage = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
