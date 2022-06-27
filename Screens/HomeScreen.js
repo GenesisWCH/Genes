@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Image, Text, View, SectionList, TouchableOpacity } from 'react-native';
+import { Text, View, SectionList, Image, Button } from 'react-native';
 import styles from '../css/HomeScreenStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -7,65 +7,95 @@ import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../functions/LogOutHandler";
 import { auth } from '../firebase';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-function MainScreen({ navigation }) {
+const LIST = [
+  {
+    title: "Food Outlets", data: [
+      { text: 'Drinks Vending Machine @ Level 1', image: 'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2', navi: 'Drinks Vending Machine @ Level 1' },
+      { text: 'Drinks Vending Machine @ Level 2', image: 'https://drive.google.com/uc?export=view&id=1cyMDd645LiwPmAW2kv2D_cT6UO6d7Wbc', navi: 'Drinks Vending Machine @ Level 2' },
+    ]
+  },
+  {
+    title: "Facilities", data: [
+      { text: 'Printer @ Level 1', image: 'https://drive.google.com/uc?export=view&id=182HG7-kIMQy7WwgZlvTKACm5iQiGRWE3', navi: 'Printer @ Level 1' },
+      { text: 'bluPort @ Level 1', image: 'https://drive.google.com/uc?export=view&id=1kDyvpxZOqd7vXhojJ3StbivApLL_BpTS', navi: 'bluPort @ Level 1' },
+    ]
+  },
+  {
+    title: "Study Spaces", data: [
+      { text: 'Study Space @ Level B1', image: 'https://drive.google.com/uc?export=view&id=1J94yKs4BnJf7OLuDu9I21iefAWJehxn_', navi: 'Study Space @ Level B1' },
+      { text: 'Study Space @ Level 2', image: 'https://drive.google.com/uc?export=view&id=1QZXjJmY4apFmV2onWnZ9qqcp_k0qhP7d', navi: 'Study Space @ Level 2' },
+    ]
+  },
+]
+
+function L1VendingMachineDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 200, height: 200}}/>
+      <Text>
+        Vending Machine @ COM 2, Level 1
+      </Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
     </View>
   );
 }
 
-function DetailScreen({ navigation }) {
+function L2VendingMachineDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Go back" onPress={() => navigation.goBack()} >
-        <Text>HAHAHA</Text>
-        </Button>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1cyMDd645LiwPmAW2kv2D_cT6UO6d7Wbc'}} style={{width: 200, height: 200}}/>
+      <Text>Vending Machine @ COM 1, Level 2{'\n'}
+        Outside the Foyer, near Makers@SoC
+        </Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
     </View>
   );
 }
 
-// function MyStack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="Main" component={mainScreen} />
-//       <Stack.Screen name="Details" component={detailScreen} />
-//     </Stack.Navigator>
-//   );
-// } 
+function L1PrinterDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=182HG7-kIMQy7WwgZlvTKACm5iQiGRWE3'}} style={{width: 200, height: 200}}/>
+      <Text>Printer @ Located in COM 2, Level 1
+        </Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
+    </View>
+  );
+}
 
-const DATA = [
-  {
-    title: "Food Outlets",
-    data: [
-      
-        <Pressable
-          style={styles.listButton}
-          onPress={() => navigation.navigate('not Main')}
-        >
-          <Text>Drinks Vending Machine @ Level 1</Text>
-        </Pressable>,
-        <View>
-        <Image source={{ uri: 'https://msba.nus.edu.sg/wp-content/uploads/2019/04/2010-School-of-Computing-pic-_5_.jpg' }} style={{ width: 50, height: 50 }} />
-        
-      </View>,
-      <Text>Drinks Vending Machine @ Level 2</Text>
-    ],
-  },
-  {
-    title: "Facilities",
-    data: ['Printer @ Level 1', 'Portable Charger @ Level 1', 'bluPort @ Level 1'],
-  },
-  {
-    title: "Study Spaces",
-    data: ['Study Space @ Level 1', 'Study Space @ Level 2'],
-  }]
+
+function L1bluPortDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1kDyvpxZOqd7vXhojJ3StbivApLL_BpTS'}} style={{width: 200, height: 200}}/>
+      <Text>bluPort @ COM 2, Level 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
+    </View>
+  );
+}
+
+function B1StudySpaceDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1J94yKs4BnJf7OLuDu9I21iefAWJehxn_'}} style={{width: 200, height: 200}}/>
+       <Text>Study Space @ COM 1, Basement 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
+    </View>
+  );
+}
+
+function L2StudySpaceDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1QZXjJmY4apFmV2onWnZ9qqcp_k0qhP7d'}} style={{width: 200, height: 200}}/>
+       <Text>Study Space @ COM 1, Level 2</Text>
+      <Button style={styles.backButton} title="Go back" onPress={() => navigation.goBack()}/>
+    </View>
+    
+  );
+}
 
 function HomeScreenMain({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -82,14 +112,11 @@ function HomeScreenMain({ navigation }) {
             <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
             <Pressable
               style={[styles.button]}
-
             >
               <Text style={styles.textStyle}>Profile</Text>
-
             </Pressable>
             <Pressable
               style={[styles.button]}
-
             >
               <Text style={styles.textStyle}>Settings</Text>
 
@@ -116,28 +143,25 @@ function HomeScreenMain({ navigation }) {
         </Pressable>
 
       </View>
-
       <View style={styles.body}>
         <Text style={styles.welcomeText}>
-          Welcome, {auth.currentUser.isAnonymous ? 'Guest' : auth.currentUser.displayName}!
+          Welcome, {auth.currentUser.isAnonymous ? 'User' : auth.currentUser.displayName}!
         </Text>
         <SectionList
-          sections={DATA}
-          renderItem={({ item }) =>
+          sections={LIST}
+          renderItem={({ item, index }) =>
             <View>
-              <Text style={styles.item}>
-                {item}
-              </Text>
               <Pressable
-                onPress={() => navigation.navigate('Details')}
-                style={styles.directionbutton}
-                android_ripple={{ color: '#FFF' }}>
-                <Text style={styles.directionButtonText}>Directions</Text>
+              onPress={() => navigation.navigate(item.navi)}
+              style={styles.item}
+              >
+              <Image style={styles.image} source={{uri:item.image}} />
+              <Text key={index}>{item.text}</Text>
               </Pressable>
             </View>
           }
           renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => item + index}
         />
       </View>
     </SafeAreaView>
@@ -152,20 +176,15 @@ const HomeScreen = () => {
     screenOptions={{
       headerShown: false
     }}>
-      <Stack.Screen name="Main" component={HomeScreenMain} />
-      <Stack.Screen name="not Main" component={MainScreen} />
-      <Stack.Screen name="Details" component={DetailScreen} />
-    </Stack.Navigator >
+      <Stack.Screen name="Main" component={HomeScreenMain}  />
+      <Stack.Screen name="Drinks Vending Machine @ Level 1" component={L1VendingMachineDetails} />
+      <Stack.Screen name="Drinks Vending Machine @ Level 2" component={L2VendingMachineDetails} />
+      <Stack.Screen name="Printer @ Level 1" component={L1PrinterDetails} />
+      <Stack.Screen name="bluPort @ Level 1" component={L1bluPortDetails} />
+      <Stack.Screen name="Study Space @ Level B1" component={B1StudySpaceDetails} />
+      <Stack.Screen name="Study Space @ Level 2" component={L2StudySpaceDetails} />
+    </Stack.Navigator>
   )
 }
 
 export default HomeScreen;
-/*
-{
-  return(
-    <NavigationContainer>
-      <MyStack/>
-    </NavigationContainer>
-  );
-}
-*/
