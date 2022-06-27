@@ -172,7 +172,10 @@ function BookingsScreen() {
       <View style={styles.body}>
         {auth.currentUser.isAnonymous ?
           <Text styles={styles.headerText}> You are a guest. Bookings are only available to NUS staff and students.</Text>
-          : <Text styles={styles.headerText}>Bookings are made here!</Text>}
+          : <View>
+            <Text styles={styles.headerText}>
+            Bookings are made here!
+            </Text>
         <Dropdown
           // level
           style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -269,6 +272,7 @@ function BookingsScreen() {
         <Pressable style={styles.searchButton}>
           <Text style={styles.searchButtonText}>Search</Text>
         </Pressable>
+        </View>}
       </View>
     </SafeAreaView>
   );
