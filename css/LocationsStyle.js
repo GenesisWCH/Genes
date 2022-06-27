@@ -109,7 +109,7 @@ const LocationsStyle = StyleSheet.create({
   },
   L2Map: {
     width: width,
-    height: width * ASPECT_RATIO,
+    height: 250,
     position: 'absolute',
     bottom: 0,
   }

@@ -181,7 +181,7 @@ const SignUpPage = () => {
                 style={styles.image}
             />
 
-            <View style={styles.inputContainer}>
+            <KeyboardAvoidingView style={styles.inputContainer}>
                 <TextInput
                     onChangeText={setName}
                     value={name}
@@ -226,7 +226,7 @@ const SignUpPage = () => {
                 >
                     <Text style={styles.buttonText}>Sign Up</Text>
                 </Pressable>
-            </View>
+            </KeyboardAvoidingView>
         </KeyboardAvoidingView>
     );
 };
