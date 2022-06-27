@@ -12,22 +12,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const LIST = [
   {
     title: "Food Outlets", data: [
-      { text: 'Drinks Vending Machine @ Level 1', image: 'https://msba.nus.edu.sg/wp-content/uploads/2019/04/2010-School-of-Computing-pic-_5_.jpg', navi: 'Drinks Vending Machine @ Level 1' },
-      { text: 'Drinks Vending Machine @ Level 2', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/COM_2_Building%2C_NUS_School_of_Computing%2C_National_University_of_Singapore_-_20100813.jpg/1280px-COM_2_Building%2C_NUS_School_of_Computing%2C_National_University_of_Singapore_-_20100813.jpg', navi: 'Drinks Vending Machine @ Level 2' }
+      { text: 'Drinks Vending Machine @ Level 1', image: 'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2', navi: 'Drinks Vending Machine @ Level 1' },
+      { text: 'Drinks Vending Machine @ Level 2', image: 'https://drive.google.com/uc?export=view&id=1cyMDd645LiwPmAW2kv2D_cT6UO6d7Wbc', navi: 'Drinks Vending Machine @ Level 2' },
     ]
   },
   {
     title: "Facilities", data: [
-      { text: 'Printer @ Level 1', image: 'https://drive.google.com/file/d/1iupyn2093cJo9-n-o0TFOXBEhQruuhlE/view?usp=sharing', navi: 'Printer @ Level 1' },
-      { text: 'Portable Charger @ Level 1', image: '', navi: 'Portable Charger @ Level 1' },
-      { text: 'bluPort @ Level 1', image: '', navi: 'bluPort @ Level 1' },
+      { text: 'Printer @ Level 1', image: 'https://drive.google.com/uc?export=view&id=182HG7-kIMQy7WwgZlvTKACm5iQiGRWE3', navi: 'Printer @ Level 1' },
+      { text: 'bluPort @ Level 1', image: 'https://drive.google.com/uc?export=view&id=1kDyvpxZOqd7vXhojJ3StbivApLL_BpTS', navi: 'bluPort @ Level 1' },
     ]
   },
   {
     title: "Study Spaces", data: [
-      { text: 'Study Space @ Level 1', image: 'https://drive.google.com/file/d/1iupyn2093cJo9-n-o0TFOXBEhQruuhlE/view?usp=sharing', navi: 'Study Space @ Level 1' },
-      { text: 'Study Space @ Level 2', image: '', navi: 'Study Space @ Level 2' },
-      { text: 'bluPort @ Level 1', image: '', navi: 'bluPort @ Level 1' },
+      { text: 'Study Space @ Level B1', image: 'https://drive.google.com/uc?export=view&id=1J94yKs4BnJf7OLuDu9I21iefAWJehxn_', navi: 'Study Space @ Level B1' },
+      { text: 'Study Space @ Level 2', image: 'https://drive.google.com/uc?export=view&id=1QZXjJmY4apFmV2onWnZ9qqcp_k0qhP7d', navi: 'Study Space @ Level 2' },
     ]
   },
 ]
@@ -35,9 +33,60 @@ const LIST = [
 function L1VendingMachineDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Go back" onPress={() => navigation.goBack()} >
-        <Text>HAHAHA</Text>
-        </Button>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 50, height: 50}}/>
+      <Text>Vending Machine @ Level 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+    </View>
+  );
+}
+
+function L2VendingMachineDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1cyMDd645LiwPmAW2kv2D_cT6UO6d7Wbc'}} style={{width: 200, height: 200}}/>
+      <Text>Vending Machine @ Level 2</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+    </View>
+  );
+}
+
+function L1PrinterDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 200, height: 200}}/>
+      <Text>Printer @ Level 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+    </View>
+  );
+}
+
+
+function L1bluPortDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1kDyvpxZOqd7vXhojJ3StbivApLL_BpTS'}} style={{width: 200, height: 200}}/>
+      <Text>bluPort @ Level 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+    </View>
+  );
+}
+
+function B1StudySpaceDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1J94yKs4BnJf7OLuDu9I21iefAWJehxn_'}} style={{width: 200, height: 200}}/>
+       <Text>Study Space @ Basement 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+    </View>
+  );
+}
+
+function L2StudySpaceDetails({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1QZXjJmY4apFmV2onWnZ9qqcp_k0qhP7d'}} style={{width: 200, height: 200}}/>
+       <Text>Study Space @ Level 2</Text>
+      <Button style={{flex: 1, justifyContent: 'flex-end', marginBottom: 30}} title="Go back" onPress={() => navigation.goBack()}></Button>
     </View>
   );
 }
@@ -90,7 +139,7 @@ function HomeScreenMain({ navigation }) {
       </View>
       <View style={styles.body}>
         <Text style={styles.welcomeText}>
-          Welcome, {auth.currentUser.isAnonymous ? 'Guest' : auth.currentUser.displayName}!
+          Welcome, {auth.currentUser.isAnonymous ? 'User' : auth.currentUser.displayName}!
         </Text>
         <SectionList
           sections={LIST}
@@ -121,8 +170,13 @@ const HomeScreen = () => {
     screenOptions={{
       headerShown: false
     }}>
-      <Stack.Screen name="Main" component={HomeScreenMain} />
+      <Stack.Screen name="Main" component={HomeScreenMain}  />
       <Stack.Screen name="Drinks Vending Machine @ Level 1" component={L1VendingMachineDetails} />
+      <Stack.Screen name="Drinks Vending Machine @ Level 2" component={L2VendingMachineDetails} />
+      <Stack.Screen name="Printer @ Level 1" component={L1PrinterDetails} />
+      <Stack.Screen name="bluPort @ Level 1" component={L1bluPortDetails} />
+      <Stack.Screen name="Study Space @ Level B1" component={B1StudySpaceDetails} />
+      <Stack.Screen name="Study Space @ Level 2" component={L2StudySpaceDetails} />
     </Stack.Navigator >
   )
 }
