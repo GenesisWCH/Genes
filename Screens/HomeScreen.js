@@ -33,9 +33,11 @@ const LIST = [
 function L1VendingMachineDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 50, height: 50}}/>
-      <Text>Vending Machine @ Level 1</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 200, height: 200}}/>
+      <Text>
+        Vending Machine @ COM 2, Level 1
+      </Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
     </View>
   );
 }
@@ -44,8 +46,10 @@ function L2VendingMachineDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1cyMDd645LiwPmAW2kv2D_cT6UO6d7Wbc'}} style={{width: 200, height: 200}}/>
-      <Text>Vending Machine @ Level 2</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+      <Text>Vending Machine @ COM 1, Level 2{'\n'}
+        Outside the Foyer, near Makers@SoC
+        </Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
     </View>
   );
 }
@@ -53,9 +57,10 @@ function L2VendingMachineDetails({ navigation }) {
 function L1PrinterDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 200, height: 200}}/>
-      <Text>Printer @ Level 1</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=182HG7-kIMQy7WwgZlvTKACm5iQiGRWE3'}} style={{width: 200, height: 200}}/>
+      <Text>Printer @ Located in COM 2, Level 1
+        </Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
     </View>
   );
 }
@@ -65,8 +70,8 @@ function L1bluPortDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1kDyvpxZOqd7vXhojJ3StbivApLL_BpTS'}} style={{width: 200, height: 200}}/>
-      <Text>bluPort @ Level 1</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+      <Text>bluPort @ COM 2, Level 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
     </View>
   );
 }
@@ -75,8 +80,8 @@ function B1StudySpaceDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
        <Image source={{uri:'https://drive.google.com/uc?export=view&id=1J94yKs4BnJf7OLuDu9I21iefAWJehxn_'}} style={{width: 200, height: 200}}/>
-       <Text>Study Space @ Basement 1</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()}></Button>
+       <Text>Study Space @ COM 1, Basement 1</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
     </View>
   );
 }
@@ -85,9 +90,10 @@ function L2StudySpaceDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
        <Image source={{uri:'https://drive.google.com/uc?export=view&id=1QZXjJmY4apFmV2onWnZ9qqcp_k0qhP7d'}} style={{width: 200, height: 200}}/>
-       <Text>Study Space @ Level 2</Text>
-      <Button style={{flex: 1, justifyContent: 'flex-end', marginBottom: 30}} title="Go back" onPress={() => navigation.goBack()}></Button>
+       <Text>Study Space @ COM 1, Level 2</Text>
+      <Button style={styles.backButton} title="Go back" onPress={() => navigation.goBack()}/>
     </View>
+    
   );
 }
 
@@ -177,7 +183,7 @@ const HomeScreen = () => {
       <Stack.Screen name="bluPort @ Level 1" component={L1bluPortDetails} />
       <Stack.Screen name="Study Space @ Level B1" component={B1StudySpaceDetails} />
       <Stack.Screen name="Study Space @ Level 2" component={L2StudySpaceDetails} />
-    </Stack.Navigator >
+    </Stack.Navigator>
   )
 }
 

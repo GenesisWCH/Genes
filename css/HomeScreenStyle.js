@@ -100,6 +100,10 @@ const HomeScreenStyle = StyleSheet.create({
     image: {
       width: 50,
       height: 50,
+    },
+    backButton: {
+      position: 'absolute',
+      bottom: 50
     }
   });
 
