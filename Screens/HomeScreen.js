@@ -33,7 +33,7 @@ const LIST = [
 function L1VendingMachineDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 50, height: 50}}/>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 300, height: 300}}/>
       <Text>Vending Machine @ Level 1</Text>
       <Button title="Go back" onPress={() => navigation.goBack()}></Button>
     </View>
@@ -43,7 +43,7 @@ function L1VendingMachineDetails({ navigation }) {
 function L2VendingMachineDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1cyMDd645LiwPmAW2kv2D_cT6UO6d7Wbc'}} style={{width: 200, height: 200}}/>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1cyMDd645LiwPmAW2kv2D_cT6UO6d7Wbc'}} style={{width: 300, height: 300}}/>
       <Text>Vending Machine @ Level 2</Text>
       <Button title="Go back" onPress={() => navigation.goBack()}></Button>
     </View>
@@ -53,7 +53,7 @@ function L2VendingMachineDetails({ navigation }) {
 function L1PrinterDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1tJZUiK5VK3MOKgxCWYh574__AcxIsqR2'}} style={{width: 200, height: 200}}/>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=182HG7-kIMQy7WwgZlvTKACm5iQiGRWE3'}} style={{width: 300, height: 300}}/>
       <Text>Printer @ Level 1</Text>
       <Button title="Go back" onPress={() => navigation.goBack()}></Button>
     </View>
@@ -64,7 +64,7 @@ function L1PrinterDetails({ navigation }) {
 function L1bluPortDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1kDyvpxZOqd7vXhojJ3StbivApLL_BpTS'}} style={{width: 200, height: 200}}/>
+      <Image source={{uri:'https://drive.google.com/uc?export=view&id=1kDyvpxZOqd7vXhojJ3StbivApLL_BpTS'}} style={{width: 300, height: 300}}/>
       <Text>bluPort @ Level 1</Text>
       <Button title="Go back" onPress={() => navigation.goBack()}></Button>
     </View>
@@ -74,7 +74,7 @@ function L1bluPortDetails({ navigation }) {
 function B1StudySpaceDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1J94yKs4BnJf7OLuDu9I21iefAWJehxn_'}} style={{width: 200, height: 200}}/>
+       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1J94yKs4BnJf7OLuDu9I21iefAWJehxn_'}} style={{width: 300, height: 300}}/>
        <Text>Study Space @ Basement 1</Text>
       <Button title="Go back" onPress={() => navigation.goBack()}></Button>
     </View>
@@ -84,9 +84,9 @@ function B1StudySpaceDetails({ navigation }) {
 function L2StudySpaceDetails({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1QZXjJmY4apFmV2onWnZ9qqcp_k0qhP7d'}} style={{width: 200, height: 200}}/>
+       <Image source={{uri:'https://drive.google.com/uc?export=view&id=1QZXjJmY4apFmV2onWnZ9qqcp_k0qhP7d'}} style={{width: 300, height: 300}}/>
        <Text>Study Space @ Level 2</Text>
-      <Button style={{flex: 1, justifyContent: 'flex-end', marginBottom: 30}} title="Go back" onPress={() => navigation.goBack()}></Button>
+      <Button style={{flex: 1, marginTop: 30}} title="Go back" onPress={() => navigation.goBack()}></Button>
     </View>
   );
 }
