@@ -89,12 +89,38 @@ const BookingsScreenStyle = StyleSheet.create({
     },
     timeText: {
         fontSize: 20,
-        marginLeft: 5
+        marginLeft: 5,
     },
     timeContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center', 
+    },
+    dropdownStartTime: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        marginHorizontal: 10,
+        marginVertical: 5,
+        paddingHorizontal: 8,
+        backgroundColor: 'white',
+        position: 'absolute',
+        left: 10,
+        top: 10,
+    },
+    dropdownEndTime: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        marginHorizontal: 10,
+        marginVertical: 5,
+        paddingHorizontal: 8,
+        backgroundColor: 'white',
+        position: 'absolute',
+        right: 10,
+        top: 10
     },
     searchButton: {
         backgroundColor: 'white',
@@ -102,6 +128,7 @@ const BookingsScreenStyle = StyleSheet.create({
         paddingHorizontal: 5,
         paddingVertical: 8,
         borderRadius: 5,
+        alignSelf: 'center',
     },
     searchButtonText: {
         fontSize: 18,
