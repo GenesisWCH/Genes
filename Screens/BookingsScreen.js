@@ -187,7 +187,7 @@ function BookingsScreen() {
           valueField="level"
           placeholder='Select level'
           searchPlaceholder="Search..."
-          value={level}
+          // value={level}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
@@ -217,15 +217,16 @@ function BookingsScreen() {
           valueField="room"
           placeholder='Room Type'
           searchPlaceholder="Search..."
-          value={roomType}
+          // value={roomType}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
             setRoomType(item.room);
             setIsFocus(false);
             // filterTest(level, roomType)
-            filterByLevelType(level, roomType)
-            console.log('yes there is change!')
+            // filterByLevelType(level, roomType)
+            // console.log('yes there is change!')
+            console.log(roomType)
           }}
           renderLeftIcon={() => (
             <AntDesign
