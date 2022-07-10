@@ -249,7 +249,7 @@ function BookingsScreenMain({ navigation }) {
                   size={20}
                 />
               )}
-            />
+              />
             <Dropdown
               //date
               style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -291,7 +291,6 @@ function BookingsScreenMain({ navigation }) {
               style={styles.searchButton}>
               <Text style={styles.searchButtonText}>Update dates</Text>
             </Pressable>
-
           </View>}
       </View>
     </SafeAreaView>
