@@ -13,7 +13,7 @@ const ChosenBookingStyle = StyleSheet.create({
         color: 'black',
         marginTop: 8,
     },
-    selectBookingButton: {
+    confirmBookingButton: {
         backgroundColor: "darkorange",
         paddingHorizontal: 5,
         paddingVertical: 8,
@@ -22,8 +22,44 @@ const ChosenBookingStyle = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 5,
     },
-    selectBookingButtonText: {
+    confirmBookingButtonText: {
         fontSize: 18,
+    },
+    dropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        marginHorizontal: 10,
+        marginVertical: 5,
+        paddingHorizontal: 8,
+        backgroundColor: 'white',
+    },
+    icon: {
+        marginRight: 5,
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
     },
 });
 

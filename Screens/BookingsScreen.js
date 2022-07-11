@@ -318,6 +318,7 @@ const BookingsScreen = () => {
           backgroundColor: 'darkorange',
         }
       }} />
+      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} />
     </Stack.Navigator>
   )
 }
