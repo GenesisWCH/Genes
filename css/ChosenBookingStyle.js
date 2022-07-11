@@ -61,6 +61,7 @@ const ChosenBookingStyle = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
+    
 });
 
 export default ChosenBookingStyle;

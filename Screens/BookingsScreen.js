@@ -174,7 +174,6 @@ function BookingsScreenMain({ navigation }) {
           </View>
         </View>
       </Modal>
-
       <View style={styles.header}>
         <Text style={styles.headerText}>Booking</Text>
         <Pressable style={styles.profileIcon} onPress={() => setModalVisible(true)}>

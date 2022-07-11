@@ -39,4 +39,5 @@ function ConfirmedBooking({ route, navigation }) {
     )
 }
 
+
 export default ConfirmedBooking;

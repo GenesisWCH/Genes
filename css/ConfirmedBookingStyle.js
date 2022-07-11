@@ -25,7 +25,6 @@ const ConfirmedBookingStyle = StyleSheet.create({
     backToMainButtonText: {
         fontSize: 18,
     },
-    
 });
 
 export default ChosenBookingStyle;
