@@ -4,8 +4,13 @@ const ChosenBookingStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgb(125, 129, 247)',
+    },
+    textContainer: {
+        flex: 40,
         alignItems: 'center',
-        // justifyContent: 'center',
+    },
+    bookingContainer: {
+        flex: 60,
     },
     dateText: {
         fontSize: 20,
@@ -38,15 +43,6 @@ const ChosenBookingStyle = StyleSheet.create({
     icon: {
         marginRight: 5,
     },
-    label: {
-        position: 'absolute',
-        backgroundColor: 'white',
-        left: 22,
-        top: 8,
-        zIndex: 999,
-        paddingHorizontal: 8,
-        fontSize: 14,
-    },
     placeholderStyle: {
         fontSize: 16,
     },
@@ -61,7 +57,7 @@ const ChosenBookingStyle = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
-    
+
 });
 
 export default ChosenBookingStyle;

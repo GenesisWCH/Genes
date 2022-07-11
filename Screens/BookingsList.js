@@ -17,7 +17,7 @@ function BookingsList({ route, navigation }) {
     }, []);
 
     const selectBooking = async () => {
-        console.log(choice)
+        // console.log(choice)
         navigation.navigate("Chosen Booking", {
             choice: choice,
             dateText: dateText,

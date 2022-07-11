@@ -17,7 +17,7 @@ function ConfirmedBooking({ route, navigation }) {
         console.log(choice)
     }, []);
 
-    const backToMain = ( {navigation} ) => {
+    const backToMain = () => {
         navigation.navigate('Main')
     }
 

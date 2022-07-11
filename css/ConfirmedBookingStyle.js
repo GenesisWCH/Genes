@@ -27,4 +27,4 @@ const ConfirmedBookingStyle = StyleSheet.create({
     },
 });
 
-export default ChosenBookingStyle;
+export default ConfirmedBookingStyle;

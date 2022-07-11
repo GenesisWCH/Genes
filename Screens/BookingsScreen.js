@@ -11,10 +11,11 @@ import LogOutHandler from "../functions/LogOutHandler";
 import { auth, db } from '../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { collection, collectionGroup, query, where, getDocs, Firestore } from "firebase/firestore";
+import { collection, collectionGroup, query, where, getDocs } from "firebase/firestore";
 import toJSDateStr from "../functions/toJSDateStr";
 import BookingsList from "./BookingsList";
 import ChosenBooking from "./ChosenBooking";
+import ConfirmedBooking from "./ConfirmedBooking";
 
 const levelData = [
   { label: 'Level 1', level: 1 },
@@ -118,11 +119,12 @@ function BookingsScreenMain({ navigation }) {
       var fsStartTime = doc.get('startTime')
       var fsEndTime = doc.get('endTime')
       var fsName = doc.get('name')
+      var parentDocID = doc.get('parentDocID')
       var jsStartTime = toTimeStr(fsStartTime)
       var jsEndTime = toTimeStr(fsEndTime)
       var label = toLabelString(fsName, jsStartTime, jsEndTime)
 
-      dummySlots.push({ label: label, value: { id: doc.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime } })
+      dummySlots.push({ label: label, value: { id: doc.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID } })
     })
     console.log(dummySlots)
     // setData(dummySlots)
@@ -147,26 +149,26 @@ function BookingsScreenMain({ navigation }) {
           <View style={styles.modalView}>
             <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
             <Pressable
-              style={[styles.button]}
+              style={styles.button}
             //</View>onPress={}
             >
               <Text style={styles.textStyle}>Profile</Text>
 
             </Pressable>
             <Pressable
-              style={[styles.button]}
+              style={styles.button}
             //onPress={}
             >
               <Text style={styles.textStyle}>Settings</Text>
 
             </Pressable>
             <Pressable
-              style={[styles.button]}
+              style={styles.button}
             >
               <Text style={styles.textStyle}>About</Text>
             </Pressable>
             <Pressable
-              style={[styles.button]}
+              style={styles.button}
               onPress={LogOutHandler}
             >
               <Text style={styles.textStyle}>Sign Out</Text>
@@ -316,7 +318,11 @@ const BookingsScreen = () => {
           backgroundColor: 'darkorange',
         }
       }} />
-      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} />
+      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} options={{
+        headerShown: true, headerStyle: {
+          backgroundColor: 'darkorange',
+        }
+      }}/>
     </Stack.Navigator>
   )
 }
