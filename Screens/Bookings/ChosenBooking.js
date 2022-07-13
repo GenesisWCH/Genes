@@ -1,19 +1,13 @@
 // Bookings tab is a work in progress and not finalised in both frontend and backend
 import React, { useState, useEffect } from "react";
-import { Text, View, FlatList, Dimensions } from 'react-native';
-import styles from '../css/ChosenBookingStyle';
-import { isAnonymous } from "firebase/auth";
+import { Text, View, TextInput } from 'react-native';
+import styles from '../../css/ChosenBookingStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import Modal from "react-native-modal";
-import { SafeAreaView } from "react-native-safe-area-context";
-import LogOutHandler from "../functions/LogOutHandler";
-import { auth, db } from '../firebase';
+import { auth, db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { doc, getDocs, collectionGroup, query, where, setDoc, updateDoc } from "firebase/firestore";
-import SimpleSelectButton from 'react-native-simple-select-button';
-import toJSDateStr from "../functions/toJSDateStr";
+import { doc, getDoc, getDocs, setDoc, updateDoc, collection } from "firebase/firestore";
+
 import Toast from 'react-native-root-toast';
 
 const reasonDATA = [
@@ -21,17 +15,21 @@ const reasonDATA = [
   { label: 'Club Activities', reason: 'Club Activities' },
 ]
 
-
 function ChosenBooking({ route, navigation }) {
   const { choice } = route.params
   const { dateText } = route.params
   const [bookingReason, setBookingReason] = useState('')
+  const [ bookingReasonForOthers, setBookingReasonForOthers ] = useState('')
   const [isFocus, setIsFocus] = useState(false);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log(dateText)
-    console.log(choice)
-  }, []);
+      const getBookingReasons = async () => {
+        const querySnapshot = await getDocs(collection(db, "bookingReasons"));
+        setData(querySnapshot.docs.map((doc) => ({ label: doc.id, reason: doc.id })))
+      };
+      getBookingReasons();
+    }, []);
 
   const missingReasonToast = () => {
     let toast = Toast.show('Please ensure you have selected a booking reason!', {
@@ -59,9 +57,24 @@ function ChosenBooking({ route, navigation }) {
       status: 'pending',
     });
 
-    setDoc(docRef, {
-      bookingReason: bookingReason
-    }, { merge: true });
+    if (bookingReason == 'Others') {
+      setDoc(docRef, {
+        bookingReason: bookingReasonForOthers
+      }, { merge: true });
+
+      const othersDoc = doc(db, 'bookingReasons', 'Others')
+      const docSnap = await getDoc(othersDoc);
+      const reasonsList = docSnap.get('reasons');
+      reasonsList.push(bookingReasonForOthers)
+      updateDoc(othersDoc, {
+        reasons: reasonsList
+      });
+
+    } else {
+      setDoc(docRef, {
+        bookingReason: bookingReason
+      }, { merge: true });
+    }
 
     console.log('Booked', choice.name, 'with id:', choice.id)
 
@@ -87,7 +100,7 @@ function ChosenBooking({ route, navigation }) {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={reasonDATA}
+          data={data}
           search
           maxHeight={300}
           labelField="label"
@@ -110,6 +123,15 @@ function ChosenBooking({ route, navigation }) {
             />
           )}
         />
+        <View style={styles.inputContainer}>
+        <TextInput
+          onChangeText={setBookingReasonForOthers}
+          value={bookingReasonForOthers}
+          placeholder='Reason for others'
+          selectionColor='#003D7C'
+          style={styles.input}
+        />
+        </View>
         <Pressable
           onPress={confirmBooking}
           style={styles.confirmBookingButton}>

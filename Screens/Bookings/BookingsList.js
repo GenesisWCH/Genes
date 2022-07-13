@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, FlatList, Dimensions } from 'react-native';
-import styles from '../css/BookingsListStyle';
-import { isAnonymous } from "firebase/auth";
-import { AntDesign } from '@expo/vector-icons';
+import styles from '../../css/BookingsListStyle';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import SimpleSelectButton from 'react-native-simple-select-button';
 

@@ -5,10 +5,25 @@ const ConfirmedBookingStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgb(125, 129, 247)',
         alignItems: 'center',
-        // justifyContent: 'center',
+        justifyContent: 'center',
     },
-    dateText: {
-        fontSize: 20,
+    textContainer: {
+        flex: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    bookingContainer: {
+        flex: 60,
+    },
+    text: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'black',
+        marginTop: 8,
+        marginHorizontal: 10,
+    },
+    text2: {
+        fontSize: 30,
         fontWeight: 'bold',
         color: 'black',
         marginTop: 8,
@@ -17,7 +32,7 @@ const ConfirmedBookingStyle = StyleSheet.create({
         backgroundColor: "darkorange",
         paddingHorizontal: 5,
         paddingVertical: 8,
-        marginVertical: 3,
+        marginVertical: 10,
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,

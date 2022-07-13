@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const BookingsScreenStyle = StyleSheet.create({
+const BookingsSearchStyle = StyleSheet.create({
     page: {
         backgroundColor: 'rgb(125, 129, 247)',
         flex: 1,
@@ -78,18 +78,9 @@ const BookingsScreenStyle = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
-    timeText: {
-        fontSize: 20,
-        marginLeft: 5,
-    },
-    timeContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     searchButton: {
         backgroundColor: 'white',
-        marginTop: 46,
+        marginVertical: 23,
         paddingHorizontal: 5,
         paddingVertical: 8,
         borderRadius: 5,
@@ -100,30 +91,6 @@ const BookingsScreenStyle = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
     },
-    container: {
-        flex: 1,
-        backgroundColor: 'rgb(125, 129, 247)',
-        alignItems: 'center',
-        // justifyContent: 'center',
-    },
-    dateText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'black',
-        marginTop: 8,
-    },
-    selectBookingButton: {
-        backgroundColor: "darkorange",
-        paddingHorizontal: 5,
-        paddingVertical: 8,
-        marginVertical: 3,
-        alignItems: 'center',
-        alignSelf: 'center',
-        borderRadius: 5,
-    },
-    selectBookingButtonText: {
-        fontSize: 18,
-    },
 });
 
-export default BookingsScreenStyle;
+export default BookingsSearchStyle;

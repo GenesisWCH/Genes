@@ -1,40 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, FlatList, Dimensions } from 'react-native';
-import styles from '../css/ConfirmedBookingStyle';
-import { isAnonymous } from "firebase/auth";
-import { AntDesign } from '@expo/vector-icons';
+import { Text, View } from 'react-native';
+import styles from '../../css/ConfirmedBookingStyle';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-
-
 
 
 function ConfirmedBooking({ route, navigation }) {
     const { choice } = route.params
     const { dateText } = route.params
-
-    useEffect(() => {
-        console.log(dateText)
-        console.log(choice)
-    }, []);
-
+    
     const backToMain = () => {
         navigation.navigate('Main')
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.dateText}>
+            <View style={styles.textContainer}>
+            <Text style={styles.text}>
                 Your booking has{'\n'}
                 been confirmed!
             </Text>
-            <Text style={styles.dateText}>{choice.name}</Text>
-            <Text style={styles.dateText}>{dateText}</Text>
-            <Text style={styles.dateText}>{choice.startTime} to {choice.endTime}</Text>
+            <Text style={styles.text2}>{choice.name}</Text>
+            <Text style={styles.text2}>{dateText}</Text>
+            <Text style={styles.text2}>{choice.startTime} to {choice.endTime}</Text>
+            </View>
+            <View style={styles.bookingContainer}>
             <Pressable
             onPress={backToMain}
             style={styles.backToMainButton}>
                 <Text style={styles.backToMainButtonText}>Back to bookings</Text>
             </Pressable>
+            </View>
         </View>
     )
 }
