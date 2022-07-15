@@ -5,11 +5,10 @@ import {
 } from "react-native";
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
-import { auth, db } from '../firebase/index';
+import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
 import Toast from 'react-native-root-toast';
-import styles from '../css/SignUpStyle';
-import { doc, setDoc } from "firebase/firestore";
+import styles from '../css/SignUpStyle'
 
 const SignUpPage = () => {
     const [name, setName] = useState('');
@@ -78,7 +77,7 @@ const SignUpPage = () => {
         }, 3000);
     };
 
-    const signUpHandler = async () => {
+    const signUpHandler = () => {
         if (name.length === 0 || email.length === 0 || password.length === 0 || confirmPassword.length === 0) {
             missingFieldsToast();
             return;
@@ -126,13 +125,6 @@ const SignUpPage = () => {
                 }).then(() => {
                 }).catch((error) => {
                 });
-
-                setDoc(doc(db, "users", auth.currentUser.uid), {
-                    displayName: name,
-                    email: email,
-                  });
-                  console.log('Created user with \nid:', auth.currentUser.uid, '\nname:', name, 'and \nemail:', email)
-                  
             })
             .catch(error => {
                 const errorCode = error.code;
@@ -189,7 +181,7 @@ const SignUpPage = () => {
                 style={styles.image}
             />
 
-            <View style={styles.inputContainer}>
+            <KeyboardAvoidingView style={styles.inputContainer}>
                 <TextInput
                     onChangeText={setName}
                     value={name}
@@ -234,7 +226,7 @@ const SignUpPage = () => {
                 >
                     <Text style={styles.buttonText}>Sign Up</Text>
                 </Pressable>
-            </View>
+            </KeyboardAvoidingView>
         </KeyboardAvoidingView>
     );
 };
