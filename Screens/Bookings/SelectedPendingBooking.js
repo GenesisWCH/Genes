@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View } from 'react-native';
 import styles from '../../css/SelectedPendingBookingStyle';
-import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../../functions/LogOutHandler";
 import { auth, db } from '../../firebase';

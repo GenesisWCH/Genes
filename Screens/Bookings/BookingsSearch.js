@@ -10,7 +10,7 @@ import LogOutHandler from "../../functions/LogOutHandler";
 import { auth, db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
 import { collection, collectionGroup, query, where, getDocs } from "firebase/firestore";
-import toJSDateStr from "../../functions/toJSDateStr";
+import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunctions";
 
 const levelData = [
   { label: 'Level 1', level: 1 },
@@ -43,29 +43,6 @@ function BookingsSearch({ navigation }) {
   const [data, setData] = useState([]);
   const [dates, setDates] = useState([]);
 
-  // Link: https://stackoverflow.com/questions/13898423/javascript-convert-24-hour-time-of-day-string-to-12-hour-time-with-am-pm-and-no
-  function tConvert(time) {
-    // Check correct time format and split into components
-    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
-    if (time.length > 1) { // If time format correct
-      time = time.slice(1); // Remove full string match value
-      time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
-      time[0] = +time[0] % 12 || 12; // Adjust hours
-    }
-    return time.join(''); // return adjusted time or original string
-  }
-
-  const toTimeStr = (fsDate) => {
-    var jsDate = fsDate.toDate()
-    var str = jsDate.toTimeString()
-    return tConvert(str.slice(0, 5))
-  }
-
-  const toLabelString = (name, startTime, endTime) => {
-    var str = name + ", " + startTime + " to " + endTime
-    return str
-  }
 
   // see how to make a callback after setting a change in state
   // apparently the same timestamps are actually diff objects. how do I extract/query the correct documents?

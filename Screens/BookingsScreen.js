@@ -36,27 +36,32 @@ const BookingsScreen = () => {
             backgroundColor: 'darkorange',
           }
         }} />
-      <Stack.Screen name="Chosen Booking" component={ChosenBooking} options={{
+      <Stack.Screen name="Chosen Booking" component={ChosenBooking} 
+      options={{
         headerShown: true, headerStyle: {
           backgroundColor: 'darkorange',
         }
       }} />
-      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} options={{
+      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} 
+      options={{
         headerShown: true, headerStyle: {
           backgroundColor: 'darkorange',
         }
       }} />
-      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} options={{
+      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} 
+      options={{
         headerShown: true, headerStyle: {
           backgroundColor: 'darkorange',
         }
       }} />
-      <Stack.Screen name="Pending Bookings" component={PendingBookings} options={{
+      <Stack.Screen name="Pending Bookings" component={PendingBookings} 
+      options={{
         headerShown: true, headerStyle: {
           backgroundColor: 'darkorange',
         }
       }} />
-      <Stack.Screen name="Selected Pending Booking" component={SelectedPendingBooking} options={{
+      <Stack.Screen name="Selected Pending Booking" component={SelectedPendingBooking} 
+      options={{
         headerShown: true, headerStyle: {
           backgroundColor: 'darkorange',
         }

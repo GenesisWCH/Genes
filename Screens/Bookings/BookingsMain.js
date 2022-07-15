@@ -70,7 +70,7 @@ function BookingsMain({ navigation }) {
             <View style={styles.body}>
                 {auth.currentUser.isAnonymous
                     ? <Text styles={styles.guestText}>You are a guest. Bookings are only available to NUS staff and students.</Text>
-                    : auth.currentUser.uid == 'l98EXfLxB2NGgIQwbjr20uDvMEg1'
+                    : auth.currentUser.uid == 'PmdSTWIMA8eCv13mAC4ex7TwrHS2'
                         ? <View>
                             <Pressable
                                 onPress={() => navigation.navigate('Search')}
@@ -78,24 +78,24 @@ function BookingsMain({ navigation }) {
                                 <Text style={styles.bodyButtonText}>Book a room</Text>
                             </Pressable>
                             <Pressable
-                                // onPress={() => navigation.navigate('Search')}
+                                onPress={() => navigation.navigate('My Bookings')}
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>My bookings</Text>
                             </Pressable>
                             <Pressable
-                                // onPress={() => navigation.navigate('Search')}
+                                onPress={() => navigation.navigate('Search')}
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>Pending Bookings</Text>
                             </Pressable>
                         </View>
                         : <View>
                             <Pressable
-                                onPress={() => navigation.navigate('Search')}
+                                onPress={() => navigation.navigate('Pending Bookings')}
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>Book a room</Text>
                             </Pressable>
                             <Pressable
-                                // onPress={() => navigation.navigate('Search')}
+                                onPress={() => navigation.navigate('My Bookings')}
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>My bookings</Text>
                             </Pressable>
