@@ -34,6 +34,9 @@ function PendingBookings({ navigation }) {
       const querySnapshot = await getDocs(slotsAvail);
       querySnapshot.forEach((doc) => {
 
+        // query for user details here based on uid
+        // need to update booking feature where there is writing of user id.
+
         var fsStartTime = doc.get('startTime')
         var fsEndTime = doc.get('endTime')
         var fsName = doc.get('name')
@@ -57,7 +60,7 @@ function PendingBookings({ navigation }) {
     getPendingBookings();
   }, []);
 
-
+  // flesh out the flatlist and how data is extracted from firestore, including querying for user details to put inside var bookings
   return (
     <SafeAreaView style={styles.page}>
       <FlatList
