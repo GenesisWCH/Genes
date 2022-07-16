@@ -13,7 +13,7 @@ import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunct
 
 
 // data = [
-//   {label: 'string', value: {name: '', date: '', startTime: '', endTime: ''}}
+//   {label: 'string', name: '', date: '', startTime: '', endTime: ''}
 // ]
 
 // how to approve bookings and show it in the my bookings?
