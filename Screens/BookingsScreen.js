@@ -8,6 +8,7 @@ import ChosenBooking from "./Bookings/ChosenBooking";
 import ConfirmedBooking from "./Bookings/ConfirmedBooking";
 import PendingBookings from "./Bookings/PendingBookings";
 import SelectedPendingBooking from "./Bookings/SelectedPendingBooking";
+import UserBookings from "./Bookings/UserBookings";
 
 
 const Stack = createNativeStackNavigator();
@@ -48,12 +49,6 @@ const BookingsScreen = () => {
           backgroundColor: 'darkorange',
         }
       }} />
-      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} 
-      options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
       <Stack.Screen name="Pending Bookings" component={PendingBookings} 
       options={{
         headerShown: true, headerStyle: {
@@ -61,6 +56,12 @@ const BookingsScreen = () => {
         }
       }} />
       <Stack.Screen name="Selected Pending Booking" component={SelectedPendingBooking} 
+      options={{
+        headerShown: true, headerStyle: {
+          backgroundColor: 'darkorange',
+        }
+      }} />
+      <Stack.Screen name="My Bookings" component={UserBookings} 
       options={{
         headerShown: true, headerStyle: {
           backgroundColor: 'darkorange',

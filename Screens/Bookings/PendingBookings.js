@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import styles from '../../css/PendingBookingsStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -8,75 +8,128 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../../functions/LogOutHandler";
 import { auth, db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
-import { collection, collectionGroup, query, where, getDocs } from "firebase/firestore";
+import { collection, collectionGroup, query, where, doc, getDoc, getDocs } from "firebase/firestore";
 import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunctions";
 
 
-// data = [
-//   {label: 'string', name: '', date: '', startTime: '', endTime: ''}
-// ]
-
-// how to approve bookings and show it in the my bookings?
-// grab the uid of the user you want to be the 'admin' and do conditonal rendering to separate what the user sees.
-// i.e. anonymous user, admin user, normal user 
-// create the booking and my booking page
-// admin user will see 3 buttons. book, my bookings, and the pending bookings
-// admin will be decided by checking user id. 
 // the Firestore read write rules will be decided later.
 function PendingBookings({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
   const [bookings, setBookings] = useState([]);
-
+  const [trackerKeys, setTrackerKeys] = useState([]); 
 
   useEffect(() => {
     const getPendingBookings = async () => {
-      const slotsAvail = query(collectionGroup(db, 'bookings'), where('status', '==', 'pending'));
-      const querySnapshot = await getDocs(slotsAvail);
-      querySnapshot.forEach((doc) => {
+      const pendingSlots = query(collectionGroup(db, 'bookings'), where('status', '==', 'pending'));
+      const querySnapshot = await getDocs(pendingSlots);
+      querySnapshot.forEach(async (docSnapshot) => {
+
+        console.log(docSnapshot.id)
+
 
         // query for user details here based on uid
         // need to update booking feature where there is writing of user id.
 
-        var fsStartTime = doc.get('startTime')
-        var fsEndTime = doc.get('endTime')
-        var fsName = doc.get('name')
-        var parentDocID = doc.get('parentDocID')
+        var fsStartTime = docSnapshot.get('startTime')
+        var fsEndTime = docSnapshot.get('endTime')
+        var fsName = docSnapshot.get('name')
+        var parentDocID = docSnapshot.get('parentDocID')
+        var bookingReason = docSnapshot.get('bookingReason')
         var jsStartTime = toTimeStr(fsStartTime)
         var jsEndTime = toTimeStr(fsEndTime)
         var label = toLabelString(fsName, jsStartTime, jsEndTime)
+        var dateText = toJSDateStr(fsStartTime.toDate())
 
-        dummySlots.push({ label: label, value: { id: doc.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID } })
+        var uid = docSnapshot.get('user')
+        const userDoc = doc(db, 'users', uid)
+        const docSnap = await getDoc(userDoc);
+        var displayName = docSnap.get('displayName');
+        var email = docSnap.get('email');
+        var key = dateText + " " + label
+
+        if (!trackerKeys.includes(key)) {
+          trackerKeys.push(key)
+          bookings.push({ key: key, label: label, dateText: dateText, 
+            value: { id: docSnapshot.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID, 
+              useruid: uid, displayName: displayName, email: email, bookingReason: bookingReason } })
+        }
       })
-      console.log(dummySlots)
-      setBookings(dummySlots)
-      // console.log(data)
-
-      // navigation.navigate("Selected Pending Booking", {
-      //   data: data,
-      //   dateText: dateText
-      // })
-
+      console.log(bookings)
     };
     getPendingBookings();
   }, []);
 
+
+  const getPendingBookings = async () => {
+    // setTrackerKeys([])
+    // console.log(trackerKeys)
+    const pendingSlots = query(collectionGroup(db, 'bookings'), where('status', '==', 'pending'));
+    const querySnapshot = await getDocs(pendingSlots);
+    querySnapshot.forEach(async (docSnapshot) => {
+
+      console.log(docSnapshot.id)
+
+
+      // query for user details here based on uid
+      // need to update booking feature where there is writing of user id.
+
+      var fsStartTime = docSnapshot.get('startTime')
+      var fsEndTime = docSnapshot.get('endTime')
+      var fsName = docSnapshot.get('name')
+      var parentDocID = docSnapshot.get('parentDocID')
+      var bookingReason = docSnapshot.get('bookingReason')
+      var jsStartTime = toTimeStr(fsStartTime)
+      var jsEndTime = toTimeStr(fsEndTime)
+      var label = toLabelString(fsName, jsStartTime, jsEndTime)
+      var dateText = toJSDateStr(fsStartTime.toDate())
+
+      var uid = docSnapshot.get('user')
+      const userDoc = doc(db, 'users', uid)
+      const docSnap = await getDoc(userDoc);
+      var displayName = docSnap.get('displayName');
+      var email = docSnap.get('email');
+      var key = dateText + " " + label
+
+      if (!trackerKeys.includes(key)) {
+        trackerKeys.push(key)
+        bookings.push({ key: key, label: label, dateText: dateText, 
+          value: { id: docSnapshot.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID, 
+            useruid: uid, displayName: displayName, email: email, bookingReason: bookingReason } })
+      }
+    })
+    console.log(bookings)
+
+  };
+
   // flesh out the flatlist and how data is extracted from firestore, including querying for user details to put inside var bookings
+  // flatlist: 
   return (
     <SafeAreaView style={styles.page}>
+      <Pressable
+      onPress={() => getPendingBookings()}
+      style={styles.refreshButton}>
+        <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
+      </Pressable>
       <FlatList
-        data={DATA}
+        data={bookings}
         renderItem={({ item }) =>
-            <View>
-              <Pressable
-              onPress={() => navigation.navigate(item.navi)}
+          <View>
+            <Pressable
+              onPress={() => navigation.navigate('Selected Pending Booking', {
+                slot: item.value,
+                dateText: item.dateText 
+              })}
               style={styles.item}
-              >
-              <Image style={styles.image} source={{uri:item.image}} />
-              <Text key={index}>{item.text}</Text>
-              </Pressable>
-            </View>
-          }
-        keyExtractor={item => item.id}
+            >
+              <View style={styles.leftCol}>
+                <Text>{item.dateText}</Text>
+              </View>
+              <View style={styles.rightCol}>
+                <Text>{item.label}</Text>
+              </View>
+            </Pressable>
+          </View>
+        }
+        keyExtractor={item => item.key}
       />
     </SafeAreaView>
   );

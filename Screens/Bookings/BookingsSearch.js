@@ -11,10 +11,12 @@ import { auth, db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
 import { collection, collectionGroup, query, where, getDocs } from "firebase/firestore";
 import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunctions";
+import Toast from 'react-native-root-toast';
 
 const levelData = [
   { label: 'Level 1', level: 1 },
   { label: 'Level 2', level: 2 },
+  { label: 'Level 3', level: 3 }
 ];
 
 const roomTypeData = [
@@ -42,6 +44,27 @@ function BookingsSearch({ navigation }) {
   const [isFocus, setIsFocus] = useState(false);
   const [data, setData] = useState([]);
   const [dates, setDates] = useState([]);
+
+
+  const missingFieldsToast = () => {
+    let toast = Toast.show('Missing fields, please try again!', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+      Toast.hide(toast);
+    }, 3000);
+  };
+
+  const unavailableDatesToast = () => {
+    let toast = Toast.show('No dates are available for booking.', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+      Toast.hide(toast);
+    }, 3000);
+  };
 
 
   // see how to make a callback after setting a change in state
@@ -75,10 +98,18 @@ function BookingsSearch({ navigation }) {
     console.log(trackerDates)
     console.log(dummyDates)
     setDates(dummyDates)
-      ;
+    if (dummyDates.length == 0) {
+      unavailableDatesToast()
+    }
   }
 
   const search = async () => {
+    if (level == null || roomType == null || date == null ) {
+      missingFieldsToast()
+      return;
+    }
+
+
     var dummySlots = []
     const currDate = new Date(date.getTime())
     const currDate2 = new Date(date.getTime())
@@ -107,6 +138,11 @@ function BookingsSearch({ navigation }) {
     console.log(dummySlots)
     // setData(dummySlots)
     // console.log(data)
+
+    if (dummySlots.length == 0) {
+      unavailableDatesToast()
+      return;
+    }
 
     navigation.navigate("List of available rooms:", {
       data: dummySlots,

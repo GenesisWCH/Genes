@@ -55,6 +55,7 @@ function ChosenBooking({ route, navigation }) {
     updateDoc(docRef, {
       valid: false,
       status: 'pending',
+      user: auth.currentUser.uid
     });
 
     if (bookingReason == 'Others') {

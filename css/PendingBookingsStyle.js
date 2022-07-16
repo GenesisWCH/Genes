@@ -52,58 +52,36 @@ const PendingBookingsStyle = StyleSheet.create({
     modalText: {
       textAlign: "center"
     },
-    sectionHeader: {
-      paddingTop: 2,
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingBottom: 2,
-      fontSize: 14,
-      fontWeight: 'bold',
-      backgroundColor: 'silver',
-    },
     item: {
       padding: 10,
       fontSize: 18,
       height: 100,
+      flexDirection: 'row',
+      backgroundColor: 'white',
+      
     },
     container: {
       flex:1,
       paddingTop:22
     },
-    directionbutton: {
-      backgroundColor: "orange",
-      width: 100,
-      paddingVertical: 8,
-      marginVertical: 10,
-      position: 'absolute',
-      right: 5
+    leftCol: {
+      flex: 40,
     },
-    welcomeText: {
-      fontSize: 25, 
-      color: 'black',
-      fontWeight: 'bold',
-      backgroundColor: 'white',
-      paddingLeft: 5,
+    rightCol: {
+      flex: 60,
     },
-    listButton: {
-      backgroundColor: "white",
-      textAlign: "center",
-      width: 300,
-      fontSize: 60,
-      paddingTop: 20,
-      paddingLeft: 10,
-      height:100,
+    refreshButton: {
+      backgroundColor: "darkorange",
+        paddingHorizontal: 5,
+        paddingVertical: 8,
+        marginVertical: 3,
+        alignItems: 'center',
+        alignSelf: 'center',
+        borderRadius: 5,
+        marginHorizontal: 50,
     },
-    item: {
-      flexDirection: 'row'
-    },
-    image: {
-      width: 50,
-      height: 50,
-    },
-    backButton: {
-      position: 'absolute',
-      bottom: 50
+    refreshButtonText: {
+      fontSize: 18
     }
   });
 
