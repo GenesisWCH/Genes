@@ -18,6 +18,7 @@ function SelectedPendingBooking({ route, navigation }) {
     }, []);
 
 
+    // what if this action is invalid? like status is no longer pending. throw a toast instead.
     const approveBooking = async () => {
         const docRef = doc(db, 'rooms', slot.parentDocID, 'bookings', slot.id)
         updateDoc(docRef, {

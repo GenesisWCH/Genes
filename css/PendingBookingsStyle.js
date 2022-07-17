@@ -54,21 +54,23 @@ const PendingBookingsStyle = StyleSheet.create({
     },
     item: {
       padding: 10,
-      fontSize: 18,
-      height: 100,
+      height: 70,
       flexDirection: 'row',
       backgroundColor: 'white',
-      
+      alignItems: 'center'
     },
     container: {
       flex:1,
       paddingTop:22
     },
     leftCol: {
-      flex: 40,
+      flex: 30,
     },
     rightCol: {
-      flex: 60,
+      flex: 70,
+    },
+    itemText: {
+        fontSize: 20,
     },
     refreshButton: {
       backgroundColor: "darkorange",

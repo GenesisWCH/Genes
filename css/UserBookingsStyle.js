@@ -57,9 +57,7 @@ const PendingBookingsStyle = StyleSheet.create({
       height: 70,
       flexDirection: 'row',
       backgroundColor: 'white',
-      color: 'black',
       alignItems: 'center'
-      
     },
     container: {
       flex:1,
@@ -69,9 +67,13 @@ const PendingBookingsStyle = StyleSheet.create({
       flex: 80,
       flexDirection: 'column'
     },
-    rightCol: {
+    rightApprovedCol: {
         flex: 20,
         backgroundColor: 'lightgreen',
+    },
+    rightDeclinedCol: {
+        flex: 20,
+        backgroundColor: 'tomato',
     },
     itemText: {
         fontSize: 20,

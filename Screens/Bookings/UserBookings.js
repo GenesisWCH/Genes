@@ -17,55 +17,47 @@ function UserBookings() {
   const [bookings, setBookings] = useState([]);
   const [trackerKeys, setTrackerKeys] = useState([]);
 
-  useEffect(() => {
-    const refreshBookings = async () => {
-      // setTrackerKeys([])
-      // console.log(trackerKeys)
-      const userSlots = collection(db, 'users', auth.currentUser.uid, 'userBookings');
-      const querySnapshot = await getDocs(userSlots);
-      querySnapshot.forEach(async (docSnapshot) => {
+  // useEffect(() => {
+  //   const refreshBookings = async () => {
+  //     // setTrackerKeys([])
+  //     // console.log(trackerKeys)
+  //     const userSlots = collection(db, 'users', auth.currentUser.uid, 'userBookings');
+  //     const querySnapshot = await getDocs(userSlots);
+  //     querySnapshot.forEach(async (docSnapshot) => {
   
-        console.log(docSnapshot.id)
+  //       console.log(docSnapshot.id)
   
+  //       var jsStartTime = docSnapshot.get('startTime')
+  //       var jsEndTime = docSnapshot.get('endTime')
+  //       var fsName = docSnapshot.get('venue')
+  //       var label = toLabelString(fsName, jsStartTime, jsEndTime)
+  //       var dateText = docSnapshot.get('date')
   
-        // query for user details here based on uid
-        // need to update booking feature where there is writing of user id.
+  //       var status = docSnapshot.get('status')
+  //       var key = dateText + " " + label
   
-        var jsStartTime = docSnapshot.get('startTime')
-        var jsEndTime = docSnapshot.get('endTime')
-        var fsName = docSnapshot.get('venue')
-        var label = toLabelString(fsName, jsStartTime, jsEndTime)
-        var dateText = docSnapshot.get('date')
+  //       if (!trackerKeys.includes(key)) {
+  //         trackerKeys.push(key)
+  //         bookings.push({
+  //           key: key, label: label, dateText: dateText, status: status
+  //         })
+  //       }
+  //     })
+  //     console.log(bookings)
   
-        var status = docSnapshot.get('status')
-        var key = dateText + " " + label
-  
-        if (!trackerKeys.includes(key)) {
-          trackerKeys.push(key)
-          bookings.push({
-            key: key, label: label, dateText: dateText, status: status
-          })
-        }
-      })
-      console.log(bookings)
-  
-    };
-    refreshBookings();
-  }, []);
+  //   };
+  //   refreshBookings();
+  // }, []);
 
 
   const refreshBookings = async () => {
-    // setTrackerKeys([])
-    // console.log(trackerKeys)
+    var tracker = []
+    var dummyBookings = []
     const userSlots = collection(db, 'users', auth.currentUser.uid, 'userBookings');
     const querySnapshot = await getDocs(userSlots);
     querySnapshot.forEach(async (docSnapshot) => {
 
       console.log(docSnapshot.id)
-
-
-      // query for user details here based on uid
-      // need to update booking feature where there is writing of user id.
 
       var jsStartTime = docSnapshot.get('startTime')
       var jsEndTime = docSnapshot.get('endTime')
@@ -76,19 +68,18 @@ function UserBookings() {
       var status = docSnapshot.get('status')
       var key = dateText + " " + label
 
-      if (!trackerKeys.includes(key)) {
-        trackerKeys.push(key)
-        bookings.push({
+      if (!tracker.includes(key)) {
+        tracker.push(key)
+        dummyBookings.push({
           key: key, label: label, dateText: dateText, status: status
         })
       }
     })
+    setBookings(dummyBookings)
     console.log(bookings)
 
   };
 
-  // flesh out the flatlist and how data is extracted from firestore, including querying for user details to put inside var bookings
-  // flatlist: 
   return (
     <SafeAreaView style={styles.page}>
       <Pressable
@@ -105,9 +96,15 @@ function UserBookings() {
                 <Text style={styles.itemText}>{item.dateText}</Text>
                 <Text style={styles.itemText}>{item.label}</Text>
                 </View>
-              <View style={styles.rightCol}>
+              
+                {item.status == 'Approved' 
+                ?<View style={styles.rightApprovedCol}>
+                  <Text style={styles.itemText}>{item.status}</Text>
+                </View>
+                :<View style={styles.rightDeclinedCol}>
                 <Text style={styles.itemText}>{item.status}</Text>
               </View>
+  }
             </View>
           </View>
         }
