@@ -1,5 +1,5 @@
 // Bookings tab is a work in progress and not finalised in both frontend and backend
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BookingsList from "./Bookings/BookingsList";
 import BookingsSearch from "./Bookings/BookingsSearch";
@@ -12,16 +12,6 @@ import UserBookings from "./Bookings/UserBookings";
 
 
 const Stack = createNativeStackNavigator();
-
-
-// another page for admin user. 
-// create a users collection with uid as doc, and store fields on doc
-// when i book, I will store another field: user uid . this will be used to query for user data 
-// takes in data from firestore where bookings doc has pending status
-// show username, user uid, email, booking reason (others booking reason if it exists),
-// venue, start and end time, date 
-// flatlist just shows date, room, time. navigate to another page with full details  
-// to confirm or deny booking slot
 
 const BookingsScreen = () => {
   return (

@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, FlatList } from 'react-native';
 import styles from '../../css/UserBookingsStyle';
-import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
-import LogOutHandler from "../../functions/LogOutHandler";
 import { auth, db } from '../../firebase';
-import { Dropdown } from 'react-native-element-dropdown';
-import { collection, collectionGroup, query, where, doc, getDoc, getDocs } from "firebase/firestore";
-import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunctions";
+import { collection, getDocs } from "firebase/firestore";
+import { toLabelString } from "../../functions/timeFunctions";
 
 
 // the Firestore read write rules will be decided later.

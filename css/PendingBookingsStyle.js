@@ -84,7 +84,7 @@ const PendingBookingsStyle = StyleSheet.create({
     },
     refreshButtonText: {
       fontSize: 18
-    }
+    },
   });
 
   export default PendingBookingsStyle;

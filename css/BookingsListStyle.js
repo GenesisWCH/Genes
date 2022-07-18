@@ -25,6 +25,30 @@ const BookingsListStyle = StyleSheet.create({
     selectBookingButtonText: {
         fontSize: 18,
     },
+    refreshButton: {
+        backgroundColor: "darkorange",
+        paddingHorizontal: 5,
+        paddingVertical: 8,
+        marginVertical: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        borderRadius: 5,
+        marginHorizontal: 10,
+    },
+    refreshButtonText: {
+        fontSize: 18
+    },
+    top: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    noBookingsContainer: {
+
+    },
+    noBookingsText: {
+        fontSize: 30,
+    },
 });
 
 export default BookingsListStyle;

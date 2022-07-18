@@ -41,6 +41,26 @@ function ChosenBooking({ route, navigation }) {
     }, 3000);
   };
 
+  const missingOthersReasonToast = () => {
+    let toast = Toast.show('Please ensure you have specified a booking reason for "Others"!', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+      Toast.hide(toast);
+    }, 3000);
+  };
+
+  const invalidBookingToast = () => {
+    let toast = Toast.show('The slot you have chosen may have been already booked. Please go back and pick another slot.', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+      Toast.hide(toast);
+    }, 3000);
+  };
+
   const confirmBooking = async () => {
     // write data. 
     // valid -> false
@@ -50,8 +70,18 @@ function ChosenBooking({ route, navigation }) {
       missingReasonToast()
       return;
     }
+    if (bookingReason == 'Others' && bookingReasonForOthers == '') {
+      missingOthersReasonToast()
+      return;
+    }
 
     const docRef = doc(db, 'rooms', choice.parentDocID, 'bookings', choice.id)
+    const docSnap = await getDoc(docRef);
+    if (docSnap.get('status') != 'available' || docSnap.get('valid') != 'false') {
+      invalidBookingToast()
+      return;
+    }
+    
     updateDoc(docRef, {
       valid: false,
       status: 'pending',

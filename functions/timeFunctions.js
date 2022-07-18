@@ -44,7 +44,7 @@ const getMonthWord = (month) => {
 }
 
 const toJSDateStr = (jsDate) => {
-    console.log(jsDate)
+    // console.log(jsDate)
     var day = jsDate.getDate()
     var month = getMonthWord(jsDate.getMonth())
     var year = jsDate.getFullYear()

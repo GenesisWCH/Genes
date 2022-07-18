@@ -9,8 +9,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../../functions/LogOutHandler";
 import { auth, db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
-import { collection, collectionGroup, query, where, getDocs } from "firebase/firestore";
-import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunctions";
+import { collectionGroup, query, where, getDocs } from "firebase/firestore";
+import { toJSDateStr } from "../../functions/timeFunctions";
 import Toast from 'react-native-root-toast';
 
 const levelData = [
@@ -32,7 +32,6 @@ function BookingsSearch({ navigation }) {
   const [date, setDate] = useState(null);
   const [dateText, setDateText] = useState('');
   const [isFocus, setIsFocus] = useState(false);
-  const [data, setData] = useState([]);
   const [dates, setDates] = useState([]);
 
 
@@ -54,9 +53,7 @@ function BookingsSearch({ navigation }) {
         var currDate = doc.get('date')
         var jsDate = currDate.toDate()
         var str = toJSDateStr(jsDate)
-  
-        // TODO: extract all the dates within 14 days from now. query by range. may need to convert date to UNIX time by momentjs to query.
-        // do i want my dummyDates to have a timestamp or strings? or have it contain the array objects {} and another array to keep track of the dates?
+
         if (!trackerDates.includes(str)) {
           trackerDates.push(str)
           dummyDates.push({ label: str, date: jsDate })
@@ -88,15 +85,7 @@ function BookingsSearch({ navigation }) {
     }, 3000);
   };
 
-  const unavailableDatesToast = () => {
-    let toast = Toast.show('No dates are available for booking.', {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.CENTER,
-    });
-    setTimeout(function hideToast() {
-      Toast.hide(toast);
-    }, 3000);
-  };
+  
 
   const search = async () => {
     if (level == null || roomType == null || date == null ) {
@@ -104,43 +93,10 @@ function BookingsSearch({ navigation }) {
       return;
     }
 
-
-    var dummySlots = []
-    const currDate = new Date(date.getTime())
-    const currDate2 = new Date(date.getTime())
-    currDate.setHours(0, 0, 0, 0)
-    currDate2.setHours(23, 0, 0, 0)
-
-    console.log(date)
-    console.log(currDate)
-    console.log(currDate2)
-
-    const slotsAvail = query(collectionGroup(db, 'bookings'), where('type', '==', roomType),
-      where('level', '==', level), where('valid', '==', true), where('status', '==', 'available'), where('date', '>=', currDate), where('date', '<=', currDate2));
-    const querySnapshot = await getDocs(slotsAvail);
-    querySnapshot.forEach((doc) => {
-
-      var fsStartTime = doc.get('startTime')
-      var fsEndTime = doc.get('endTime')
-      var fsName = doc.get('name')
-      var parentDocID = doc.get('parentDocID')
-      var jsStartTime = toTimeStr(fsStartTime)
-      var jsEndTime = toTimeStr(fsEndTime)
-      var label = toLabelString(fsName, jsStartTime, jsEndTime)
-
-      dummySlots.push({ label: label, value: { id: doc.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID } })
-    })
-    console.log(dummySlots)
-    // setData(dummySlots)
-    // console.log(data)
-
-    if (dummySlots.length == 0) {
-      unavailableDatesToast()
-      return;
-    }
-
     navigation.navigate("List of available rooms:", {
-      data: dummySlots,
+      level: level,
+      roomType: roomType,
+      date: date,
       dateText: dateText
     })
 
