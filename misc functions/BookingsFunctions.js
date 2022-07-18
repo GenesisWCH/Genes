@@ -66,3 +66,10 @@ useEffect(() => {
 
 // // Log to console
 // console.log(list)
+
+// pressable for updating dates
+{/* <Pressable
+            onPress={() => filterByLevelType()}
+            style={styles.searchButton}>
+            <Text style={styles.searchButtonText}>Update dates</Text>
+          </Pressable> */}

@@ -55,7 +55,9 @@ function ChosenBooking({ route, navigation }) {
     updateDoc(docRef, {
       valid: false,
       status: 'pending',
-      user: auth.currentUser.uid
+      useruid: auth.currentUser.uid,
+      userDisplayName: auth.currentUser.displayName,
+      userEmail: auth.currentUser.email
     });
 
     if (bookingReason == 'Others') {

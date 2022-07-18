@@ -62,6 +62,7 @@ function SelectedPendingBooking({ route, navigation }) {
 
         updateDoc(docRef, {
             status: 'available',
+            valid: true,
         });
 
         var currDate = new Date()

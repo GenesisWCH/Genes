@@ -8,109 +8,77 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../../functions/LogOutHandler";
 import { auth, db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
-import { collection, collectionGroup, query, where, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, collectionGroup, query, where, doc, getDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunctions";
 
 
 // the Firestore read write rules will be decided later.
 // biggest issue is rendering data in flatlist properly. i.e. without saving file again and the bookings that are approved/declined being removed from list
 function PendingBookings({ navigation }) {
-  const [bookings, setBookings] = useState(null);
-  const [trackerKeys, setTrackerKeys] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [reset, setReset] = useState(true);
 
-  // useEffect(() => {
+  useEffect(() =>
+    navigation.addListener('focus', () => setReset(true)),
+    []);
 
-  //   const getPendingBookings = async () => {
-  //     var tracker = []
-  //     var dummyBookings = []
-  //     const pendingSlots = query(collectionGroup(db, 'bookings'), where('status', '==', 'pending'));
-  //     const querySnapshot = await getDocs(pendingSlots);
-  //     querySnapshot.forEach(async (docSnapshot) => {
+  useEffect(() => {
+    const getPendingBookings = async () => {
+      const dummyBookings = []
+      const pendingSlots = query(collectionGroup(db, 'bookings'), where('status', '==', 'pending'));
+      const querySnapshot = await getDocs(pendingSlots);
+      // avoid asynchronous function within forEach. 
+      querySnapshot.forEach((docSnapshot) => {
 
-  //       console.log(docSnapshot.id)
+        console.log(docSnapshot.id)
 
+        var fsStartTime = docSnapshot.get('startTime')
+        var fsEndTime = docSnapshot.get('endTime')
+        var fsName = docSnapshot.get('name')
+        var parentDocID = docSnapshot.get('parentDocID')
+        var bookingReason = docSnapshot.get('bookingReason')
+        var jsStartTime = toTimeStr(fsStartTime)
+        var jsEndTime = toTimeStr(fsEndTime)
+        var label = toLabelString(fsName, jsStartTime, jsEndTime)
+        var dateText = toJSDateStr(fsStartTime.toDate())
 
-  //       var fsStartTime = docSnapshot.get('startTime')
-  //       var fsEndTime = docSnapshot.get('endTime')
-  //       var fsName = docSnapshot.get('name')
-  //       var parentDocID = docSnapshot.get('parentDocID')
-  //       var bookingReason = docSnapshot.get('bookingReason')
-  //       var jsStartTime = toTimeStr(fsStartTime)
-  //       var jsEndTime = toTimeStr(fsEndTime)
-  //       var label = toLabelString(fsName, jsStartTime, jsEndTime)
-  //       var dateText = toJSDateStr(fsStartTime.toDate())
+        var uid = docSnapshot.get('useruid')
+        var displayName = docSnapshot.get('userDisplayName')
+        var email = docSnapshot.get('userEmail')
 
-  //       var uid = docSnapshot.get('user')
-  //       const userDoc = doc(db, 'users', uid)
-  //       const docSnap = await getDoc(userDoc);
-  //       var displayName = docSnap.get('displayName');
-  //       var email = docSnap.get('email');
-  //       var key = dateText + " " + label
+        var key = dateText + " " + label
 
-  //       if (!tracker.includes(key)) {
-  //         tracker.push(key)
-  //         dummyBookings.push({
-  //           key: key, label: label, dateText: dateText,
-  //           value: {
-  //             id: docSnapshot.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID,
-  //             useruid: uid, displayName: displayName, email: email, bookingReason: bookingReason
-  //           }
-  //         })
-  //       }
-  //     })
-  //     setBookings(dummyBookings)
-  //     console.log(bookings)
-  //   };
-  //   getPendingBookings();
-  // }, []);
-
-
-  const getPendingBookings = async () => {
-    var tracker = []
-    var dummyBookings = []
-    const pendingSlots = query(collectionGroup(db, 'bookings'), where('status', '==', 'pending'));
-    const querySnapshot = await getDocs(pendingSlots);
-    querySnapshot.forEach(async (docSnapshot) => {
-
-      console.log(docSnapshot.id)
-
-      var fsStartTime = docSnapshot.get('startTime')
-      var fsEndTime = docSnapshot.get('endTime')
-      var fsName = docSnapshot.get('name')
-      var parentDocID = docSnapshot.get('parentDocID')
-      var bookingReason = docSnapshot.get('bookingReason')
-      var jsStartTime = toTimeStr(fsStartTime)
-      var jsEndTime = toTimeStr(fsEndTime)
-      var label = toLabelString(fsName, jsStartTime, jsEndTime)
-      var dateText = toJSDateStr(fsStartTime.toDate())
-
-      var uid = docSnapshot.get('user')
-      const userDoc = doc(db, 'users', uid)
-      const docSnap = await getDoc(userDoc);
-      var displayName = docSnap.get('displayName');
-      var email = docSnap.get('email');
-      var key = dateText + " " + label
-
-      if (!tracker.includes(key)) {
-        tracker.push(key)
         dummyBookings.push({
           key: key, label: label, dateText: dateText,
           value: {
             id: docSnapshot.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID,
-            useruid: uid, displayName: displayName, email: email, bookingReason: bookingReason
+            useruid: uid,
+            displayName: displayName, email: email,
+            bookingReason: bookingReason
           }
         })
-      }
-    })
-    setBookings(dummyBookings)
-    console.log(bookings)
+        console.log('dummyBookings:', dummyBookings)
+      })
 
+      setBookings(dummyBookings)
+      console.log('bookings:', bookings)
+      setReset(false)
+    };
+
+    if (reset) {
+      getPendingBookings()
+    }
+  }, [bookings, reset]);
+
+
+  const refreshPendingBookings = async () => {
+    setReset(true)
   };
 
   return (
     <SafeAreaView style={styles.page}>
       <Pressable
-        onPress={() => getPendingBookings()}
+        onPress={() => refreshPendingBookings()}
         style={styles.refreshButton}>
         <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
       </Pressable>

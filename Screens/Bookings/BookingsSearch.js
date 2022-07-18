@@ -1,6 +1,6 @@
 // Bookings tab is a work in progress and not finalised in both frontend and backend
 import React, { useState, useEffect } from "react";
-import { Text, View } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import styles from '../../css/BookingsSearchStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -24,16 +24,6 @@ const roomTypeData = [
   { label: 'Tutorial', room: 'tutorial' },
 ]
 
-// data = [
-//   {label: 'string', value: {name: '', date: '', startTime: '', endTime: ''}}
-// ]
-
-// how to approve bookings and show it in the my bookings?
-// grab the uid of the user you want to be the 'admin' and do conditonal rendering to separate what the user sees.
-// i.e. anonymous user, admin user, normal user 
-// create the booking and my booking page
-// admin user will see 3 buttons. book, my bookings, and the pending bookings
-// admin will be decided by checking user id. 
 // the Firestore read write rules will be decided later.
 function BookingsSearch({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -44,6 +34,48 @@ function BookingsSearch({ navigation }) {
   const [isFocus, setIsFocus] = useState(false);
   const [data, setData] = useState([]);
   const [dates, setDates] = useState([]);
+
+
+  useEffect(() => {
+    const filterByLevelType = async () => {
+      var dummyDates = []
+      var trackerDates = []
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 14)
+      var futureDate2 = futureDate
+      futureDate.setHours(0, 0, 0, 0)
+      futureDate2.setHours(0, 0, 0, 0)
+      // possible query by timestamp needed
+      const datesAvail = query(collectionGroup(db, 'bookings'), where('type', '==', roomType),
+        where('level', '==', level), where('date', '<=', futureDate), where('valid', '==', true), where('status', '==', 'available'));
+      const querySnapshot = await getDocs(datesAvail);
+      querySnapshot.forEach((doc) => {
+  
+        var currDate = doc.get('date')
+        var jsDate = currDate.toDate()
+        var str = toJSDateStr(jsDate)
+  
+        // TODO: extract all the dates within 14 days from now. query by range. may need to convert date to UNIX time by momentjs to query.
+        // do i want my dummyDates to have a timestamp or strings? or have it contain the array objects {} and another array to keep track of the dates?
+        if (!trackerDates.includes(str)) {
+          trackerDates.push(str)
+          dummyDates.push({ label: str, date: jsDate })
+        }
+  
+      })
+      console.log(trackerDates)
+      console.log(dummyDates)
+      setDates(dummyDates)
+      console.log('dates:', dates)
+      if (dummyDates.length == 0) {
+        unavailableDatesToast()
+      }
+    }
+    
+    if (level != null && roomType!= null) {
+      filterByLevelType();
+    }
+  }, [level, roomType]);
 
 
   const missingFieldsToast = () => {
@@ -65,43 +97,6 @@ function BookingsSearch({ navigation }) {
       Toast.hide(toast);
     }, 3000);
   };
-
-
-  // see how to make a callback after setting a change in state
-  // apparently the same timestamps are actually diff objects. how do I extract/query the correct documents?
-  const filterByLevelType = async () => {
-    var dummyDates = []
-    var trackerDates = []
-    const futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 14)
-    var futureDate2 = futureDate
-    futureDate.setHours(0, 0, 0, 0)
-    futureDate2.setHours(0, 0, 0, 0)
-    // possible query by timestamp needed
-    const datesAvail = query(collectionGroup(db, 'bookings'), where('type', '==', roomType),
-      where('level', '==', level), where('date', '<=', futureDate), where('valid', '==', true), where('status', '==', 'available'));
-    const querySnapshot = await getDocs(datesAvail);
-    querySnapshot.forEach((doc) => {
-
-      var currDate = doc.get('date')
-      var jsDate = currDate.toDate()
-      var str = toJSDateStr(jsDate)
-
-      // TODO: extract all the dates within 14 days from now. query by range. may need to convert date to UNIX time by momentjs to query.
-      // do i want my dummyDates to have a timestamp or strings? or have it contain the array objects {} and another array to keep track of the dates?
-      if (!trackerDates.includes(str)) {
-        trackerDates.push(str)
-        dummyDates.push({ label: str, date: jsDate })
-      }
-
-    })
-    console.log(trackerDates)
-    console.log(dummyDates)
-    setDates(dummyDates)
-    if (dummyDates.length == 0) {
-      unavailableDatesToast()
-    }
-  }
 
   const search = async () => {
     if (level == null || roomType == null || date == null ) {
@@ -263,11 +258,7 @@ function BookingsSearch({ navigation }) {
               />
             )}
           />
-          <Pressable
-            onPress={() => filterByLevelType()}
-            style={styles.searchButton}>
-            <Text style={styles.searchButtonText}>Update dates</Text>
-          </Pressable>
+          
           <Dropdown
             //date
             style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}

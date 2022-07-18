@@ -15,76 +15,50 @@ import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunct
 // the Firestore read write rules will be decided later.
 function UserBookings() {
   const [bookings, setBookings] = useState([]);
-  const [trackerKeys, setTrackerKeys] = useState([]);
+  const [reset, setReset] = useState(true);
 
-  // useEffect(() => {
-  //   const refreshBookings = async () => {
-  //     // setTrackerKeys([])
-  //     // console.log(trackerKeys)
-  //     const userSlots = collection(db, 'users', auth.currentUser.uid, 'userBookings');
-  //     const querySnapshot = await getDocs(userSlots);
-  //     querySnapshot.forEach(async (docSnapshot) => {
-  
-  //       console.log(docSnapshot.id)
-  
-  //       var jsStartTime = docSnapshot.get('startTime')
-  //       var jsEndTime = docSnapshot.get('endTime')
-  //       var fsName = docSnapshot.get('venue')
-  //       var label = toLabelString(fsName, jsStartTime, jsEndTime)
-  //       var dateText = docSnapshot.get('date')
-  
-  //       var status = docSnapshot.get('status')
-  //       var key = dateText + " " + label
-  
-  //       if (!trackerKeys.includes(key)) {
-  //         trackerKeys.push(key)
-  //         bookings.push({
-  //           key: key, label: label, dateText: dateText, status: status
-  //         })
-  //       }
-  //     })
-  //     console.log(bookings)
-  
-  //   };
-  //   refreshBookings();
-  // }, []);
+  useEffect(() => {
+    const refreshBookings = async () => {
+      var dummyBookings = []
+      const userSlots = collection(db, 'users', auth.currentUser.uid, 'userBookings');
+      const querySnapshot = await getDocs(userSlots);
+      querySnapshot.forEach((docSnapshot) => {
 
+        console.log(docSnapshot.id)
 
-  const refreshBookings = async () => {
-    var tracker = []
-    var dummyBookings = []
-    const userSlots = collection(db, 'users', auth.currentUser.uid, 'userBookings');
-    const querySnapshot = await getDocs(userSlots);
-    querySnapshot.forEach(async (docSnapshot) => {
+        var jsStartTime = docSnapshot.get('startTime')
+        var jsEndTime = docSnapshot.get('endTime')
+        var fsName = docSnapshot.get('venue')
+        var label = toLabelString(fsName, jsStartTime, jsEndTime)
+        var dateText = docSnapshot.get('date')
 
-      console.log(docSnapshot.id)
-
-      var jsStartTime = docSnapshot.get('startTime')
-      var jsEndTime = docSnapshot.get('endTime')
-      var fsName = docSnapshot.get('venue')
-      var label = toLabelString(fsName, jsStartTime, jsEndTime)
-      var dateText = docSnapshot.get('date')
-
-      var status = docSnapshot.get('status')
-      var key = dateText + " " + label
-
-      if (!tracker.includes(key)) {
-        tracker.push(key)
+        var status = docSnapshot.get('status')
+        var key = dateText + " " + label
         dummyBookings.push({
           key: key, label: label, dateText: dateText, status: status
         })
-      }
-    })
-    setBookings(dummyBookings)
-    console.log(bookings)
 
+      })
+      setBookings(dummyBookings)
+      console.log(bookings)
+      setReset(false)
+
+    };
+    if (reset) {
+      refreshBookings();
+    }
+  }, [reset]);
+
+
+  const refreshBookings = async () => {
+    setReset(true)
   };
 
   return (
     <SafeAreaView style={styles.page}>
       <Pressable
-      onPress={() => refreshBookings()}
-      style={styles.refreshButton}>
+        onPress={() => refreshBookings()}
+        style={styles.refreshButton}>
         <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
       </Pressable>
       <FlatList
@@ -95,16 +69,16 @@ function UserBookings() {
               <View style={styles.leftCol}>
                 <Text style={styles.itemText}>{item.dateText}</Text>
                 <Text style={styles.itemText}>{item.label}</Text>
-                </View>
-              
-                {item.status == 'Approved' 
-                ?<View style={styles.rightApprovedCol}>
+              </View>
+
+              {item.status == 'Approved'
+                ? <View style={styles.rightApprovedCol}>
                   <Text style={styles.itemText}>{item.status}</Text>
                 </View>
-                :<View style={styles.rightDeclinedCol}>
-                <Text style={styles.itemText}>{item.status}</Text>
-              </View>
-  }
+                : <View style={styles.rightDeclinedCol}>
+                  <Text style={styles.itemText}>{item.status}</Text>
+                </View>
+              }
             </View>
           </View>
         }
@@ -113,7 +87,5 @@ function UserBookings() {
     </SafeAreaView>
   );
 }
-
-
 
 export default UserBookings;
