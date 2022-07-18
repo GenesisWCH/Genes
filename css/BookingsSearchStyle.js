@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const BookingsScreenStyle = StyleSheet.create({
+const BookingsSearchStyle = StyleSheet.create({
     page: {
         backgroundColor: 'rgb(125, 129, 247)',
         flex: 1,
@@ -64,15 +64,6 @@ const BookingsScreenStyle = StyleSheet.create({
     icon: {
         marginRight: 5,
     },
-    label: {
-        position: 'absolute',
-        backgroundColor: 'white',
-        left: 22,
-        top: 8,
-        zIndex: 999,
-        paddingHorizontal: 8,
-        fontSize: 14,
-    },
     placeholderStyle: {
         fontSize: 16,
     },
@@ -87,44 +78,9 @@ const BookingsScreenStyle = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
-    timeText: {
-        fontSize: 20,
-        marginLeft: 5,
-    },
-    timeContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center', 
-    },
-    dropdownStartTime: {
-        height: 50,
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        marginHorizontal: 10,
-        marginVertical: 5,
-        paddingHorizontal: 8,
-        backgroundColor: 'white',
-        position: 'absolute',
-        left: 10,
-        top: 10,
-    },
-    dropdownEndTime: {
-        height: 50,
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        marginHorizontal: 10,
-        marginVertical: 5,
-        paddingHorizontal: 8,
-        backgroundColor: 'white',
-        position: 'absolute',
-        right: 10,
-        top: 10
-    },
     searchButton: {
         backgroundColor: 'white',
-        marginTop: 46,
+        marginVertical: 23,
         paddingHorizontal: 5,
         paddingVertical: 8,
         borderRadius: 5,
@@ -134,7 +90,7 @@ const BookingsScreenStyle = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color: 'black',
-    }
+    },
 });
 
-export default BookingsScreenStyle;
+export default BookingsSearchStyle;
