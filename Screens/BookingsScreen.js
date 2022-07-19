@@ -1,4 +1,3 @@
-// Bookings tab is a work in progress and not finalised in both frontend and backend
 import React from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BookingsList from "./Bookings/BookingsList";

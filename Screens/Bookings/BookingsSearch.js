@@ -1,17 +1,22 @@
 // Bookings tab is a work in progress and not finalised in both frontend and backend
 import React, { useState, useEffect } from "react";
-import { Text, View, FlatList } from 'react-native';
+import { Text, View } from 'react-native';
 import styles from '../../css/BookingsSearchStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../../functions/LogOutHandler";
-import { auth, db } from '../../firebase';
+import { db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
 import { collectionGroup, query, where, getDocs } from "firebase/firestore";
 import { toJSDateStr } from "../../functions/timeFunctions";
 import Toast from 'react-native-root-toast';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const levelData = [
   { label: 'Level 1', level: 1 },
@@ -24,7 +29,6 @@ const roomTypeData = [
   { label: 'Tutorial', room: 'tutorial' },
 ]
 
-// the Firestore read write rules will be decided later.
 function BookingsSearch({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [level, setLevel] = useState(null);
@@ -60,8 +64,6 @@ function BookingsSearch({ navigation }) {
         }
   
       })
-      console.log(trackerDates)
-      console.log(dummyDates)
       setDates(dummyDates)
       console.log('dates:', dates)
       if (dummyDates.length == 0) {
@@ -85,7 +87,15 @@ function BookingsSearch({ navigation }) {
     }, 3000);
   };
 
-  
+  const unavailableDatesToast = () => {
+    let toast = Toast.show('There are no rooms available for booking. Please try again by choosing a different room type or date.', {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+        Toast.hide(toast);
+    }, 3000);
+};
 
   const search = async () => {
     if (level == null || roomType == null || date == null ) {
@@ -118,14 +128,12 @@ function BookingsSearch({ navigation }) {
             //</View>onPress={}
             >
               <Text style={styles.textStyle}>Profile</Text>
-
             </Pressable>
             <Pressable
               style={styles.button}
             //onPress={}
             >
               <Text style={styles.textStyle}>Settings</Text>
-
             </Pressable>
             <Pressable
               style={styles.button}
@@ -146,13 +154,11 @@ function BookingsSearch({ navigation }) {
         <Pressable style={styles.profileIcon} onPress={() => setModalVisible(true)}>
           <AntDesign name="user" size={28} color='black' />
         </Pressable>
-
       </View>
-
       <View style={styles.body}>
         <View>
-          <Text styles={styles.headerText}>
-            Bookings are made here! {auth.currentUser.uid}
+          <Text style={styles.headerText}>
+            Please select the level and room type first. The available dates will be queried after that.
           </Text>
           <Dropdown
             // level
@@ -256,7 +262,6 @@ function BookingsSearch({ navigation }) {
     </SafeAreaView>
   );
 }
-
 
 
 export default BookingsSearch;

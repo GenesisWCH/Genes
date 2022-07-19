@@ -1,4 +1,3 @@
-// Bookings tab is a work in progress and not finalised in both frontend and backend
 import React, { useState, useEffect } from "react";
 import { Text, View, TextInput } from 'react-native';
 import styles from '../../css/ChosenBookingStyle';
@@ -7,13 +6,7 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { auth, db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
 import { doc, getDoc, getDocs, setDoc, updateDoc, collection } from "firebase/firestore";
-
 import Toast from 'react-native-root-toast';
-
-const reasonDATA = [
-  { label: 'Personal Use', reason: 'Personal Use' },
-  { label: 'Club Activities', reason: 'Club Activities' },
-]
 
 function ChosenBooking({ route, navigation }) {
   const { choice } = route.params
@@ -62,14 +55,11 @@ function ChosenBooking({ route, navigation }) {
   };
 
   const confirmBooking = async () => {
-    // write data. 
-    // valid -> false
-    // status -> pending
-
     if (bookingReason == '') {
       missingReasonToast()
       return;
     }
+
     if (bookingReason == 'Others' && bookingReasonForOthers == '') {
       missingOthersReasonToast()
       return;
@@ -77,6 +67,7 @@ function ChosenBooking({ route, navigation }) {
 
     const docRef = doc(db, 'rooms', choice.parentDocID, 'bookings', choice.id)
     const docSnap = await getDoc(docRef);
+
     if (docSnap.get('status') != 'available' || docSnap.get('valid') != 'false') {
       invalidBookingToast()
       return;
@@ -174,5 +165,6 @@ function ChosenBooking({ route, navigation }) {
     </View>
   )
 }
+
 
 export default ChosenBooking;
