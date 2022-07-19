@@ -1,50 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Text, View } from 'react-native';
 import styles from '../../css/SelectedPendingBookingStyle';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { SafeAreaView } from "react-native-safe-area-context";
-import LogOutHandler from "../../functions/LogOutHandler";
 import { auth, db } from '../../firebase';
-import { Timestamp, collection, collectionGroup, query, where, doc, addDoc, getDocs, updateDoc } from "firebase/firestore";
+import { Timestamp, collection, doc, addDoc, getDoc, updateDoc } from "firebase/firestore";
+import Toast from 'react-native-root-toast';
 
 
 function SelectedPendingBooking({ route, navigation }) {
     const { slot } = route.params
     const { dateText } = route.params
 
-    useEffect(() => {
-        console.log(slot)
-        console.log(dateText)
-    }, []);
 
+    const invalidBookingToast = () => {
+        let toast = Toast.show('The slot you have chosen is no longer pending. It may have been handled by another admin already.', {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+          Toast.hide(toast);
+        }, 3000);
+      };
 
-    // what if this action is invalid? like status is no longer pending. throw a toast instead.
+    
     const approveBooking = async () => {
         const docRef = doc(db, 'rooms', slot.parentDocID, 'bookings', slot.id)
-        updateDoc(docRef, {
-            status: 'booked',
-        });
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.get('status') != 'pending' || docSnap.get('valid') != false) {
+            invalidBookingToast()
+            return;
+        }
 
         var currDate = new Date()
         var fsDate = Timestamp.fromDate(currDate)
+        console.log(fsDate)
 
-        const userDoc = doc(db, 'users', slot.useruid)
-        const colRef = collection(userDoc, "userBookings")
-        addDoc(colRef, {
-            bookingID: slot.id,
+        const userBookingDocRef = doc(db, 'users', slot.useruid, 'userBookings', slot.userBookingID)
+        updateDoc(userBookingDocRef, {
             admin: auth.currentUser.displayName,
-            date: dateText,
-            venue: slot.name,
-            startTime: slot.startTime,
-            endTime: slot.endTime,
+            adminID: auth.currentUser.uid,
             status: 'Approved',
-            created: fsDate
+            adminResponseTime: fsDate
         });
 
-        const notificationRef = collection(userDoc, "notifications")
+        updateDoc(docRef, {
+            status: 'booked',
+            admin: auth.currentUser.displayName,
+            adminID: auth.currentUser.uid,
+            adminResponseTime: fsDate,
+        });
+
+        const notificationRef = collection(db, 'users', slot.useruid, "notifications")
 
         var message = 'Your booking at ' + slot.name + ' on ' + dateText + ' from ' + slot.startTime + ' to ' + slot.endTime + ' is approved!'
-       
+
         addDoc(notificationRef, {
             type: 'booking',
             docID: slot.id,
@@ -58,33 +69,36 @@ function SelectedPendingBooking({ route, navigation }) {
 
     const declineBooking = async () => {
         const docRef = doc(db, 'rooms', slot.parentDocID, 'bookings', slot.id)
+        const docSnap = await getDoc(docRef);
 
-
-        updateDoc(docRef, {
-            status: 'available',
-            valid: true,
-        });
+        if (docSnap.get('status') != 'pending' || docSnap.get('valid') != false) {
+            invalidBookingToast()
+            return;
+        }
 
         var currDate = new Date()
         var fsDate = Timestamp.fromDate(currDate)
+        console.log(fsDate)
 
-        const userDoc = doc(db, 'users', slot.useruid)
-        const colRef = collection(userDoc, "userBookings")
-        addDoc(colRef, {
-            bookingID: slot.id,
+        const userBookingDocRef = doc(db, 'users', slot.useruid, 'userBookings', slot.userBookingID)
+        updateDoc(userBookingDocRef, {
             admin: auth.currentUser.displayName,
-            date: dateText,
-            venue: slot.name,
-            startTime: slot.startTime,
-            endTime: slot.endTime,
+            adminID: auth.currentUser.uid,
             status: 'Declined',
-            created: fsDate
+            adminResponseTime: fsDate
         });
 
-        const notificationRef = collection(userDoc, "notifications")
+        updateDoc(docRef, {
+            status: 'Available',
+            admin: auth.currentUser.displayName,
+            adminID: auth.currentUser.uid,
+            adminResponseTime: fsDate,
+        });
+
+        const notificationRef = collection(db, 'users', slot.useruid, "notifications")
 
         var message = 'Your booking at ' + slot.name + ' on ' + dateText + ' from ' + slot.startTime + ' to ' + slot.endTime + ' is declined.'
-       
+
         addDoc(notificationRef, {
             type: 'booking',
             docID: slot.id,
@@ -104,6 +118,7 @@ function SelectedPendingBooking({ route, navigation }) {
                         <Text style={styles.dateText}>{dateText}</Text>
                         <Text style={styles.dateText}>{slot.name}</Text>
                         <Text style={styles.dateText}>{slot.startTime} to {slot.endTime}</Text>
+                        <Text style={styles.dateText}>{slot.id}</Text>
                     </View>
                     <View style={styles.userDetailsContainer}>
                         <Text style={styles.userDetailsText}>User: {slot.displayName}/{slot.useruid}</Text>
@@ -114,17 +129,16 @@ function SelectedPendingBooking({ route, navigation }) {
                 <View style={styles.bookingContainer}>
                     <Pressable
                         onPress={() => approveBooking()}
-                        style={styles.approveButton}>
-                        <Text style={styles.approveButtonText}>Approve</Text>
+                        style={styles.button}>
+                        <Text style={styles.buttonText}>Approve</Text>
                     </Pressable>
                     <Pressable
                         onPress={() => declineBooking()}
-                        style={styles.approveButton}>
-                        <Text style={styles.approveButtonText}>Decline</Text>
+                        style={styles.button}>
+                        <Text style={styles.buttonText}>Decline</Text>
                     </Pressable>
                 </View>
             </View>
-
         </SafeAreaView>
     );
 }

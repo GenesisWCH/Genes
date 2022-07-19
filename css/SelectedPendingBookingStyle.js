@@ -13,17 +13,19 @@ const SelectedPendingBookingStyle = StyleSheet.create({
         justifyContent: 'center'
     },
     slotTextContainer: {
-        flex: 60,
+        flex: 50,
         alignItems: 'center',
         justifyContent: 'center'
     },
     userDetailsContainer: {
-        flex: 60,
+        flex: 50,
         justifyContent: 'center'
     },
     bookingContainer: {
         flex: 40,
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     },
     dateText: {
         fontSize: 30,
@@ -32,21 +34,19 @@ const SelectedPendingBookingStyle = StyleSheet.create({
         marginTop: 8,
         alignSelf: 'center',
     },
-    approveButton: {
+    button: {
         backgroundColor: "darkorange",
         paddingHorizontal: 5,
         paddingVertical: 8,
-        marginVertical: 3,
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,
-        marginHorizontal: 50,
     },
-    approveButtonText: {
+    buttonText: {
         fontSize: 18,
     },
     userDetailsText: {
-        fontSize: 20,
+        fontSize: 25,
         color: 'black',
         marginLeft: 10,
         fontWeight: 'bold',

@@ -145,10 +145,10 @@ function BookingsList({ route, navigation }) {
                                 onPress={() => setChoice(item.value)}
                                 isChecked={choice === item.value}
                                 text={item.label}
-                                textSize={14}
-                                iconName="checkcircleo"
-                                iconColor="#fff"
-                                iconSize={14}
+                                textSize={18}
+                                // iconName="checkcircleo"
+                                // iconColor="#fff"
+                                // iconSize={18}
                                 buttonDefaultColor="#e5e5e5"
                                 buttonSelectedColor="#ff9c5b"
                                 textDefaultColor="#333"

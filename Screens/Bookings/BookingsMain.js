@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Text, View } from 'react-native';
 import styles from '../../css/BookingsMainStyle';
 import { AntDesign } from '@expo/vector-icons';

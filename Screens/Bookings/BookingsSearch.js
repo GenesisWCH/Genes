@@ -1,4 +1,3 @@
-// Bookings tab is a work in progress and not finalised in both frontend and backend
 import React, { useState, useEffect } from "react";
 import { Text, View } from 'react-native';
 import styles from '../../css/BookingsSearchStyle';
@@ -68,6 +67,8 @@ function BookingsSearch({ navigation }) {
       console.log('dates:', dates)
       if (dummyDates.length == 0) {
         unavailableDatesToast()
+      } else {
+        readyDatesToast()
       }
     }
     
@@ -95,6 +96,16 @@ function BookingsSearch({ navigation }) {
     setTimeout(function hideToast() {
         Toast.hide(toast);
     }, 3000);
+};
+
+const readyDatesToast = () => {
+  let toast = Toast.show('The dates available for booking are ready for selection in the Dates dropdown list.', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+  });
+  setTimeout(function hideToast() {
+      Toast.hide(toast);
+  }, 3000);
 };
 
   const search = async () => {

@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, FlatList } from 'react-native';
 import styles from '../../css/PendingBookingsStyle';
-import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
-import LogOutHandler from "../../functions/LogOutHandler";
-import { auth, db } from '../../firebase';
-import { Dropdown } from 'react-native-element-dropdown';
-import { collection, collectionGroup, query, where, doc, getDoc, getDocs, onSnapshot } from "firebase/firestore";
+import { db } from '../../firebase';
+import { collectionGroup, query, where, getDocs } from "firebase/firestore";
 import { toJSDateStr, toLabelString, toTimeStr } from "../../functions/timeFunctions";
+import Toast from 'react-native-root-toast';
 
 
-// the Firestore read write rules will be decided later.
-// biggest issue is rendering data in flatlist properly. i.e. without saving file again and the bookings that are approved/declined being removed from list
 function PendingBookings({ navigation }) {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState(null);
   const [reset, setReset] = useState(true);
 
   useEffect(() =>
@@ -45,6 +40,7 @@ function PendingBookings({ navigation }) {
         var uid = docSnapshot.get('useruid')
         var displayName = docSnapshot.get('userDisplayName')
         var email = docSnapshot.get('userEmail')
+        var userBookingID = docSnapshot.get('userBookingID')
 
         var key = dateText + " " + label
 
@@ -52,7 +48,7 @@ function PendingBookings({ navigation }) {
           key: key, label: label, dateText: dateText,
           value: {
             id: docSnapshot.id, name: fsName, startTime: jsStartTime, endTime: jsEndTime, parentDocID: parentDocID,
-            useruid: uid,
+            useruid: uid, userBookingID: userBookingID,
             displayName: displayName, email: email,
             bookingReason: bookingReason
           }
@@ -68,20 +64,48 @@ function PendingBookings({ navigation }) {
     if (reset) {
       getPendingBookings()
     }
-  }, [bookings, reset]);
 
+    if (bookings != null && bookings == false) {
+      console.log('\ncalling toast\n')
+      noPendingDatesToast()
+  }
+  }, [ reset]);
+
+  const refreshToast = () => {
+    let toast = Toast.show('Please wait for a few seconds while refreshing.', {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+        Toast.hide(toast);
+    }, 3000);
+};
+
+const noPendingDatesToast = () => {
+  let toast = Toast.show('There are no rooms pending for approval.', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+  });
+  setTimeout(function hideToast() {
+      Toast.hide(toast);
+  }, 3000);
+};
 
   const refreshPendingBookings = async () => {
     setReset(true)
+    refreshToast()
   };
 
   return (
     <SafeAreaView style={styles.page}>
-      <Pressable
-        onPress={() => refreshPendingBookings()}
-        style={styles.refreshButton}>
-        <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
-      </Pressable>
+      <View style={styles.top}>
+        <Pressable
+          onPress={() => refreshPendingBookings()}
+          style={styles.refreshButton}>
+          <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
+        </Pressable>
+      </View>
+      <View style={styles.bottom}>
       <FlatList
         data={bookings}
         renderItem={({ item }) =>
@@ -104,10 +128,10 @@ function PendingBookings({ navigation }) {
         }
         keyExtractor={item => item.key}
       />
+      </View>
     </SafeAreaView>
   );
 }
-
 
 
 export default PendingBookings;
