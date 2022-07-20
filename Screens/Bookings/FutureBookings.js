@@ -5,7 +5,7 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { db } from '../../firebase';
 import { collectionGroup, query, where, getDocs } from "firebase/firestore";
-import { toLabelString } from "../../functions/timeFunctions";
+import { toLabelString, toTimeStr, toJSDateStr } from "../../functions/timeFunctions";
 import Toast from 'react-native-root-toast';
 
 
@@ -137,18 +137,24 @@ function FutureBookings({ navigation }) {
                                     <Text style={styles.itemText}>{item.dateText}</Text>
                                     <Text style={styles.itemText}>{item.label}</Text>
                                 </View>
-                                {item.status == 'booked'
+                                
+                                { item.value.status == 'booked'
                                     ? <View style={styles.rightApprovedCol}>
-                                        <Text style={styles.itemText}>Booked</Text>
+                                        <Text style={styles.itemText}>Approved</Text>
                                     </View>
-                                    : item.status == 'closed'
+                                    : item.value.status == 'closed'
                                         ? <View style={styles.rightClosedCol}>
                                             <Text style={styles.itemText}>Closed</Text>
                                         </View>
-                                        : <View style={styles.rightPendingCol}>
-                                            <Text style={styles.itemText}>Pending</Text>
-                                        </View>
+                                        : item.value.status == 'available'
+                                            ? <View style={styles.rightAvailableCol}>
+                                                <Text style={styles.itemText}>Available</Text>
+                                            </View>
+                                            : <View style={styles.rightPendingCol}>
+                                                <Text style={styles.itemText}>Pending</Text>
+                                            </View>
                                 }
+                                
                             </Pressable>
                         </View>
                     }

@@ -21,18 +21,25 @@ const FutureBookingsStyle = StyleSheet.create({
       flex: 80,
       flexDirection: 'column'
     },
+    rightCol: {
+      justifyContent: 'center'
+    },
     rightApprovedCol: {
         flex: 20,
         backgroundColor: 'lightgreen',
     },
     rightClosedCol: {
         flex: 20,
-        backgroundColor: 'tomato',
+        backgroundColor: 'lightgrey',
     },
     rightPendingCol: {
       flex: 20,
       backgroundColor: 'gold',
   },
+  rightAvailableCol: {
+    flex: 20,
+    backgroundColor: 'greenyellow',
+},
     itemText: {
         fontSize: 20,
     },
@@ -54,6 +61,7 @@ const FutureBookingsStyle = StyleSheet.create({
     bottom: {
       flex: 95,
     },
+
   });
 
   export default FutureBookingsStyle;

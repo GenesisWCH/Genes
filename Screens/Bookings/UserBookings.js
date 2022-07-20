@@ -47,26 +47,26 @@ function UserBookings() {
     if (bookings != null && bookings == false) {
       console.log('\ncalling toast\n')
       noBookingsToast()
-  }
+    }
   }, [reset]);
 
   const refreshToast = () => {
     let toast = Toast.show('Please wait for a few seconds while refreshing.', {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.CENTER,
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
     });
     setTimeout(function hideToast() {
-        Toast.hide(toast);
+      Toast.hide(toast);
     }, 3000);
-};
+  };
 
   const noBookingsToast = () => {
     let toast = Toast.show('You have no bookings', {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.CENTER,
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
     });
     setTimeout(function hideToast() {
-        Toast.hide(toast);
+      Toast.hide(toast);
     }, 3000);
   };
 
@@ -79,39 +79,39 @@ function UserBookings() {
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.top}>
-      <Pressable
-        onPress={() => refreshBookings()}
-        style={styles.refreshButton}>
-        <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
-      </Pressable>
+        <Pressable
+          onPress={() => refreshBookings()}
+          style={styles.refreshButton}>
+          <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
+        </Pressable>
       </View>
       <View style={styles.bottom}>
-      <FlatList
-        data={bookings}
-        renderItem={({ item }) =>
-          <View>
-            <View style={styles.item}>
-              <View style={styles.leftCol}>
-                <Text style={styles.itemText}>{item.dateText}</Text>
-                <Text style={styles.itemText}>{item.label}</Text>
-              </View>
-              {item.status == 'Approved'
-                ? <View style={styles.rightApprovedCol}>
-                  <Text style={styles.itemText}>{item.status}</Text>
+        <FlatList
+          data={bookings}
+          renderItem={({ item }) =>
+            <View>
+              <View style={styles.item}>
+                <View style={styles.leftCol}>
+                  <Text style={styles.itemText}>{item.dateText}</Text>
+                  <Text style={styles.itemText}>{item.label}</Text>
                 </View>
-                : item.status == 'Declined'
-                ? <View style={styles.rightDeclinedCol}>
-                  <Text style={styles.itemText}>{item.status}</Text>
-                </View>
-                : <View style={styles.rightPendingCol}>
-                <Text style={styles.itemText}>{item.status}</Text>
+                {item.status == 'Approved'
+                  ? <View style={styles.rightApprovedCol}>
+                    <Text style={styles.itemText}>{item.status}</Text>
+                  </View>
+                  : item.status == 'Declined'
+                    ? <View style={styles.rightDeclinedCol}>
+                      <Text style={styles.itemText}>{item.status}</Text>
+                    </View>
+                    : <View style={styles.rightPendingCol}>
+                      <Text style={styles.itemText}>{item.status}</Text>
+                    </View>
+                }
               </View>
-              }
             </View>
-          </View>
-        }
-        keyExtractor={item => item.key}
-      />
+          }
+          keyExtractor={item => item.key}
+        />
       </View>
     </SafeAreaView>
   );

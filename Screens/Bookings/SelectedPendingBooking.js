@@ -15,15 +15,15 @@ function SelectedPendingBooking({ route, navigation }) {
 
     const invalidBookingToast = () => {
         let toast = Toast.show('The slot you have chosen is no longer pending. It may have been handled by another admin already.', {
-          duration: Toast.durations.LONG,
-          position: Toast.positions.CENTER,
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
         });
         setTimeout(function hideToast() {
-          Toast.hide(toast);
+            Toast.hide(toast);
         }, 3000);
-      };
+    };
 
-    
+
     const approveBooking = async () => {
         const docRef = doc(db, 'rooms', slot.parentDocID, 'bookings', slot.id)
         const docSnap = await getDoc(docRef);
@@ -50,6 +50,7 @@ function SelectedPendingBooking({ route, navigation }) {
             admin: auth.currentUser.displayName,
             adminID: auth.currentUser.uid,
             adminResponseTime: fsDate,
+            valid: false,
         });
 
         const notificationRef = collection(db, 'users', slot.useruid, "notifications")
@@ -89,10 +90,11 @@ function SelectedPendingBooking({ route, navigation }) {
         });
 
         updateDoc(docRef, {
-            status: 'Available',
+            status: 'available',
             admin: auth.currentUser.displayName,
             adminID: auth.currentUser.uid,
             adminResponseTime: fsDate,
+            valid: true,
         });
 
         const notificationRef = collection(db, 'users', slot.useruid, "notifications")
@@ -107,6 +109,59 @@ function SelectedPendingBooking({ route, navigation }) {
             message: message
         });
         console.log('I pressed decline!')
+        navigation.goBack()
+    }
+
+    const cancelBooking = async () => {
+        const docRef = doc(db, 'rooms', slot.parentDocID, 'bookings', slot.id)
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.get('status') != 'pending') {
+            notPendingToast()
+            return;
+        }
+
+        if (closingReason == "") {
+            missingClosingReasonToast()
+            return;
+        }
+
+        var currDate = new Date()
+        var fsDate = Timestamp.fromDate(currDate)
+        console.log(fsDate)
+
+        const userBookingDocRef = doc(db, 'users', slot.useruid, 'userBookings', slot.userBookingID)
+        // const userBookingDocSnap = await getDoc(userBookingDocRef)
+
+        updateDoc(userBookingDocRef, {
+            admin: auth.currentUser.displayName,
+            adminID: auth.currentUser.uid,
+            status: 'Declined',
+            adminResponseTime: fsDate
+        });
+
+        updateDoc(docRef, {
+            status: 'closed',
+            admin: auth.currentUser.displayName,
+            adminID: auth.currentUser.uid,
+            adminResponseTime: fsDate,
+            closingReason: closingReason
+        });
+
+        const notificationRef = collection(db, 'users', slot.useruid, "notifications")
+
+        var message = 'Your booking at ' + slot.name +
+            ' on ' + dateText + ' from ' + slot.startTime + ' to ' + slot.endTime
+            + ' is cancelled as requested.'
+
+        addDoc(notificationRef, {
+            type: 'booking',
+            docID: slot.id,
+            admin: auth.currentUser.displayName,
+            created: fsDate,
+            message: message,
+        });
+        console.log('I pressed cancel booking!')
         navigation.goBack()
     }
 
@@ -136,6 +191,11 @@ function SelectedPendingBooking({ route, navigation }) {
                         onPress={() => declineBooking()}
                         style={styles.button}>
                         <Text style={styles.buttonText}>Decline</Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={() => cancelBooking()}
+                        style={styles.button}>
+                        <Text style={styles.buttonText}>Cancel</Text>
                     </Pressable>
                 </View>
             </View>
