@@ -8,6 +8,8 @@ import ConfirmedBooking from "./Bookings/ConfirmedBooking";
 import PendingBookings from "./Bookings/PendingBookings";
 import SelectedPendingBooking from "./Bookings/SelectedPendingBooking";
 import UserBookings from "./Bookings/UserBookings";
+import FutureBookings from "./Bookings/FutureBookings";
+import SelectedFutureBooking from "./Bookings/SelectedFutureBooking";
 
 
 const Stack = createNativeStackNavigator();
@@ -51,6 +53,18 @@ const BookingsScreen = () => {
         }
       }} />
       <Stack.Screen name="My Bookings" component={UserBookings} 
+      options={{
+        headerShown: true, headerStyle: {
+          backgroundColor: 'darkorange',
+        }
+      }} />
+      <Stack.Screen name="Future Bookings" component={FutureBookings} 
+      options={{
+        headerShown: true, headerStyle: {
+          backgroundColor: 'darkorange',
+        }
+      }} />
+      <Stack.Screen name="Selected Future Booking Slot" component={SelectedFutureBooking} 
       options={{
         headerShown: true, headerStyle: {
           backgroundColor: 'darkorange',

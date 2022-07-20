@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const UserBookingsStyle = StyleSheet.create({
+const FutureBookingsStyle = StyleSheet.create({
     page: {
       backgroundColor: 'rgb(125, 129, 247)', 
       flex: 1, 
@@ -25,7 +25,7 @@ const UserBookingsStyle = StyleSheet.create({
         flex: 20,
         backgroundColor: 'lightgreen',
     },
-    rightDeclinedCol: {
+    rightClosedCol: {
         flex: 20,
         backgroundColor: 'tomato',
     },
@@ -56,4 +56,4 @@ const UserBookingsStyle = StyleSheet.create({
     },
   });
 
-  export default UserBookingsStyle;
+  export default FutureBookingsStyle;
