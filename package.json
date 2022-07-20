@@ -30,6 +30,7 @@
     "react-native-dotenv": "^3.3.1",
     "react-native-element-dropdown": "^2.0.0",
     "react-native-google-places-autocomplete": "^2.4.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "^0.31.1",
     "react-native-modal": "^13.0.1",
     "react-native-root-toast": "^3.4.0",
