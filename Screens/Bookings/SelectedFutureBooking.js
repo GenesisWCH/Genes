@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import styles from '../../css/SelectedFutureBookingStyle';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -84,6 +84,7 @@ function SelectedFutureBooking({ route, navigation }) {
         var fsDate = Timestamp.fromDate(currDate)
         console.log(fsDate)
 
+        // notification message sent to user if booking slot is 'booked' but booking has to be closed.
         if (slot.userBookingID != '') {
             const userBookingDocRef = doc(db, 'users', slot.useruid, 'userBookings', slot.userBookingID)
 
