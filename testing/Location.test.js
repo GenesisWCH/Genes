@@ -104,5 +104,15 @@ dummyMap2.set('Wire Centre dummy', ['ICPC Lab dummy', '02-AHU4', 'L2 Undergradua
 
 
 setVisitedDummyCases = [
-    [dummyMap, ]
+    [dummyMap, '02-AHU1 -> 02-AHU1 dummy -> SR 5 dummy -> Makers@SoC dummy -> SR 6 dummy -> Student Area -> L2_Foyer -> SR 7 dummy -> SR 8 dummy -> SR 9 dummy -> SR 10 dummy -> 02-AHU2 dummy -> 02-AHU2']
 ]
+
+describe("Location functions", () => {
+    test.each(setVisitedDummyCases)(
+        'there is a route',
+        (map, expected) => {
+            console.log(expected);
+            expect(testSetRoute(map)).toBe(expected);
+        }
+    )
+})
