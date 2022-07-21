@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const UserBookingsStyle = StyleSheet.create({
+const FutureBookingsStyle = StyleSheet.create({
     page: {
       backgroundColor: 'rgb(125, 129, 247)', 
       flex: 1, 
@@ -21,18 +21,25 @@ const UserBookingsStyle = StyleSheet.create({
       flex: 80,
       flexDirection: 'column'
     },
+    rightCol: {
+      justifyContent: 'center'
+    },
     rightApprovedCol: {
         flex: 20,
         backgroundColor: 'lightgreen',
     },
-    rightDeclinedCol: {
+    rightClosedCol: {
         flex: 20,
-        backgroundColor: 'tomato',
+        backgroundColor: 'lightgrey',
     },
     rightPendingCol: {
       flex: 20,
       backgroundColor: 'gold',
   },
+  rightAvailableCol: {
+    flex: 20,
+    backgroundColor: 'greenyellow',
+},
     itemText: {
         fontSize: 20,
     },
@@ -54,6 +61,7 @@ const UserBookingsStyle = StyleSheet.create({
     bottom: {
       flex: 95,
     },
+
   });
 
-  export default UserBookingsStyle;
+  export default FutureBookingsStyle;

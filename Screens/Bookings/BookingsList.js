@@ -17,7 +17,6 @@ function BookingsList({ route, navigation }) {
     const [bookings, setBookings] = useState(null)
     const [reset, setReset] = useState(true);
     const [choice, setChoice] = useState(null);
-    // const [ refresh, setRefresh ] = useState(0)
 
     const listenerFunction = () => {
         setReset(true)
@@ -33,41 +32,12 @@ function BookingsList({ route, navigation }) {
 
 
     useEffect(() => {
-        console.log(dateText)
-    }, []);
-
-    const unavailableDatesToast = () => {
-        let toast = Toast.show('There are no rooms available for booking. Please try again by choosing a different room type or date.', {
-            duration: Toast.durations.LONG,
-            position: Toast.positions.CENTER,
-        });
-        setTimeout(function hideToast() {
-            Toast.hide(toast);
-        }, 3000);
-    };
-
-    const unselectedSlotToast = () => {
-        let toast = Toast.show('Please pick a timeslot for booking.', {
-            duration: Toast.durations.LONG,
-            position: Toast.positions.CENTER,
-        });
-        setTimeout(function hideToast() {
-            Toast.hide(toast);
-        }, 3000);
-    };
-
-
-    useEffect(() => {
         const getAvailableBookings = async () => {
             var dummySlots = []
             const currDate = new Date(date.getTime())
             const currDate2 = new Date(date.getTime())
             currDate.setHours(0, 0, 0, 0)
             currDate2.setHours(23, 0, 0, 0)
-
-            console.log(date)
-            console.log(currDate)
-            console.log(currDate2)
 
             const slotsAvail = query(collectionGroup(db, 'bookings'), where('type', '==', roomType),
                 where('level', '==', level), where('valid', '==', true), where('status', '==', 'available'), where('date', '>=', currDate), where('date', '<=', currDate2));
@@ -86,9 +56,6 @@ function BookingsList({ route, navigation }) {
             })
             setBookings(dummySlots)
             setReset(false)
-            console.log('bookings:', bookings)
-            console.log('reset:', reset)
-            console.log('choice:', choice)
         }
         if (reset) {
             console.log('\ncalling getAvailableBookings()\n')
@@ -98,21 +65,39 @@ function BookingsList({ route, navigation }) {
         if (bookings != null && bookings == false) {
             console.log('\ncalling toast\n')
             unavailableDatesToast()
-            console.log('bookings:', bookings)
-            console.log('reset:', reset)
-            console.log('choice:', choice)
         }
     }, [ reset ]);
 
-    // useEffect(() => {
-    //     if (bookings != null && bookings == false) {
-    //         console.log('\ncalling toast\n')
-    //         unavailableDatesToast()
-    //         console.log('bookings:', bookings)
-    //         console.log('reset:', reset)
-    //         console.log('choice:', choice)
-    //     }
-    // }, [bookings]);
+
+    const unavailableDatesToast = () => {
+        let toast = Toast.show('There are no rooms available for booking. Please try again by going back and choosing a different room type or date.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+            Toast.hide(toast);
+        }, 3000);
+    };
+
+    const unselectedSlotToast = () => {
+        let toast = Toast.show('Please pick a timeslot for booking.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+            Toast.hide(toast);
+        }, 3000);
+    };
+
+    const refreshToast = () => {
+        let toast = Toast.show('Please wait for a few seconds while refreshing.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+            Toast.hide(toast);
+        }, 3000);
+    };
 
     const selectBooking = async () => {
         if (bookings == false) {
@@ -133,6 +118,7 @@ function BookingsList({ route, navigation }) {
         setReset(true)
         setBookings(null)
         setChoice(null)
+        refreshToast()
     };
 
     return (
@@ -159,10 +145,10 @@ function BookingsList({ route, navigation }) {
                                 onPress={() => setChoice(item.value)}
                                 isChecked={choice === item.value}
                                 text={item.label}
-                                textSize={14}
-                                iconName="checkcircleo"
-                                iconColor="#fff"
-                                iconSize={14}
+                                textSize={18}
+                                // iconName="checkcircleo"
+                                // iconColor="#fff"
+                                // iconSize={18}
                                 buttonDefaultColor="#e5e5e5"
                                 buttonSelectedColor="#ff9c5b"
                                 textDefaultColor="#333"
@@ -177,7 +163,6 @@ function BookingsList({ route, navigation }) {
                 <Text style={styles.selectBookingButtonText}>Select Booking</Text>
             </Pressable>
         </View>
-
     );
 }
 

@@ -5,7 +5,6 @@ const BookingsListStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgb(125, 129, 247)',
         alignItems: 'center',
-        // justifyContent: 'center',
     },
     dateText: {
         fontSize: 20,
@@ -33,7 +32,7 @@ const BookingsListStyle = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,
-        marginHorizontal: 10,
+        marginHorizontal: 30,
     },
     refreshButtonText: {
         fontSize: 18
@@ -42,12 +41,6 @@ const BookingsListStyle = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    noBookingsContainer: {
-
-    },
-    noBookingsText: {
-        fontSize: 30,
     },
 });
 

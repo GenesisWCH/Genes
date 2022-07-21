@@ -23,6 +23,8 @@ const BookingsMainStyle = StyleSheet.create({
     },
     body: {
         flex: 93,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     centeredView: {
         flex: 1,
@@ -40,7 +42,7 @@ const BookingsMainStyle = StyleSheet.create({
     button: {
         backgroundColor: "darkorange",
         width: 100,
-        marginVertical: 3
+        marginVertical: 3,
     },
     textStyle: {
         color: "black",
@@ -65,8 +67,9 @@ const BookingsMainStyle = StyleSheet.create({
         color: 'black',
     },
     guestText: {
-        marginLeft: 5,
-    }
+        fontSize: 20,
+        marginHorizontal: 10,
+    },
 });
 
 export default BookingsMainStyle;
