@@ -8,7 +8,27 @@ import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } 
 import { auth } from '../firebase/index';
 import Modal from "react-native-modal";
 import Toast from 'react-native-root-toast';
-import styles from '../css/SignUpStyle'
+import styles from '../css/SignUpStyle';
+
+
+const invalidPassword = (password) => {
+    const containsUpper = /[A-Z]/.test(password);
+    const containsLower = /[a-z]/.test(password);
+    const containsNum = /\d/.test(password);
+    const containsSpecial = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password);
+
+    if (password.length < 6 || !containsLower || !containsUpper || !containsNum || !containsSpecial) {
+        return true;
+    }
+    return false
+}
+
+const invalidEmail = (email) => {
+    if (/@gmail.com\s*$/.test(email) || /@u.nus.edu\s*$/.test(email)) {
+        return false
+    }
+    return true
+}
 
 const SignUpPage = () => {
     const [name, setName] = useState('');
@@ -77,28 +97,23 @@ const SignUpPage = () => {
         }, 3000);
     };
 
+    
+
     const signUpHandler = () => {
         if (name.length === 0 || email.length === 0 || password.length === 0 || confirmPassword.length === 0) {
             missingFieldsToast();
             return;
         }
 
-        const containsUpper = /[A-Z]/.test(password);
-        const containsLower = /[a-z]/.test(password);
-        const containsNum = /\d/.test(password);
-        const containsSpecial = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password);
 
-        if (/@gmail.com\s*$/.test(email) || /@u.nus.edu\s*$/.test(email)) {
-            // 
-        } else {
+        if (invalidEmail(email)) {
             invalidEmailToast()
             console.log("it does not end in @gmail or @u.nus.edu");
             return;
         }
 
 
-
-        if (password.length < 6 || !containsLower || !containsUpper || !containsNum || !containsSpecial) {
+        if (invalidPassword(password)) {
             strongPasswordToast();
             return;
         }
@@ -232,3 +247,5 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+
+export { invalidEmail, invalidPassword };
