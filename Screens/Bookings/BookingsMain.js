@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Text, View } from 'react-native';
 import styles from '../../css/BookingsMainStyle';
-import { isAnonymous } from "firebase/auth";
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../../functions/LogOutHandler";
-import { auth, db } from '../../firebase';
+import { auth } from '../../firebase';
 
-
-// how to approve bookings and show it in the my bookings?
-// grab the uid of the user you want to be the 'admin' and do conditonal rendering to separate what the user sees.
-// i.e. anonymous user, admin user, normal user 
-// create the booking and my booking page
-// admin user will see 3 buttons. book, my bookings, and the pending bookings
-// admin will be decided by checking user id. 
-// the Firestore read write rules will be decided later.
+// create bookings page where admin can see bookings, also another page to navigate to that shows the bookings details. populate document fields with empty strings.
+// the second page has a cancel booked status and close off a booking slot for official reasons.
 function BookingsMain({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -36,14 +29,12 @@ function BookingsMain({ navigation }) {
                         //</View>onPress={}
                         >
                             <Text style={styles.textStyle}>Profile</Text>
-
                         </Pressable>
                         <Pressable
                             style={styles.button}
                         //onPress={}
                         >
                             <Text style={styles.textStyle}>Settings</Text>
-
                         </Pressable>
                         <Pressable
                             style={styles.button}
@@ -64,12 +55,10 @@ function BookingsMain({ navigation }) {
                 <Pressable style={styles.profileIcon} onPress={() => setModalVisible(true)}>
                     <AntDesign name="user" size={28} color='black' />
                 </Pressable>
-
             </View>
-
             <View style={styles.body}>
                 {auth.currentUser.isAnonymous
-                    ? <Text styles={styles.guestText}>You are a guest. Bookings are only available to NUS staff and students.</Text>
+                    ? <Text style={styles.guestText}>You are a guest. Bookings are only available for NUS staff and students.</Text>
                     : auth.currentUser.uid == 'PmdSTWIMA8eCv13mAC4ex7TwrHS2' || auth.currentUser.uid == 'k6TZAj2oIBMC8hvMaK73MYKdRRr2'
                         ? <View>
                             <Pressable
@@ -87,6 +76,11 @@ function BookingsMain({ navigation }) {
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>Pending Bookings</Text>
                             </Pressable>
+                            <Pressable
+                                onPress={() => navigation.navigate('Future Bookings')}
+                                style={styles.bodyButton}>
+                                <Text style={styles.bodyButtonText}>Future Bookings</Text>
+                            </Pressable>
                         </View>
                         : <View>
                             <Pressable
@@ -99,15 +93,11 @@ function BookingsMain({ navigation }) {
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>My bookings</Text>
                             </Pressable>
-                        </View>
-                }
-
+                        </View>}
             </View>
-
         </SafeAreaView >
     );
 }
-
 
 
 export default BookingsMain;

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const SelectedPendingBookingStyle = StyleSheet.create({
+const SelectedFutureBookingStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgb(125, 129, 247)',
@@ -9,8 +9,6 @@ const SelectedPendingBookingStyle = StyleSheet.create({
     },
     textContainer: {
         flex: 60,
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     slotTextContainer: {
         flex: 50,
@@ -23,12 +21,10 @@ const SelectedPendingBookingStyle = StyleSheet.create({
     },
     bookingContainer: {
         flex: 40,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly'
+        flexDirection: 'column',
     },
     dateText: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
         color: 'black',
         marginTop: 8,
@@ -46,12 +42,24 @@ const SelectedPendingBookingStyle = StyleSheet.create({
         fontSize: 18,
     },
     userDetailsText: {
-        fontSize: 25,
+        fontSize: 18,
         color: 'black',
-        marginLeft: 10,
+        marginLeft: 0,
         fontWeight: 'bold',
         paddingTop: 5
+    },
+    input: {
+        marginVertical: 20,
+        borderRadius: 8,
+        width: 300,
+        height: 50,
+        paddingHorizontal: 8,
+        backgroundColor: 'white',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
     }
 });
 
-export default SelectedPendingBookingStyle;
+export default SelectedFutureBookingStyle;

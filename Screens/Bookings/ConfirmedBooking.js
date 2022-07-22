@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Text, View } from 'react-native';
 import styles from '../../css/ConfirmedBookingStyle';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
