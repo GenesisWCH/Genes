@@ -1,10 +1,12 @@
 {
   "expo": {
     "name": "DestiNUS",
-    "slug": "DestiNUS",
+    "owner": "genesisdestinus",
+    "slug": "destinus",
+    "description": "Welcome to DestiNUS mobile app! DestiNUS is a navigation application that aims to provide users with the relevant and updated information about the places within the School of Computing in NUS. With DestiNUS, users can perform bookings of rooms and facilities in the School of Computing.",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/destinus-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
