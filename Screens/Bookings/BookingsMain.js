@@ -62,7 +62,7 @@ function BookingsMain({ navigation }) {
                     : auth.currentUser.uid == 'PmdSTWIMA8eCv13mAC4ex7TwrHS2' || auth.currentUser.uid == 'k6TZAj2oIBMC8hvMaK73MYKdRRr2'
                         ? <View>
                             <Pressable
-                                onPress={() => navigation.navigate('Search')}
+                                onPress={() => navigation.navigate('Book a room')}
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>Book a room</Text>
                             </Pressable>

@@ -3,9 +3,7 @@ import { Text, View } from 'react-native';
 import styles from '../../css/BookingsSearchStyle';
 import { AntDesign } from '@expo/vector-icons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import Modal from "react-native-modal";
 import { SafeAreaView } from "react-native-safe-area-context";
-import LogOutHandler from "../../functions/LogOutHandler";
 import { db } from '../../firebase';
 import { Dropdown } from 'react-native-element-dropdown';
 import { collectionGroup, query, where, getDocs } from "firebase/firestore";
@@ -29,7 +27,6 @@ const roomTypeData = [
 ]
 
 function BookingsSearch({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
   const [level, setLevel] = useState(null);
   const [roomType, setRoomType] = useState(null);
   const [date, setDate] = useState(null);
@@ -52,7 +49,7 @@ function BookingsSearch({ navigation }) {
         where('level', '==', level), where('date', '<=', futureDate), where('valid', '==', true), where('status', '==', 'available'));
       const querySnapshot = await getDocs(datesAvail);
       querySnapshot.forEach((doc) => {
-  
+
         var currDate = doc.get('date')
         var jsDate = currDate.toDate()
         var str = toJSDateStr(jsDate)
@@ -61,7 +58,7 @@ function BookingsSearch({ navigation }) {
           trackerDates.push(str)
           dummyDates.push({ label: str, date: jsDate })
         }
-  
+
       })
       setDates(dummyDates)
       console.log('dates:', dates)
@@ -71,8 +68,8 @@ function BookingsSearch({ navigation }) {
         readyDatesToast()
       }
     }
-    
-    if (level != null && roomType!= null) {
+
+    if (level != null && roomType != null) {
       filterByLevelType();
     }
   }, [level, roomType]);
@@ -90,26 +87,26 @@ function BookingsSearch({ navigation }) {
 
   const unavailableDatesToast = () => {
     let toast = Toast.show('There are no rooms available for booking. Please try again by choosing a different room type or date.', {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.CENTER,
-    });
-    setTimeout(function hideToast() {
-        Toast.hide(toast);
-    }, 3000);
-};
-
-const readyDatesToast = () => {
-  let toast = Toast.show('The dates available for booking are ready for selection in the Dates dropdown list.', {
       duration: Toast.durations.LONG,
       position: Toast.positions.CENTER,
-  });
-  setTimeout(function hideToast() {
+    });
+    setTimeout(function hideToast() {
       Toast.hide(toast);
-  }, 3000);
-};
+    }, 3000);
+  };
+
+  const readyDatesToast = () => {
+    let toast = Toast.show('The dates available for booking are ready for selection in the Dates dropdown list.', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+    });
+    setTimeout(function hideToast() {
+      Toast.hide(toast);
+    }, 3000);
+  };
 
   const search = async () => {
-    if (level == null || roomType == null || date == null ) {
+    if (level == null || roomType == null || date == null) {
       missingFieldsToast()
       return;
     }
@@ -125,150 +122,107 @@ const readyDatesToast = () => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Modal
-        animationIn={"slideInRight"}
-        animationOut={'slideOutRight'}
-        isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
-            <Pressable
-              style={styles.button}
-            //</View>onPress={}
-            >
-              <Text style={styles.textStyle}>Profile</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button}
-            //onPress={}
-            >
-              <Text style={styles.textStyle}>Settings</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button}
-            >
-              <Text style={styles.textStyle}>About</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button}
-              onPress={LogOutHandler}
-            >
-              <Text style={styles.textStyle}>Sign Out</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Booking</Text>
-        <Pressable style={styles.profileIcon} onPress={() => setModalVisible(true)}>
-          <AntDesign name="user" size={28} color='black' />
+      <View>
+        <Text style={styles.headerText}>
+          Please select the level and room type first. The available dates will be queried after that.
+        </Text>
+        <Dropdown
+          // level
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={levelData}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="level"
+          placeholder='Select level'
+          searchPlaceholder="Search..."
+          value={level}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setLevel(item.level);
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <AntDesign
+              style={styles.icon}
+              color={isFocus ? 'blue' : 'black'}
+              name="Safety"
+              size={20}
+            />
+          )}
+        />
+        <Dropdown
+          // type
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={roomTypeData}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="room"
+          placeholder='Room Type'
+          searchPlaceholder="Search..."
+          value={roomType}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setRoomType(item.room);
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <AntDesign
+              style={styles.icon}
+              color={isFocus ? 'blue' : 'black'}
+              name="Safety"
+              size={20}
+            />
+          )}
+        />
+
+        <Dropdown
+          //date
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={dates}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="date"
+          placeholder='Select Date'
+          searchPlaceholder="Search..."
+          value={date}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setDate(item.date);
+            setDateText(item.label)
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <AntDesign
+              style={styles.icon}
+              color={isFocus ? 'blue' : 'black'}
+              name="Safety"
+              size={20}
+            />
+          )}
+        />
+        <Pressable
+          onPress={() => search()}
+          style={styles.searchButton}>
+          <Text style={styles.searchButtonText}>Search</Text>
         </Pressable>
-      </View>
-      <View style={styles.body}>
-        <View>
-          <Text style={styles.headerText}>
-            Please select the level and room type first. The available dates will be queried after that.
-          </Text>
-          <Dropdown
-            // level
-            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={levelData}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="level"
-            placeholder='Select level'
-            searchPlaceholder="Search..."
-            value={level}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={item => {
-              setLevel(item.level);
-              setIsFocus(false);
-            }}
-            renderLeftIcon={() => (
-              <AntDesign
-                style={styles.icon}
-                color={isFocus ? 'blue' : 'black'}
-                name="Safety"
-                size={20}
-              />
-            )}
-          />
-          <Dropdown
-            // type
-            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={roomTypeData}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="room"
-            placeholder='Room Type'
-            searchPlaceholder="Search..."
-            value={roomType}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={item => {
-              setRoomType(item.room);
-              setIsFocus(false);
-            }}
-            renderLeftIcon={() => (
-              <AntDesign
-                style={styles.icon}
-                color={isFocus ? 'blue' : 'black'}
-                name="Safety"
-                size={20}
-              />
-            )}
-          />
-          
-          <Dropdown
-            //date
-            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={dates}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="date"
-            placeholder='Select Date'
-            searchPlaceholder="Search..."
-            value={date}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={item => {
-              setDate(item.date);
-              setDateText(item.label)
-              setIsFocus(false);
-            }}
-            renderLeftIcon={() => (
-              <AntDesign
-                style={styles.icon}
-                color={isFocus ? 'blue' : 'black'}
-                name="Safety"
-                size={20}
-              />
-            )}
-          />
-          <Pressable
-            onPress={() => search()}
-            style={styles.searchButton}>
-            <Text style={styles.searchButtonText}>Search</Text>
-          </Pressable>
-        </View>
       </View>
     </SafeAreaView>
   );

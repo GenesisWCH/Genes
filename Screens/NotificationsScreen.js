@@ -33,6 +33,7 @@ function NotificationsScreen({navigation}) {
       querySnapshot.forEach((docSnapshot) => {
 
         console.log(docSnapshot.id)
+        console.log(docSnapshot)
 
         var admin = docSnapshot.get('admin')
         var createdTime = docSnapshot.get('created')
@@ -134,7 +135,7 @@ function NotificationsScreen({navigation}) {
         </View>
       </Modal>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Location</Text>
+        <Text style={styles.headerText}>Notifications</Text>
         <Pressable
           style={styles.profileIcon}
           onPress={() => setModalVisible(true)}
@@ -161,7 +162,7 @@ function NotificationsScreen({navigation}) {
                   })}
                   style={styles.item}
                 >
-                  { item.type == 'bookings'
+                  { item.type == 'booking'
                   ? <View style={styles.leftCol}>
                   <Text style={styles.typeText}>Bookings</Text>
                 </View>
