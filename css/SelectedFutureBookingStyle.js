@@ -17,7 +17,8 @@ const SelectedFutureBookingStyle = StyleSheet.create({
     },
     userDetailsContainer: {
         flex: 50,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingHorizontal: 5,
     },
     bookingContainer: {
         flex: 40,
@@ -55,6 +56,7 @@ const SelectedFutureBookingStyle = StyleSheet.create({
         height: 50,
         paddingHorizontal: 8,
         backgroundColor: 'white',
+        alignSelf: 'center'
     },
     buttonContainer: {
         flexDirection: 'row',

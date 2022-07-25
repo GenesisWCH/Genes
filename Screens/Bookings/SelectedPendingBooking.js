@@ -23,6 +23,16 @@ function SelectedPendingBooking({ route, navigation }) {
         }, 3000);
     };
 
+    const cannotCancelToast = () => {
+        let toast = Toast.show('The slot you have chosen is no longer pending or booked. It may have been handled by another admin already.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+            Toast.hide(toast);
+        }, 3000);
+    };
+
 
     const approveBooking = async () => {
         const docRef = doc(db, 'rooms', slot.parentDocID, 'bookings', slot.id)
@@ -117,12 +127,7 @@ function SelectedPendingBooking({ route, navigation }) {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.get('status') != 'pending') {
-            notPendingToast()
-            return;
-        }
-
-        if (closingReason == "") {
-            missingClosingReasonToast()
+            cannotCancelToast()
             return;
         }
 
@@ -141,11 +146,11 @@ function SelectedPendingBooking({ route, navigation }) {
         });
 
         updateDoc(docRef, {
-            status: 'closed',
+            status: 'available',
             admin: auth.currentUser.displayName,
             adminID: auth.currentUser.uid,
             adminResponseTime: fsDate,
-            closingReason: closingReason
+            valid: true,
         });
 
         const notificationRef = collection(db, 'users', slot.useruid, "notifications")
