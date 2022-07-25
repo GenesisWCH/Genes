@@ -18,60 +18,27 @@ const BookingsScreen = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false
+        headerShown: true,
+        headerStyle: {
+        backgroundColor: 'darkorange',
+        },
       }}>
-      <Stack.Screen name="Main" component={BookingsMain} />
-      <Stack.Screen name="Search" component={BookingsSearch} />
-      <Stack.Screen name="List of available rooms:" component={BookingsList}
-        options={{
-          headerShown: true, headerStyle: {
-            backgroundColor: 'darkorange',
-          }
-        }} />
-      <Stack.Screen name="Chosen Booking" component={ChosenBooking} 
+      <Stack.Screen name="Main" component={BookingsMain} 
       options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
-      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking} 
-      options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
-      <Stack.Screen name="Pending Bookings" component={PendingBookings} 
-      options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
-      <Stack.Screen name="Selected Pending Booking" component={SelectedPendingBooking} 
-      options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
-      <Stack.Screen name="My Bookings" component={UserBookings} 
-      options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
-      <Stack.Screen name="Future Bookings" component={FutureBookings} 
-      options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
-      <Stack.Screen name="Selected Future Booking Slot" component={SelectedFutureBooking} 
-      options={{
-        headerShown: true, headerStyle: {
-          backgroundColor: 'darkorange',
-        }
-      }} />
+        headerShown: false,
+      }}/>
+      <Stack.Screen name="Book a room" component={BookingsSearch} />
+      <Stack.Screen name="List of available rooms:" component={BookingsList}/>
+      <Stack.Screen name="Chosen Booking" component={ChosenBooking}/>
+      <Stack.Screen name="Confirmed Booking" component={ConfirmedBooking}/>
+      <Stack.Screen name="Pending Bookings" component={PendingBookings}/>
+      <Stack.Screen name="Selected Pending Booking" component={SelectedPendingBooking}/>
+      <Stack.Screen name="My Bookings" component={UserBookings}/>
+      <Stack.Screen name="Future Bookings" component={FutureBookings}/>
+      <Stack.Screen name="Selected Future Booking Slot" component={SelectedFutureBooking}/>
     </Stack.Navigator>
   )
 }
+
 
 export default BookingsScreen;
