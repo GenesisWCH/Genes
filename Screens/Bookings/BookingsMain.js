@@ -59,7 +59,7 @@ function BookingsMain({ navigation }) {
             <View style={styles.body}>
                 {auth.currentUser.isAnonymous
                     ? <Text style={styles.guestText}>You are a guest. Bookings are only available for NUS staff and students.</Text>
-                    : auth.currentUser.uid == 'PmdSTWIMA8eCv13mAC4ex7TwrHS2' || auth.currentUser.uid == 'k6TZAj2oIBMC8hvMaK73MYKdRRr2'
+                    : auth.currentUser.uid == 'PmdSTWIMA8eCv13mAC4ex7TwrHS2' || auth.currentUser.uid == 'cpua264knuYEWgksObfEjNtxpaE3'
                         ? <View>
                             <Pressable
                                 onPress={() => navigation.navigate('Search')}
