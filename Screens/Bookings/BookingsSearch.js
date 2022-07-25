@@ -117,8 +117,8 @@ function BookingsSearch({ navigation }) {
       date: date,
       dateText: dateText
     })
-
   }
+
 
   return (
     <SafeAreaView style={styles.page}>

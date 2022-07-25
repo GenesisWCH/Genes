@@ -40,4 +40,5 @@ const BookingsScreen = () => {
   )
 }
 
+
 export default BookingsScreen;

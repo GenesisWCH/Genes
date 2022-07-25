@@ -52,4 +52,5 @@ const BookingsSearchStyle = StyleSheet.create({
     },
 });
 
+
 export default BookingsSearchStyle;

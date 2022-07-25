@@ -8,8 +8,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LogOutHandler from "../../functions/LogOutHandler";
 import { auth } from '../../firebase';
 
-// create bookings page where admin can see bookings, also another page to navigate to that shows the bookings details. populate document fields with empty strings.
-// the second page has a cancel booked status and close off a booking slot for official reasons.
 function BookingsMain({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
 
