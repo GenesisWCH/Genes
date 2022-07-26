@@ -45,7 +45,6 @@ const UserBookingsStyle = StyleSheet.create({
     top: {
       justifyContent: 'flex-start',
       flex: 20,
-      backgroundColor: 'red'
     },
     bottom: {
       flex: 85,
