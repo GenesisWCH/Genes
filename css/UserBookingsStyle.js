@@ -13,10 +13,6 @@ const UserBookingsStyle = StyleSheet.create({
       backgroundColor: 'white',
       alignItems: 'center'
     },
-    container: {
-      flex:1,
-      paddingTop:22
-    },
     leftCol: {
       flex: 80,
       flexDirection: 'column'
@@ -47,13 +43,23 @@ const UserBookingsStyle = StyleSheet.create({
       fontSize: 18
     },
     top: {
-      alignItems: 'center',
       justifyContent: 'flex-start',
-      flex: 7,
+      flex: 20,
+      backgroundColor: 'red'
     },
     bottom: {
-      flex: 95,
+      flex: 85,
     },
+    text: {
+      fontSize: 15,
+      marginHorizontal: 10,
+    },
+    textContainer: {
+      flex: 50,
+    },
+    buttonContainer: {
+      flex: 50,
+    }
   });
 
   export default UserBookingsStyle;
