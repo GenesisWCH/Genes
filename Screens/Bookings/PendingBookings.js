@@ -25,7 +25,6 @@ function PendingBookings({ navigation }) {
       // avoid asynchronous function within forEach. 
       querySnapshot.forEach((docSnapshot) => {
 
-        console.log(docSnapshot.id)
 
         var fsStartTime = docSnapshot.get('startTime')
         var fsEndTime = docSnapshot.get('endTime')
@@ -53,11 +52,11 @@ function PendingBookings({ navigation }) {
             bookingReason: bookingReason
           }
         })
-        console.log('dummyBookings:', dummyBookings)
+        // console.log('dummyBookings:', dummyBookings)
       })
 
       setBookings(dummyBookings)
-      console.log('bookings:', bookings)
+      // console.log('bookings:', bookings)
       setReset(false)
     };
 

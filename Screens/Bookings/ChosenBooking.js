@@ -79,7 +79,7 @@ function ChosenBooking({ route, navigation }) {
     }
 
     
-    ////////////////////
+    // creating document for user bookings (users col -> user doc -> userBookings col)
     var currDate = new Date()
     var fsDate = Timestamp.fromDate(currDate)
 
@@ -105,7 +105,6 @@ function ChosenBooking({ route, navigation }) {
 
     console.log(newDocRef.id)
 
-    /////////////////////
 
     if (bookingReason == 'Others') {
       setDoc(docRef, {

@@ -137,6 +137,7 @@ function SelectedFutureBooking({ route, navigation }) {
             useruid: '',
             userDisplayName: '',
             recentAdminAction: 'Close Booking',
+            bookingReason: '',
         });
 
 
@@ -165,6 +166,7 @@ function SelectedFutureBooking({ route, navigation }) {
             recentAdminAction: 'Open up Booking',
             valid: true,
             closingReason: '',
+            bookingReason: '',
         });
         console.log('I pressed open booking!')
         navigation.goBack()
