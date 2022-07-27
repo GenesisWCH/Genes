@@ -65,6 +65,16 @@ function SelectedFutureBooking({ route, navigation }) {
         }, 3000);
     };
 
+    const notBookedOrAvailableToast = () => {
+        let toast = Toast.show('This slot is no longer booked or available. You cannot close it.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+        });
+        setTimeout(function hideToast() {
+            Toast.hide(toast);
+        }, 3000);
+    };
+
     // close booking. need to notify user if it is declined.
     const closeBooking = async () => {
         const docRef = doc(db, 'rooms', slot.parentDocID, 'bookings', slot.id)
@@ -72,6 +82,11 @@ function SelectedFutureBooking({ route, navigation }) {
 
         if (docSnap.get('status') == 'closed') {
             alreadyClosedToast()
+            return;
+        }
+
+        if (docSnap.get('status') != 'booked' && docSnap.get('status') != 'available') {
+            notBookedOrAvailableToast()
             return;
         }
 
@@ -122,6 +137,7 @@ function SelectedFutureBooking({ route, navigation }) {
             useruid: '',
             userDisplayName: '',
             recentAdminAction: 'Close Booking',
+            bookingReason: '',
         });
 
 
@@ -150,6 +166,7 @@ function SelectedFutureBooking({ route, navigation }) {
             recentAdminAction: 'Open up Booking',
             valid: true,
             closingReason: '',
+            bookingReason: '',
         });
         console.log('I pressed open booking!')
         navigation.goBack()
@@ -183,7 +200,6 @@ function SelectedFutureBooking({ route, navigation }) {
             admin: auth.currentUser.displayName,
             adminID: auth.currentUser.uid,
             adminResponseTime: fsDate,
-            closingReason: closingReason,
             valid: true,
         });
 
@@ -308,7 +324,7 @@ function SelectedFutureBooking({ route, navigation }) {
                                 ? <Text style={styles.dateText}>Status: Pending</Text>
                                 : slot.status == 'booked' && texting == false
                                     ? <Text style={styles.dateText}>Status: Booked</Text>
-                                    : <Text style={styles.dateText}>Status: Closed</Text>}
+                                    : <Text style={styles.dateText}>Status: {slot.status}</Text>}
                     </View>
                     <View style={styles.userDetailsContainer}>
                         {slot.admin != ""

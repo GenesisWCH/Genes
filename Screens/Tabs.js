@@ -1,24 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { MaterialIcons } from '@expo/vector-icons';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import HomeScreen from "./Screens/HomeScreen";
-import NotificationsScreen from "./Screens/NotificationsScreen";
-import LocationsScreen from "./Screens/LocationsScreen";
-import BookingsScreen from "./Screens/BookingsScreen";
-import LogOutHandler from "./functions/LogOutHandler";
+import HomeScreen from "./HomeScreen";
+import NotificationsScreen from "./NotificationsScreen";
+import LocationsScreen from "./LocationsScreen";
+import BookingsScreen from "./BookingsScreen";
 
 const Tab = createBottomTabNavigator();
 
 export default function Tabs() {
-
-const LogoutIcon = () => (
-  <Pressable onPress={LogOutHandler}>
-      <MaterialIcons name="logout" size={28} color='black' />
-  </Pressable>
-);
 
   return (
     <NavigationContainer independent={true}>

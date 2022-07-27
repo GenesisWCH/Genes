@@ -40,13 +40,14 @@ function BookingsSearch({ navigation }) {
       var dummyDates = []
       var trackerDates = []
       const futureDate = new Date();
-      futureDate.setDate(futureDate.getDate() + 14)
-      var futureDate2 = futureDate
+      const futureDate2 = new Date();
+      futureDate2.setDate(futureDate2.getDate() + 14)
       futureDate.setHours(0, 0, 0, 0)
       futureDate2.setHours(0, 0, 0, 0)
       // possible query by timestamp needed
       const datesAvail = query(collectionGroup(db, 'bookings'), where('type', '==', roomType),
-        where('level', '==', level), where('date', '<=', futureDate), where('valid', '==', true), where('status', '==', 'available'));
+        where('level', '==', level), where('date', '>=', futureDate), where('date', '<=', futureDate2), 
+        where('valid', '==', true), where('status', '==', 'available'));
       const querySnapshot = await getDocs(datesAvail);
       querySnapshot.forEach((doc) => {
 

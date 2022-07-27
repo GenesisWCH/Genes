@@ -21,17 +21,16 @@ function FutureBookings({ navigation }) {
         const getFutureBookings = async () => {
             const dummyBookings = []
             const futureDate = new Date();
-            futureDate.setDate(futureDate.getDate() + 14)
-            var futureDate2 = futureDate
+            const futureDate2 = new Date();
+            futureDate2.setDate(futureDate2.getDate() + 14)
             futureDate.setHours(0, 0, 0, 0)
             futureDate2.setHours(0, 0, 0, 0)
 
-            const slotsAvail = query(collectionGroup(db, 'bookings'), where('date', '<=', futureDate));
+            const slotsAvail = query(collectionGroup(db, 'bookings'), where('date', '>=', futureDate), where('date', '<=', futureDate2));
             const querySnapshot = await getDocs(slotsAvail);
             // avoid asynchronous function within forEach. 
             querySnapshot.forEach((docSnapshot) => {
 
-                console.log(docSnapshot.id)
 
                 var fsStartTime = docSnapshot.get('startTime')
                 var fsEndTime = docSnapshot.get('endTime')
@@ -69,7 +68,6 @@ function FutureBookings({ navigation }) {
                         bookingReason: bookingReason
                     }
                 })
-                console.log('dummyBookings:', dummyBookings)
             })
 
             setBookings(dummyBookings)
@@ -137,8 +135,8 @@ function FutureBookings({ navigation }) {
                                     <Text style={styles.itemText}>{item.dateText}</Text>
                                     <Text style={styles.itemText}>{item.label}</Text>
                                 </View>
-                                
-                                { item.value.status == 'booked'
+
+                                {item.value.status == 'booked'
                                     ? <View style={styles.rightApprovedCol}>
                                         <Text style={styles.itemText}>Approved</Text>
                                     </View>
@@ -154,7 +152,7 @@ function FutureBookings({ navigation }) {
                                                 <Text style={styles.itemText}>Pending</Text>
                                             </View>
                                 }
-                                
+
                             </Pressable>
                         </View>
                     }

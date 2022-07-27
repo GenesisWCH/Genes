@@ -1,15 +1,11 @@
-
 import SignUpPage from './Screens/SignUp';
 import LoginPage from './Screens/Login';
-import Tabs from './Tabs';
-
+import Tabs from './Screens/Tabs';
 import React, { useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/index';
-
 import { LogBox } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 

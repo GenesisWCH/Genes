@@ -1,3 +1,4 @@
+// file not used for unit testing
 import { testSetRoute, setVisitedDummy, getNbrsDummy, BFSDummy } from "../misc functions/LocationsFunctions"
 
 const dummyMap = new Map()

@@ -79,11 +79,19 @@ function UserBookings() {
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.top}>
-        <Pressable
-          onPress={() => refreshBookings()}
-          style={styles.refreshButton}>
-          <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
-        </Pressable>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>To cancel a booking, please email either of the following admins:{'\n'}
+            Cheong Hsien: cheonghsien@gmail.com{'\n'}
+            Wilson: leejunwei2000@gmail.com
+          </Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            onPress={() => refreshBookings()}
+            style={styles.refreshButton}>
+            <Text style={styles.refreshButtonText}>Refresh Bookings</Text>
+          </Pressable>
+        </View>
       </View>
       <View style={styles.bottom}>
         <FlatList
