@@ -82,7 +82,7 @@ function BookingsMain({ navigation }) {
                         </View>
                         : <View>
                             <Pressable
-                                onPress={() => navigation.navigate('Search')}
+                                onPress={() => navigation.navigate('Book a room')}
                                 style={styles.bodyButton}>
                                 <Text style={styles.bodyButtonText}>Book a room</Text>
                             </Pressable>
