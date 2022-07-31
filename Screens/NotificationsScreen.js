@@ -103,27 +103,30 @@ function NotificationsScreen({navigation}) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <View style={styles.iconView}>
+              <Pressable
+              style={styles.iconButton}
+              onPress={() => setModalVisible(false)
+              }>
+                <AntDesign style={styles.modalProfileIcon} name="back" size={28} color='black' />
+              </Pressable>
             <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
+            </View>
             <Pressable
               style={[styles.button]}
-            //</View>onPress={}
             >
               <Text style={styles.textStyle}>Profile</Text>
-
             </Pressable>
             <Pressable
               style={[styles.button]}
-            //onPress={}
             >
               <Text style={styles.textStyle}>Settings</Text>
 
             </Pressable>
             <Pressable
               style={[styles.button]}
-            //</View>onPress={}
             >
               <Text style={styles.textStyle}>About</Text>
-
             </Pressable>
             <Pressable
               style={[styles.button]}
