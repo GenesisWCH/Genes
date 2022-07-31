@@ -36,6 +36,10 @@ const BookingsMainStyle = StyleSheet.create({
         padding: 15,
         alignItems: "center",
     },
+    iconView: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+    },
     modalProfileIcon: {
         alignSelf: 'flex-end'
     },

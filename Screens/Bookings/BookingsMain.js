@@ -14,40 +14,47 @@ function BookingsMain({ navigation }) {
     return (
         <SafeAreaView style={styles.page}>
             <Modal
-                animationIn={"slideInRight"}
-                animationOut={'slideOutRight'}
-                isVisible={modalVisible}
-                onBackdropPress={() => setModalVisible(false)}
+        animationIn={"slideInRight"}
+        animationOut={'slideOutRight'}
+        isVisible={modalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.iconView}>
+              <Pressable
+              style={styles.iconButton}
+              onPress={() => setModalVisible(false)
+              }>
+                <AntDesign style={styles.modalProfileIcon} name="back" size={28} color='black' />
+              </Pressable>
+            <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
+            </View>
+            <Pressable
+              style={[styles.button]}
             >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
-                        <Pressable
-                            style={styles.button}
-                        //</View>onPress={}
-                        >
-                            <Text style={styles.textStyle}>Profile</Text>
-                        </Pressable>
-                        <Pressable
-                            style={styles.button}
-                        //onPress={}
-                        >
-                            <Text style={styles.textStyle}>Settings</Text>
-                        </Pressable>
-                        <Pressable
-                            style={styles.button}
-                        >
-                            <Text style={styles.textStyle}>About</Text>
-                        </Pressable>
-                        <Pressable
-                            style={styles.button}
-                            onPress={LogOutHandler}
-                        >
-                            <Text style={styles.textStyle}>Sign Out</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
+              <Text style={styles.textStyle}>Profile</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button]}
+            >
+              <Text style={styles.textStyle}>Settings</Text>
+
+            </Pressable>
+            <Pressable
+              style={[styles.button]}
+            >
+              <Text style={styles.textStyle}>About</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button]}
+              onPress={LogOutHandler}
+            >
+              <Text style={styles.textStyle}>Sign Out</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Booking</Text>
                 <Pressable style={styles.profileIcon} onPress={() => setModalVisible(true)}>

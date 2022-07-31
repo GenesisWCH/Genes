@@ -24,7 +24,15 @@ function HomeScreenMain({ navigation }) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <View style={styles.iconView}>
+              <Pressable
+              style={styles.iconButton}
+              onPress={() => setModalVisible(false)
+              }>
+                <AntDesign style={styles.modalProfileIcon} name="back" size={28} color='black' />
+              </Pressable>
             <AntDesign style={styles.modalProfileIcon} name="user" size={28} color='black' />
+            </View>
             <Pressable
               style={[styles.button]}
             >
